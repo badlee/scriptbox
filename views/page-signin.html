@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Sign In [ANINF SMS]</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <!--Loading bootstrap css-->
+    <link type="text/css" href="/fonts/fonts.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet"
+          href="/admin/vendors/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/bootstrap/css/bootstrap.min.css">
+    <!--Loading style vendors-->
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/animate.css/animate.css">
+    <!--Loading style-->
+    <link type="text/css" rel="stylesheet" href="/admin/css/style.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/style-mango.css" id="theme-style">
+    <link type="text/css" rel="stylesheet" href="/admin/css/style-responsive.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/vendors.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/themes/default.css" id="color-style">
+    <style type="text/css">
+        * {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body id="signin-page" class="animated bounceInDown">
+<div id="signin-page-content">
+    <form action="/login" method="POST" class="form"><h1 class="block-heading">Identification</h1>
+
+        {% if message  %}
+        <p>
+            <center><a style="color:#ed5565">{{ message }}</a></center>
+        </p>
+        {% endif %}
+
+        <div class="form-group">
+            <div class="input-icon"><i class="fa fa-user"></i><input value="bob" type="text" placeholder="Username" name="username"
+                                                                     class="form-control"></div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon"><i class="fa fa-key"></i><input value="secret" type="password" placeholder="Password"
+                                                                    name="password" class="form-control"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Login
+                &nbsp;<i class="fa fa-chevron-circle-right"></i></button>
+        <hr>
+    </form>
+</div>
+<script src="/admin/js/jquery-1.9.1.js"></script>
+<script src="/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/admin/js/jquery-ui.js"></script>
+<!--loading bootstrap js-->
+<script src="/admin/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="/admin/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+<script src="/admin/js/html5shiv.js"></script>
+<script src="/admin/js/respond.min.js"></script>
+<script src="/admin/vendors/jquery-cookie/jquery.cookie.js"></script>
+</body>
+</html>

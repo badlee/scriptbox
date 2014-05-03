@@ -1,0 +1,6 @@
+/*Your script Here*/
+module.exports = function(sms){
+  var m = new MSG();
+	m.msgdata = sms;
+	return m.sendSMS();
+}

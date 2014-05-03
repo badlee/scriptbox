@@ -1,0 +1,100 @@
+{% extends 'page-blank.html' %}
+{% block content %}
+	<div class="portlet  portlet-primary">
+		<div class="portlet-header">
+		    <div class="caption panel-primary">{{ title }}</div>
+		</div>
+		<div class="portlet-body">
+		    <div id="no-more-tables">
+		        <table class="table table-bordered table-striped table-condensed cf">
+		            <thead class="cf">
+		            <tr>
+		            	{% set fieldsLength = 1 %}
+		            	{% for i,j in fields %}{% if !hidden[i] %}
+		            	{% set fieldsLength = fieldsLength+1 %}
+		                <th>{{ j }}</th>
+		                {% endif %}{% endfor %}
+		                <th> Actions </th>
+		            </tr>
+		            </thead>
+		            <tbody>
+		            	{% set hasData = 0 %}
+		            	{% for i,j in data %}
+		            	{% set hasData = 1 %}
+		                <tr>
+				        	{% for c,v in fields %}{% if !hidden[c] %}
+				        	<td data-title="{{ v }}" >
+				        	{% if checkboxs[c] %}
+				        		{% if j[c] %}
+				        		<span class="label label-sm label-danger">ON</span>
+				        		{% else %}
+				        		<span class="label label-sm label-info">OFF</span>
+				        		{% endif %}
+					        {% elseif listes[c] %}
+					        	{{ listes[c][j[c]] || " - " }}
+					        {% elseif listValues[c] %}
+					        	{% set ll = 1 %}
+					        	{% for l,m in j[c] %}
+					        	{% set ll = 0 %}
+					        		<span class="label label-green">{{listValues[c][l]}}</span> 
+					        	{% endfor %}
+					        	{% if ll %} - {% endif %}
+					        {% else %}
+					         	{{ j[c] || " - " }}
+					        {% endif %}
+					        </td>
+					        {% endif %}{% endfor %}
+				            {% if getActions %}
+				            <td data-title="Actions" >
+				            	{{ getActions(j,user) }}
+				            </td>
+				            {% endif %}
+				         </tr>
+		                {% endfor %}
+		                {% if !hasData %}
+		                	<tr > <td  colspan="{{ fieldsLength }}"> <center> ** Pas de données **</center> </td></tr>
+		                {%endif%}
+		            </tbody>
+		        </table>
+		    </div>
+		</div>
+	</div>
+{% endblock %}
+{% block css %}{% endblock %}
+{% block js %}
+<script type="text/javascript">
+	if (!String.prototype.fprint) {
+	  	String.prototype.fprint = function() {
+		  	var args = arguments;
+		    return this.replace(/{(\d+)}/g, function(match, number) { 
+		      return typeof args[number] != 'undefined'
+		        ? args[number]
+		        : match
+		      ;
+		    });
+	  	};
+	}
+	function exec(url,success,error,el){
+		console.log(arguments,el);
+		if(! confirm("Confirmez votre action") ) return;
+		$.getJSON(url,function(data){
+			if(data.success){
+				noty({
+					timeout:5000,
+					text: success.fprint("success",data.message || ""),
+					buttons: [{
+						addClass: 'btn btn-dark btn-sm', text: '<i class="fa fa-times"></i>', onClick: function($noty) {
+				        	$noty.close();
+				    	}
+				    }]
+				});
+				if(el)
+					$(el).parent().parent().remove();
+			}else
+				noty({timeout:5000,text: error.fprint("error",data.message || ""), type:"error"});
+		}).fail(function(){
+			noty({timeout:5000,text: error.fprint("error", "Request Error"), type:"error"});
+		});
+	}
+</script>
+{% endblock %}

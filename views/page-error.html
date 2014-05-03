@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>{{ error.code }} [ANINF SMS]</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <!--Loading bootstrap css-->
+    <link type="text/css" href="/fonts/fonts.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet"
+          href="/admin/vendors/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/bootstrap/css/bootstrap.min.css">
+    <!--Loading style vendors-->
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/animate.css/animate.css">
+    <!--Loading style-->
+    <link type="text/css" rel="stylesheet" href="/admin/css/style.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/style-mango.css" id="theme-style">
+    <link type="text/css" rel="stylesheet" href="/admin/css/style-responsive.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/vendors.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/themes/default.css" id="color-style">
+</head>
+<body id="error-page" class="animated bounceInLeft">
+<div id="error-page-content"><h1>{{ error.code }}!</h1><h4>{{ error.message }}</h4>
+	{% if error.stack %}
+		<p>{{ error.stack }}</p>
+	{% endif %}
+    <p><a href='javascript:history.back()'>Back</a> - <a href='/'>Home</a> {% if user %}- <a href='/admin/'>Admin</a> {% endif %}</p>
+</div>
+<script src="/admin/js/jquery-1.9.1.js"></script>
+<script src="/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/admin/js/jquery-ui.js"></script>
+<!--loading bootstrap js-->
+<script src="/admin/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="/admin/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+<script src="/admin/js/html5shiv.js"></script>
+<script src="/admin/js/respond.min.js"></script>
+<script src="/admin/vendors/jquery-cookie/jquery.cookie.js"></script>
+</body>
+</html>

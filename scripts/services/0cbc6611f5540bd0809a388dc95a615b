@@ -1,0 +1,13 @@
+/*Your script Here*/
+//logger.log("Je suis un log");
+
+var square = require("square-functions");
+var sms = require("reply");
+try{
+	var sms2 = require("reply12"); // module not found
+}catch(e){
+  logger.log(e);
+}
+sms("Le care de 2 = "+square(2).area+"m2, Le Perimetre est "+square(2).perimeter+"m");
+
+//logger.log("End SMS script");

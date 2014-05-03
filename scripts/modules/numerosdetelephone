@@ -1,0 +1,6 @@
+/*Your script Here*/
+exports.airtel = /^((\+|00)?241)?0(4|7)\d{6}$/;
+exports.libertis = /^((\+|00)?241)?0(2|6)\d{6}$/;
+exports.moov = /^((\+|00)?241)?05\d{6}$/;
+exports.azur = /^((\+|00)?241)?03\d{6}$/;
+exports.GT = /^((\+|00)?241)?(01)?\d{6}$/;

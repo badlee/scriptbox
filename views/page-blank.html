@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>{{ title ? title  : "" }} [{{ siteTitle || "Oshimin SMS" }}] </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <link href="/admin/images/icons/favicon.ico" rel="shortcut icon">
+    <!--Loading bootstrap css-->
+    <link type="text/css" href="/fonts/fonts.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet"
+          href="/admin/vendors/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/bootstrap/css/bootstrap.min.css">
+    {% block css %}{% endblock %}
+    <!--LOADING SCRIPTS FOR PAGE--><!--Loading style vendors-->
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/animate.css/animate.css">
+    <link type="text/css" rel="stylesheet" href="/admin/vendors/jquery-pace/pace.css">
+    <!--Loading style-->
+    <link type="text/css" rel="stylesheet" href="/admin/css/style.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/style-mango.css" id="theme-style">
+    <link type="text/css" rel="stylesheet" href="/admin/css/vendors.css">
+    <link type="text/css" rel="stylesheet" href="/admin/css/themes/{{ user.theme || 'default' }}.css" id="color-style">
+    <link type="text/css" rel="stylesheet" href="/admin/css/style-responsive.css">
+    <link rel="shortcut icon" href="http://www.next-themes.com/mango/code/images/favicon.ico">
+    <script src="/admin/js/jquery-1.9.1.js"></script>
+    <script src="/admin/js/jquery-migrate-1.2.1.min.js"></script>
+</head>
+<body>
+<script>
+	var User = {{ user | json | raw }};
+</script>
+<div><!--BEGIN TEMPLATE SETTING-->
+    <div id="template-setting" style="top: 8px;"><a href="#" data-toggle="dropdown" class="btn-template-setting"><i
+            class="fa fa-tint"></i></a>
+
+        <div class="content-template-setting"><h4 class="block-heading">Theme Colors</h4>
+            <ul class="color-theme list-unstyled list-inline">
+                <li data-style="red" data-hover="tooltip" title="Red" class="red"></li>
+                <li data-style="orange" data-hover="tooltip" title="Orange" class="orange"></li>
+                <li data-style="green" data-hover="tooltip" title="Green" class="green"></li>
+                <li data-style="yellow" data-hover="tooltip" title="Yellow" class="yellow"></li>
+                <li data-style="blue" data-hover="tooltip" title="Blue" class="blue"></li>
+                <li data-style="violet" data-hover="tooltip" title="Violet" class="violet"></li>
+                <li data-style="pink" data-hover="tooltip" title="Pink" class="pink"></li>
+                <li data-style="grey" data-hover="tooltip" title="Grey" class="grey"></li>
+                <li data-style="default" data-hover="tooltip" title="Dark" class="dark"></li>
+                <li data-style="white" data-hover="tooltip" title="White" class="white"></li>
+            </ul>
+        </div>
+    </div>
+    <!--END TEMPLATE SETTING--><!--BEGIN TO TOP--><a id="totop" href="#"><i class="fa fa-angle-up"></i></a><!--END BACK TO TOP-->
+    <div id="wrapper"><!--BEGIN TOPBAR-->
+        <nav id="topbar" role="navigation" style="margin-bottom: 0;" class="navbar navbar-default navbar-static-top">
+            <div class="navbar-header">
+                <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span
+                        class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                        class="icon-bar"></span><span class="icon-bar"></span></button>
+                <a id="logo" href="/admin/" class="navbar-brand">{{ siteTitle || "Oshimin SMS" }}</a></div>
+            <div class="topbar-main"><a id="menu-toggle" href="#" class="btn hidden-xs"><i class="fa fa-bars"></i></a>
+
+
+                <ul class="nav navbar-top-links navbar-right" style="margin-right: 25px;">
+                    {% if user.isAdmin %}
+                    
+                    <li><a title="Application Settings" href="/admin/settings.json"><i
+                            class="fa fa-cogs fa-fw"></i></a>
+                    </li>
+                    <li><a  title="Ajouter un utilisateur" href="/admin/user.add"><i
+                            class="fa fa-user fa-fw"></i></a>
+                    </li>
+                    <li><a  title="Gestion des utilisateurs" href="/admin/user.list"><i
+                            class="fa fa-group fa-fw"></i></a>
+                    </li>
+                    {% endif %}
+                    <li class="dropdown hi"><a data-toggle="dropdown" href="#" class="dropdown-toggle"><img
+                            src="{{ gravatar(user.email,{size:32}) }}" alt="" class="img-responsive img-circle"/>&nbsp;
+                        {{ user.username }}
+                        &nbsp;<span class="caret"></span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right animated bounceInLeft">
+                            <li>
+                                <div class="navbar-content">
+                                    <div class="row">
+                                        <div class="col-md-5 col-xs-5"><img
+                                                src="{{ gravatar(user.email,{size:128}) }}" alt=""
+                                                class="img-responsive img-circle" />
+                                        </div>
+                                        <div class="col-md-7 col-xs-5"><span>{{ user.username }}</span>
+
+                                            <p class="text-muted small">{{ user.email }}</p>
+
+                                            <div class="divider"></div>
+                                            <a href="/admin/user.info" class="btn btn-primary btn-sm">View Profile</a></div>
+                                    </div>
+                                </div>
+                                <div class="navbar-footer">
+                                    <div class="navbar-footer-content">
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-6">
+                                            	<button type="button" data-target="#modal-change-password-dialog" data-toggle="modal" class="btn btn-default btn-primary btn-block btn-sm">Change Password</button>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6"><a href="/logout"
+                                                                              class="btn btn-default btn-block btn-sm pull-right">Sign
+                                                Out</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--BEGIN MODAL CONFIG PORTLET-->
+        <div id="modal-config" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                        <h4 class="modal-title">Modal title</h4></div>
+                    <div class="modal-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eleifend et
+                        nisl eget porta. Curabitur elementum sem molestie nisl varius, eget tempus odio molestie. Nunc
+                        vehicula sem arcu, eu pulvinar neque cursus ac. Aliquam ultricies lobortis magna et aliquam.
+                        Vestibulum egestas eu urna sed ultricies. Nullam pulvinar dolor vitae quam dictum condimentum.
+                        Integer a sodales elit, eu pulvinar leo. Nunc nec aliquam nisi, a mollis neque. Ut vel felis
+                        quis tellus hendrerit placerat. Vivamus vel nisl non magna feugiat dignissim sed ut nibh. Nulla
+                        elementum, est a pretium hendrerit, arcu risus luctus augue, mattis aliquet orci ligula eget
+                        massa. Sed ut ultricies felis.</p></div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--END MODAL CONFIG PORTLET--><!--END TOPBAR--><!--BEGIN SIDEBAR MENU-->
+        <nav id="sidebar" role="navigation" class="navbar-default navbar-static-side">
+            <div class="sidebar-collapse menu-scroll">
+                <ul id="side-menu" class="nav">
+                    <li class="clock"><strong id="get-date"></strong>
+
+                        <div class="digital-clock">
+                            <div id="getHours" class="get-time"></div>
+                            <span>:</span>
+
+                            <div id="getMinutes" class="get-time"></div>
+                            <span>:</span>
+
+                            <div id="getSeconds" class="get-time"></div>
+                        </div>
+                    </li>
+                    <li class="sidebar-heading"><h4>Main Menu</h4></li>
+                    <li><a href="/admin/user.todo.list"><i class="fa fa-check-square-o fa-fw"></i>&nbsp;
+                        TODO list</a>
+                    </li>
+                    {% if user.droits.scripting %}
+                    <li><a href="/admin/"><i class="fa fa-file-text fa-fw"></i>&nbsp;
+                        Script<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="/admin/script.add">Ajouter</a></li>
+                            <li ><a href="/admin/script.list">Liste des scripts</a></li>
+                            <li ><a href="/admin/module.list">Liste des modules</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if user.droits.keywording %}
+                    <li><a href="/admin/"><i class="fa fa-tags fa-fw"></i>&nbsp;
+                        Mot Cles<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ><a href="/admin/keyword.list">Liste</a></li>
+                            <li><a href="/admin/keyword.add">Ajouter</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if user.droits.expression %}
+                    <li><a href="/admin/"><i class="fa fa-ticket fa-fw"></i>&nbsp;
+                        Expression<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ><a href="/admin/expression.list">Liste</a></li>
+                            <li><a href="/admin/expression.add">Ajouter</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li><a href="/admin/"><i class="fa fa-table fa-fw"></i>&nbsp;
+                        Rapport</a>
+                    </li>
+                    <li><a href="/admin/"><i class="fa fa-question-circle fa-fw"></i>&nbsp;
+                        Aide</a>
+                    </li>
+                    <li><a href="/admin/about"><i class="fa fa-info-circle fa-fw"></i>&nbsp;
+                        A propos</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--END SIDEBAR MENU--><!--BEGIN PAGE WRAPPER-->
+        <div id="page-wrapper"><!--BEGIN PAGE HEADER & BREADCRUMB-->
+            {% if liens || title %}
+            <div class="page-header-breadcrumb">
+                <div class="page-heading hidden-xs"><h1 class="page-title">{{ title }}</h1></div>
+                <ol class="breadcrumb page-breadcrumb">
+                	<li><i class="fa fa-home"></i>&nbsp;<a href="/admin/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                	{% for lien,nom in liens %}
+                    	<li><a href="/admin/{{ lien }}">{{ nom }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                    {% endfor %}
+                    <li class="active">{{ title }}</li>
+                </ol>
+            </div>
+            {% endif %}
+            <!--END PAGE HEADER & BREADCRUMB--><!--BEGIN CONTENT-->
+            <div class="page-content">
+            {% block content %}
+            {% endblock %}
+            </div>
+            <!--END CONTENT--><!--BEGIN FOOTER-->
+            <div class="page-footer">
+                <div class="copyright">2014 © Oshimin Labs - Badinga Badinga Ulrich Arthur.</div>
+            </div>
+            <!--END FOOTER--></div>
+        <!--END PAGE WRAPPER--></div>
+</div>
+<!-- Modal view -->
+<div id="modal-change-password-dialog" tabindex="-1" role="dialog" aria-labelledby="modal-login-label" aria-hidden="false" class="modal fade in" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close" id="modal-change-password-dialog-close">×</button>
+                <h4 id="modal-login-label" class="modal-title">Change Password</h4></div>
+            <div class="modal-body">
+                <div class="form">
+                    <form class="form-horizontal" action="javascript:$.post('/admin/user.pwd', {password : $('#modal-change-password-dialog-pwd1').val()}, function(data){ $('#modal-change-password-dialog-close').trigger('click'); noty({text : 'Mot de passe'+(data.success ? '' : 'pas')+' mis à jour', timeout : 5000}); }, 'json');" >
+                        <div class="form-group"><label for="modal-change-password-dialog-pwd1" class="control-label col-md-3">Password</label>
+
+                            <div class="col-md-9"><input onkeyup="var el2 = document.getElementById('modal-change-password-dialog-btn');var el = document.getElementById('modal-change-password-dialog-pwd2');el2.disabled = !(el.value === this.value);" id="modal-change-password-dialog-pwd1" type="password" class="form-control"></div>
+                        </div>
+                        <div class="form-group"><label for="modal-change-password-dialog-pwd2" class="control-label col-md-3">Password (Reapeat)</label>
+
+                            <div class="col-md-9"><input onkeyup="var el2 = document.getElementById('modal-change-password-dialog-btn');var el = document.getElementById('modal-change-password-dialog-pwd1');el2.disabled = !(el.value === this.value);" id="modal-change-password-dialog-pwd2" type="password" class="form-control"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <button id="modal-change-password-dialog-btn" disabled=disabled type="submit" class="btn btn-tertiary btn-primary">Change</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/admin/js/jquery-ui.js"></script>
+<!--loading bootstrap js-->
+<script src="/admin/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="/admin/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+<script src="/admin/js/html5shiv.js"></script>
+<script src="/admin/js/respond.min.js"></script>
+<script src="/admin/vendors/metisMenu/jquery.metisMenu.js"></script>
+<script src="/admin/vendors/slimScroll/jquery.slimscroll.js"></script>
+<script src="/admin/vendors/jquery-cookie/jquery.cookie.js"></script>
+<script src="/admin/js/jquery.menu.js"></script>
+<script src="/admin/vendors/jquery-pace/pace.min.js"></script>
+<!-- NOTY JAVASCRIPT -->
+<script type="text/javascript" src="/assets/js/noty/jquery.noty.js"></script>
+<script type="text/javascript" src="/assets/js/noty/layouts/top.js"></script>
+<script type="text/javascript" src="/assets/js/noty/layouts/topLeft.js"></script>
+<script type="text/javascript" src="/assets/js/noty/layouts/topRight.js"></script>
+<script type="text/javascript" src="/assets/js/noty/layouts/topCenter.js"></script>
+
+<!-- You can add more layouts if you want -->
+<script type="text/javascript" src="/assets/js/noty/themes/default.js"></script>
+
+{% block js %}{% endblock %}
+<!--LOADING SCRIPTS FOR PAGE--><!--CORE JAVASCRIPT-->
+<script src="/admin/js/app.js"></script>
+<script src="/admin/js/main.js"></script>
+<script src="/admin/js/holder.js"></script>
+</body>
+</html>

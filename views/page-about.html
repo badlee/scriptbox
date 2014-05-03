@@ -1,0 +1,110 @@
+{% set title= "A propos" %}
+{% extends 'page-blank.html' %}
+{% block css %}
+     <link type="text/css" rel="stylesheet" href="/admin/vendors/jquery-news-ticker/jquery.news-ticker.css">
+     <style type="text/css">
+     .bigText {
+        box-sizing: border-box;
+        color: rgb(153, 153, 153);
+        display: inline;
+        font-family: Oswald;
+        font-size: 30px;
+        font-weight: bold;
+        height: auto;
+        line-height: 42px;
+        width: auto;
+     }
+     .center{
+        text-align:  center;
+     } 
+     </style>
+{% endblock %} 
+{% block content %}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+        <center><strong>Important!</strong> This is an alpha version.</center>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-4">&nbsp;</div>
+            <div class="col-lg-4">
+                <div class="portlet">
+                    <div class="portlet-header">
+                        <div class="caption">{{ siteTitle }}</div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="note note-success"><h4 class="block-heading">Project About</h4>
+                            <p> <strong>Sources</strong> : <a href="http://github.com/badlee/scriptbox.git">Github</a></p>
+                            <p> <strong>Author</strong> : <a href="http://github.com/badlee">Badlee</a></p>
+                            <p> <strong>Bug and issues</strong> : <a href="https://github.com/badlee/scriptbox/issues">Github</a></p>
+                            <p> <strong>Facebook</strong> : <a href="https://github.com/badlee/scriptbox/issues">Github</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mbxxl">
+                    <div class="col-md-12">
+                        <div class="pricing-table pricing-static">
+                            <div class="plan active"><h3>Community</h3>
+
+                                <div class="price-box">
+                                    <div class="price-number">FREE</div>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li><p>OshiminLabs Support</p><span>Via github</span></li>
+                                    <li><p>Plugin System</p><span>No</span></li>
+                                    <li><p>Advencend Configuration</p><span>No</span></li>
+                                    <li><p>Multi-bearerBox</p><span>No</span></li>
+                                    <li><p>Multi-database</p><span>Yes</span></li>
+                                    <li><p>Multi-language</p><span>No</span></li>
+                                    <li><p>Capacity</p><span>~1000sms/s</span></li>
+                                    <li><p>SMS Support</p><span>Text<br/>Flash</span></li>
+                                    <li><p>Language Support</p><span>Javascript</span></li>
+                                    <li style="font-size: 10px;">
+                                        &nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>
+                                        &nbsp;<br/>&nbsp;<br/>
+                                    </li>
+                                </ul></div>
+                            <div class="plan"><h3>Professional</h3>
+
+                                <div class="price-box">
+                                    <div class="price-number">$50/<span>m</span></div>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li><p>OshiminLabs Support</p><span>30h</span></li>
+                                    <li><p>Plugin System</p><span>Yes</span></li>
+                                    <li><p>Advencend Configuration</p><span>Yes</span></li>
+                                    <li><p>Multi-bearerBox</p><span>No</span></li>
+                                    <li><p>Multi-database</p><span>Yes</span></li>
+                                    <li><p>Multi-language</p><span>Yes</span></li>
+                                    <li><p>Capacity</p><span>~1000sms/s</span></li>
+                                    <li><p>SMS Support</p><span>Long<br/>Text<br/>Flash</span></li>
+                                    <li><p>Language Support</p><span style="font-size: 19px;">Javascript<br/> CoffeScript</span></li>
+                                    <li style="height: 56px;"></li>
+                                </ul>
+                                </div>
+                            <div class="plan"><h3>Premium</h3>
+
+                                <div class="price-box">
+                                    <div class="price-number">$70/<span>m</span></div>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li><p>OshiminLabs Support</p><span>72h</span></li>
+                                    <li><p>Plugin System</p><span>Yes</span></li>
+                                    <li><p>Advencend Configuration</p><span>Yes</span></li>
+                                    <li><p>Multi-bearerBox</p><span>Yes</span></li>
+                                    <li><p>Multi-database</p><span>Yes</span></li>
+                                    <li><p>Multi-language</p><span>Yes</span></li>
+                                    <li><p>Capacity</p><span style="font-size: 13px;">Depend of bearerBox<br/><br/></span></li>
+                                    <li><p>SMS Support</p><span>Long<br/>Text<br/>Flash<br/>Unicode</span></li>
+                                    <li><p>Language Support</p><span style="font-size: 13px;">Javascript<br/> CoffeScript<br/>TypeScript</span></li>
+                                    <li style="height: 20px;"></li>
+                                </ul></div>
+                        </div>
+                    </div>
+                </div>
+{% endblock %}
+{% block js %}
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'page-blank.html' %}
+{% block css %}
+     <link type="text/css" rel="stylesheet" href="/admin/vendors/jquery-news-ticker/jquery.news-ticker.css">
+     <style type="text/css">
+     .bigText {
+        box-sizing: border-box;
+        color: rgb(153, 153, 153);
+        display: inline;
+        font-family: Oswald;
+        font-size: 30px;
+        font-weight: bold;
+        height: auto;
+        line-height: 42px;
+        width: auto;
+     }
+     .center{
+        text-align:  center;
+     } 
+     </style>
+{% endblock %} 
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <ol id="sample" class="ticker">
+                            <li>Welcome to {{ siteTitle || "Oshimin SMS" }} - The Best OpenSource Vas Application</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="col-md-8 mts bigText">
+                            <p ref="uptime"><img src="/assets/img/up.png" alt=""> <bold>Up</bold> | <uptime >0ms</uptime></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel">
+                    <div class="panel-body">
+                        <h4 class="block-heading">Traffic SMS</h4>
+                        <div id="importantchart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body">
+                        <h4 class="block-heading">Traffic SMS</h4>
+                        <div class="col-md-8 mts bigText">
+                            <p ref="sent"><img src="/assets/img/up-small.png" alt=""><bold>0</bold> | Sent</p>
+                            <p ref="received"><img src="/assets/img/down-small.png" alt=""><bold>0</bold> | <bad>Received</bad></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <h4 class="block-heading">Memory Usage : <diskmemory>0</diskmemory>%</h4>
+                        <div id="load"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <h4 class="block-heading">OS RAM USAGE : <diskspace>0</diskspace>%</h4>
+                        <div id="space"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="/admin/vendors/jquery-news-ticker/jquery.news-ticker.js"></script>
+    <script type="text/javascript" src="/assets/js/admin.js"></script>
+    <script type="text/javascript" src="/assets/js/dash-charts.js"></script>
+    <script type="text/javascript" src="/assets/js/lineandbars.js"></script>
+    <script type="text/javascript" src="/assets/js/highcharts.js"></script>
+{% endblock %}

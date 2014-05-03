@@ -1,0 +1,76 @@
+{% extends 'page-blank.html' %}
+{% block content %}
+	<div id="tab-form-bordered" class="tab-pane fade active in" style="">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">{{ title }}</div>
+                    <div class="panel-body pan">
+                        <form action="" method="post" class="form-horizontal form-bordered dashed">
+                            <div class="form-body">
+                            {# ici je construi le formulaire  #}
+                            {% for cle,valeur in fields %}{% if !hidden[cle] %}
+                            	{% if valeur.label %}
+		                        	{% if readOnly[cle] || (!user.isAdmin && valeur.needAdmin ) %}
+		                        		{% set lock = true %}
+		                        	{% else %}
+		                        		{% set lock = false %}
+		                        	{% endif %}
+                            		<div class="form-group"><label for="inputFirstName" class="col-md-3 control-label">{{ valeur.label }}
+		                                {% if !lock && valeur.index %}<span class="require">*</span>{% endif %}
+		                             </label>
+		                                <div class="col-md-4">
+		                                	{% if valeur.data %}
+		                                	<div class="checkbox-list">
+		                                		{% for c,v in valeur.data %}
+		                                		<label>
+		                                			<div class="make-switch switch-mini"><input value="{{c}}" name="{{cle}}[]" {% if data[cle] && data[cle][c] %} checked=checked {% endif %} type="checkbox" {% if lock %} disabled=disabled {% endif %}></div>&nbsp;{{ v }}</label>
+                                                {% endfor %}
+                                            </div>
+		                                	{% elseif valeur.list %}
+		                                	<div class="form-group"><select name="{{ cle }}" class="form-control">
+		                                		{% for c,v in valeur.list %}
+                                                <option {% if c == data[cle] %} selected=selected {% endif %} value="{{ c }}" >{{ v }}</option>
+                                                {% endfor %}>
+                                            </select></div>
+		                                	{% elseif valeur.inputType == 'checkbox' %}
+		                                	<div data-on="primary" data-off="info" class="make-switch">
+		                                		<input {% if data[cle] %} checked="checked" {% endif %} type="checkbox"  name="{{ cle }}"
+		                                			{% if lock %} disabled=disabled {% endif %}>
+		                                	</div>
+		                                	{% elseif valeur.inputType == 'javascript' %}
+		                                		{% include "editor.twig" %}
+		                                	{% elseif valeur.dataUrl %}
+		                                		{% include "select-ajax.twig" %}
+		                                	{% else %}
+		                                	<input type="text" value="{{ data[cle] || '' }}" placeholder="{{ valeur.label }}" class="form-control" name="{{ cle }}" {% if lock %} readonly=readonly {% endif %} {% if valeur.mask %} mask="{{valeur.mask}}" {% endif %} {% if valeur.limit %} maxlength="{{ valeur.limit }}" {% endif %} >
+		                                	{% endif %}
+		                                	{% if valeur.help %}<span class="help-block">This is help text</span>{% endif %}
+		                                </div>
+		                            </div>	
+                            	{% endif %}
+                            {% endif %}{% endfor %}
+                            <div class="form-actions text-right pal">
+                                <button type="submit" class="btn btn-primary btn-outlined">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block css %}<link type="text/css" rel="stylesheet" href="/admin/vendors/bootstrap-switch/css/bootstrap-switch.css">{% endblock %}
+{% block js %}
+	<script src="/admin/vendors/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+	<script src="/admin/vendors/jquery-maskedinput/jquery-maskedinput.js"></script>
+	<script >
+		jQuery(function(){
+			$('input[mask]').each(function(i, el){
+				$(el).mask($(el).attr('mask'));
+			})
+		});
+	</script>
+{% endblock %}

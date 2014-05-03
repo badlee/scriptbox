@@ -1,0 +1,52 @@
+{% set autoComplete = random.generate(10) %}
+<div class="form-group">
+    <select id="select-data-url-{{ autoComplete }}" class="form-control">
+	   <option value=''>Loading...</option>
+    </select>
+</div>
+<script>
+    if(typeof inputAll == "undefined")
+        inputAll =  {};
+    /*
+    {{ data[cle] | json |raw }};
+    */
+    /*
+    {{ cle | json |raw }};
+    */
+$(function(){
+
+    $.ajax({
+        url: {{ valeur.dataUrl |json |raw}},
+        dataType: 'json',
+        success: function(data){
+            var str = "";
+            var element = {};
+            var input = false;
+            var val =  {{ data[cle] |json |raw }} ;
+            var el = $('select#select-data-url-{{ autoComplete }}');
+            $.each(data.data, function(i, items){
+               str += "<option value='"+items.value+"' "+(items.value ==  val ? "selected=selected" : "")+">"+items.text+"</option>";7
+               if("data" in  items){
+                    if(!input)
+                        input = $("<input type='hidden' name='{{ cle }}-val'>");
+                    element[items.value] = items;
+                    el.before(input);
+                    if( items.value ==  val )
+                        input.val(items.data);
+               }
+            });
+            el.html( str );
+            el.attr("name",{{ cle |json |raw }});
+            if(input){
+                inputAll["{{ cle }}"] = input;
+                if(!input.val())
+                    input.val(element[el.val()].data);
+                el.on("change",function(){
+                    input.val(element[el.val()].data);
+                });
+            }
+
+        }
+    });
+});
+</script>

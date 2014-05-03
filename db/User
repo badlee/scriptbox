@@ -1,0 +1,15 @@
+{"k":"0000000078","o":"0000000358","v":"001"}
+{"_id":2,"_uid":5,"_dt":1399024879527,"_s":"21ef511b59563ff80a2cea9c010aa1e8"}
+{"email":"joe2@example.com","username":"oshimin","salt":"ACehf9oSpzcWK1RIFLuUzW8HkDf8J7VhHC","password":"21a637c134102ca1028cd05867f65b35","telephone":"","gender":"male","isAdmin":true,"actif":true,"joinedAt":1398093015460,"theme":"grey","init":true,"droits":{"sendsms":1,"scripting":1,"keywording":1,"expression":1},"todo":"[]","_id":{"$wrap":"$oid","v":2}}
+{"k":"0000000078","o":"0000000336","v":"001"}
+{"_id":3,"_uid":3,"_dt":1398093015778,"_s":"b173f37a594ace3ad46841a971cfdb47"}
+{"email":"joe@example.com","username":"joe","salt":"ZbebIU0w5BaU","password":"44a2ac3bc3e1eeedc46db97b4438181c","telephone":"","gender":"male","isAdmin":false,"actif":false,"joinedAt":1398093015464,"theme":"default","init":true,"droits":{"sendsms":1,"scripting":1,"keywording":1,"expression":1},"todo":"[]","_id":{"$wrap":"$oid","v":3}}
+{"k":"0000000078","o":"0000000511","v":"001"}
+{"_id":4,"_uid":5,"_dt":1399041244666,"_s":"4ead1ff3fad65f951c21fdf8e0eeb2b2"}
+{"id":{"$wrap":"$oid","v":4},"email":"badlee.oshimin@gmail.com","username":"bob","salt":"gcNZeQSstzleZ7CGYcX01LucDSEof9yib72w","password":"aeb85ddb4cc7255e7e8f4ba3e80de23f","telephone":"","gender":"female","isAdmin":false,"actif":true,"joinedAt":1398093015464,"theme":"blue","init":true,"droits":{"sendsms":1,"scripting":1,"keywording":1,"expression":1},"todo":"[{\"data\":\"Dashboard\",\"complete\":true,\"id\":1},{\"data\":\"Reporting SMS periode\",\"complete\":false,\"id\":2}]","_id":{"$wrap":"$oid","v":4}}
+{"k":"0000000078","o":"0000000387","v":"001"}
+{"_id":5,"_uid":5,"_dt":1398105304195,"_s":"adc6bf01a3ac574e8f6329f8e5b1b04c"}
+{"email":"bachir.tonga@gmail.com","username":"bachir","salt":"Iq6QN4o7XlzQXOOm3lDHPlfay5GRqVy9yqgfW","password":"9bd8132cf780e82e31b642b1fb970ba0","telephone":"(241) 05 38 01 02","gender":"male","isAdmin":false,"actif":true,"joinedAt":1398105304181,"theme":"default","init":true,"droits":{"sendsms":1,"scripting":1,"keywording":1,"expression":1},"todo":"[]","_id":{"$wrap":"$oid","v":5}}
+{"k":"0000000078","o":"0000000513","v":"001"}
+{"_id":4,"_uid":5,"_dt":1399124552441,"_s":"4f0a4857058331d6183fdfc718811730"}
+{"id":{"$wrap":"$oid","v":4},"email":"badlee.oshimin@gmail.com","username":"bob","salt":"gcNZeQSstzleZ7CGYcX01LucDSEof9yib72w","password":"aeb85ddb4cc7255e7e8f4ba3e80de23f","telephone":"","gender":"female","isAdmin":false,"actif":true,"joinedAt":1398093015464,"theme":"yellow","init":true,"droits":{"sendsms":1,"scripting":1,"keywording":1,"expression":1},"todo":"[{\"data\":\"Dashboard\",\"complete\":true,\"id\":1},{\"data\":\"Reporting SMS periode\",\"complete\":false,\"id\":2}]","_id":{"$wrap":"$oid","v":4}}

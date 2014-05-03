@@ -1,0 +1,27 @@
+{% if ! codemirrorInclude %}
+<script src="/assets/js/codemirror-compressed.js"></script>
+<script src="/assets/js/codemirror-hint.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="/assets/css/codemirror-theme.css">
+{% endif %}
+{% set codemirrorInclude = random.generate(10) %}
+<textarea id="codemirror-include-{{ codemirrorInclude }}" name="{{ cle }}" >{{ data[cle] || "/*Your script Here*/"}}</textarea>
+<script>
+	(function () {
+		var el = document.getElementById('codemirror-include-{{ codemirrorInclude }}')
+	  	var editor = CodeMirror.fromTextArea(el, {
+		    mode: {name: "javascript", json: true, globalVars: true},
+		    theme : "twilight",
+		    lineNumbers: true,
+		    keyMap : "sublime",
+	        extraKeys: {
+	        	"Ctrl-Space": "autocomplete",
+	        	"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor());}
+	        },
+	        foldGutter: true,
+		    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+		});
+		el.parentElement.className = "col-md-9";
+	})();
+		
+</script>

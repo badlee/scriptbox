@@ -1,0 +1,1 @@
+{"id":"5","keyword":"test2","scriptId-val":"/home/oshimin/DEV/scriptBox/scripts/services/5d41402abc4b2a76b9719d911017c592","scriptId":"6","validator-val":"(?:)[:ø:]","validator":"2","blackList-val":"^[^\\W\\w]*$[:ø:]","blackList":"3","rewriter":null,"user":4}

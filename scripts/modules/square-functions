@@ -1,0 +1,12 @@
+/*Your script Here*/
+module.exports = function(width) {
+  return {
+    get area() {
+      return width * width;
+    },
+    get perimeter(){
+    	return 4*width;
+  	},
+    circle : require("circle")
+  };
+}

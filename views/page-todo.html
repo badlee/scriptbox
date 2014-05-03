@@ -1,0 +1,104 @@
+{% extends 'page-blank.html' %}
+{% block css %}
+     <link type="text/css" rel="stylesheet" href="/admin/vendors/jquery-news-ticker/jquery.news-ticker.css">
+     <style type="text/css">
+     .bigText {
+        box-sizing: border-box;
+        color: rgb(153, 153, 153);
+        display: inline;
+        font-family: Oswald;
+        font-size: 30px;
+        font-weight: bold;
+        height: auto;
+        line-height: 42px;
+        width: auto;
+     }
+     .center{
+        text-align:  center;
+     } 
+     </style>
+{% endblock %} 
+{% block content %}
+    <div class="portlet  portlet-primary">
+        <div class="portlet-header">
+            <div class="caption panel-primary">{{ title }}</div>
+        </div>
+        <div class="portlet-body">
+            <div id="todos-list">
+                <ul id="todos-list-sort" class="list-unstyled ui-sortable">
+                    <li>
+                        <div class="input-group"><input id="todos-list-input" type="text" placeholder="Key word" value="" class="form-control"><span class="input-group-btn"><button id="todos-list-add" type="button" class="btn btn-primary">Add
+                        </button></span></div>
+                    </li>
+                    {% for i,j in user.todo %}
+                    <li><input type="checkbox" {% if j.complete %} checked=checked {% endif %} id="task-item-{{i}}"><label for="task-item-{{i}}">{{j.data}}</label><a href="javascript:;" data-hover="tooltip" data-original-title="remove" class="delete"><span class="fa fa-trash-o"></span></a></li>
+                     {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+	<script type="text/javascript">
+	//BEGIN TODOS LIST
+    //$("#todos-list-sort").sortable();
+    $("#todos-list-sort").disableSelection();
+
+
+    $('#todos-list-add').click(function () {
+        var index = $('#todos-list-sort > li').length;
+        $.post("/admin/user.todo",{data:$("#todos-list-input").val()} ,function(data){
+        	if(data.success){
+	        	$('ul#todos-list-sort').append('<li><input type="checkbox" id="task-item-' + index + '" /><label for="task-item-' + index + '" >' + $("#todos-list-input").val() + '</label><a class="delete" href="javascript:;" data-hover="tooltip" data-original-title="remove"><span class="fa fa-trash-o"></span></a></li>');
+	 	       $("[data-hover='tooltip']").tooltip();
+	 	       $("#todos-list-input").val("");
+	 	   }else{
+		 	   	noty({timeout:5000,text: data.message || "Request Error", type:"error"});
+	 	   }
+        },"json").fail(function(){
+			noty({timeout:5000,text: "Request Error", type:"error"});
+		})
+    });
+
+    $('#todos-list-sort li input[type="checkbox"]').live('click', function () {
+        var el =$(this);
+        $.ajax( "/admin/user.todo",{
+        	type : "PUT",
+        	data : {
+        		data : el.parent().children("label").html()
+        	},
+        	dataType : 'json'
+        })
+		  .done(function(data) {
+		  	if(!data.success){
+		    	el.removeAttr("checked");
+		    	noty({timeout:5000,text: data.message || "Request Error", type:"error"});
+		    }
+		  })
+		  .fail(function() {
+		    el.removeAttr("checked");
+		    noty({timeout:5000,text:"Request Error", type:"error"});
+		  })
+    });
+    $('#todos-list-sort li a.delete').live('click', function () {
+        var el =$(this);
+        $.ajax( "/admin/user.todo",{
+        	type : "DELETE",
+        	data : {
+        		data : el.parent().children("label").html()
+        	},
+        	dataType : 'json'
+        })
+		  .done(function(data) {
+		  	if(data.success)
+		    	el.parent().remove();
+		    else
+		    	noty({timeout:5000,text: data.message || "Request Error", type:"error"});
+		  })
+		  .fail(function() {
+		    noty({timeout:5000,text: "Request Error", type:"error"});
+		  })
+    });
+    //END TODOS LIST
+	</script>
+{% endblock %}
