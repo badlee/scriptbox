@@ -43,7 +43,7 @@
 
 #### Add a script
 > Click on "Main Menu" > "Script" > "Ajouter"
-Fill nom(name), description and script (javascript programme), set off Module.
+Fill nom(name), description and script (javascript programme), set Module "off".
 
 ###### Sample script
 ```javascript
@@ -55,6 +55,58 @@ message.msgdata = "Hello SMS!"; // set message text
 message.sendSMS(); // send message to the sender
 ```
 this script reply "Hello SMS" on each request.
+
+#### Add a module
+> Click on "Main Menu" > "Script" > "Ajouter"
+Fill nom(name), description and script (javascript programme), set Module "on".
+
+###### Sample module
+```javascript
+//Nom: numeros
+//Description : Hello SMS
+//Module : ON
+/*Your script Here*/
+exports.airtel = /^((\+|00)?241)?0(4|7)\d{6}$/;
+exports.libertis = /^((\+|00)?241)?0(2|6)\d{6}$/;
+exports.moov = /^((\+|00)?241)?05\d{6}$/;
+exports.azur = /^((\+|00)?241)?03\d{6}$/;
+exports.GT = /^((\+|00)?241)?(01)?\d{6}$/;
+```
+this module can be used in script  `numeros = require('numeros');`
+
+###### Sample script who use module
+```javascript
+//Nom: hello2
+//Description : Hello SMS and get information network
+//Module : OFF
+var num = require("numeros");
+logger.log(sms.sender); // logger is like `console` in nodejs 
+// sms contain the SMS object 
+var m = new MSG();
+	m.msgdata = "Hello SMS!";
+	if(num.airtel.test(sms.sender))
+		m.msgdata += " - Airtel";
+	else if(num.libertis.test(sms.sender))
+		m.msgdata += " - Libertis";
+	else if(num.azur.test(sms.sender))
+		m.msgdata += " - Azur";
+	else if(num.moov.test(sms.sender))
+		m.msgdata += " - MOOV";
+	else if(num.GT.test(sms.sender))
+		m.msgdata += " - GT";
+	else 
+		m.msgdata += " - Je sais pas d'ou vient ce numero";
+	
+	m.sendSMS();
+```
+> You can juste create a Mot Cle (keyword) , and send sms for test it;
+```javascript
+    Nom : test
+    Script : hello2
+    Validateur SMS : Oui
+    Reject Sender : Non
+```
+
 
 #### Add an expression
 > Click on "Main Menu" > "Expression" > "Ajouter"
@@ -100,6 +152,25 @@ this script reply "Hello SMS" on each request.
  - Routing system
  - Script installer for production instance 
  
+#### Screen Capture
+![Capture 9][9]
+
+![Capture 2][2]
+
+![Capture 1][1]
+
+![Capture 3][3]
+
+![Capture 4][4]
+
+![Capture 5][5]
+
+![Capture 6][6]
+
+![Capture 7][7]
+
+![Capture 8][8]
+
 #### LICENCE
 
 >(The MIT License)
@@ -124,3 +195,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+  [1]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-1.png
+  [2]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-2.png
+  [3]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-3.png
+  [4]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-4.png
+  [5]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-5.png
+  [6]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-6.png
+  [7]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-7.png
+  [8]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-8.png
+  [9]: https://raw.githubusercontent.com/badlee/scriptbox/master/media/Capture-9.png
