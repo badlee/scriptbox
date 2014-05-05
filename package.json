@@ -1,5 +1,5 @@
 {
-  "name": "scriptBox",
+  "name": "scriptbox",
   "version": "0.0.1-a",
   "description": "Script box is a full VAS application",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
@@ -58,7 +58,5 @@
   },
   "license": "MIT",
   "main": "index.js",
-  "devDependencies": {
-    "coffee-script": "~1.7.1"
-  }
+  "devDependencies": {}
 }

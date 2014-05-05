@@ -5,7 +5,8 @@
 ----------
 #### Instalation 
 
-> ` npm install scriptbox `
+> `git clone https://github.com/badlee/scriptbox.git`
+> ` npm install .`
 
 #### How use
 
