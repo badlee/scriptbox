@@ -1,6 +1,6 @@
 ----------
 
-# ScriptBox (smsbox remplacement)
+# ScriptBox (Kannel Smsbox remplacement)
 
 ----------
 #### Instalation 
