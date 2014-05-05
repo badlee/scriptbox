@@ -1,1 +1,0 @@
-{"id":"3","keyword":"test","scriptId-val":"/home/oshimin/DEV/scriptBox/scripts/services/0cbc6611f5540bd0809a388dc95a615b","scriptId":"2","validator-val":"(?:)[:ø:]","validator":"2","blackList-val":"^((\\+|00)?241)?0(4|7)\\d{6}$[:ø:]","blackList":"4","rewriter":null,"user":2}

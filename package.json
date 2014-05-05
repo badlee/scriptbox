@@ -1,6 +1,6 @@
 {
   "name": "scriptBox",
-  "version": "0.0.1a",
+  "version": "0.0.1-a",
   "description": "Script box is a full VAS application",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
   "directories": {
@@ -56,5 +56,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "main": "index.js",
+  "devDependencies": {
+    "coffee-script": "~1.7.1"
+  }
 }
