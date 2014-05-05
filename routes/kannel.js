@@ -30,7 +30,7 @@ Object.defineProperties(languageTypes, {
 							var id = new Buffer(m.receiver).toString();
 							stats.byNum[id] = stats.byNum[id] || {sent : 0, received:0};
 							stats.byNum[id].sent++;
-							app.sendSMS(m);	
+							sendSMS(m);
 						}
 					});
 				}
@@ -84,6 +84,24 @@ app.on("admin",function(data){
 	};
 });
 
+var sendSMS = function(data){
+	app.sendSMS(data);
+	new Models.SMS({ 
+		pdu: data,
+		sms : (data.msgdata || "").toString(),
+		from: data.sender.toString(),
+		to: data.receiver.toString(),
+		SMSC: (data.smsc_id || "").toString(),
+		MotCle : "",
+		success : false,
+		received : false
+	}).save(function(err){
+		//if(err)
+			//console.log(err);
+	});
+	console.log(("SMS LOG "+data.sender.toString()+" SENT").grey);
+}
+
 var failSMS = function(data){
 	app.write("ack",{
 		nack : status.ack.failed,
@@ -91,6 +109,7 @@ var failSMS = function(data){
 	});
 	new Models.SMS({ 
 		pdu: data,
+		sms : (data.msgdata || "").toString(),
 		from: data.sender.toString(),
 		to: data.receiver.toString(),
 		SMSC: data.smsc_id.toString(),
@@ -109,6 +128,7 @@ var successSMS = function(data,script,keyword){
 	});
 	new Models.SMS({ 
 		pdu: data,
+		sms : (data.msgdata || "").toString(),
 		from: data.sender.toString(),
 		to: data.receiver.toString(),
 		SMSC: data.smsc_id.toString(),
@@ -219,7 +239,8 @@ module.exports = function(server){
 			res.json(404,null);
 	})
 
-	server.get("/cgi-bin/sendsms",function(req,res){
+	server.get("/cgi-bin/sendsms",function(req,res,next){
+
 		var query = url.parse(req.url,1).query;
 		var sms = {
 			msgdata : query.text,
@@ -232,12 +253,23 @@ module.exports = function(server){
 			return res.send(403,"Missing text");
 		if(!sms.receiver)
 			return res.send(403,"Missing receiver");
+		if(!query.username)
+			return res.send(403,"Missing username");
+		if(!query.password)
+			return res.send(403,"Missing password");
 
-		stats.sent++;
-		stats.byNum["KANEL"] = stats.byNum["KANEL"] || {sent : 0, received:0};
-		stats.byNum["KANEL"].sent++;
-		app.sendSMS(sms);
-		res.send(200,"Message sent");
+		Models.user.findOne({where: {username : query.username }}, function(err, user) {
+	        if (err) { return res.send(500,"Unknown Error"); }
+	        if (!user) { return res.send(404,'Unknown user ' + query.username); }
+	        if (!user.actif) { return res.send(403,'Invalid user ' + query.username)}
+	        if ('undefined' === typeof user.droits.sendsms || ('undefined' !== typeof user.droits.sendsms && !user.droits.sendsms)) { return res.send(403,'Unautorized')}
+	        if (user.smsPWD != query.password) { return res.send(403,'Invalid password') }
+	        stats.sent++;
+			stats.byNum["KANEL"] = stats.byNum["KANEL"] || {sent : 0, received:0};
+			stats.byNum["KANEL"].sent++;
+			sendSMS(sms);
+			return res.send(200,"Message sent");
+	      })
 	})
 	app.connect();
 };

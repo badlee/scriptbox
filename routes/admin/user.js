@@ -1,5 +1,5 @@
 module.exports = function(app,dir){
-	var hidden = {id:1},readOnly={username:1,id:1};
+	var hidden = {id:1, smsPWD:0},readOnly={username:1,id:1};
 	app.get("/user.theme",function(req, res,next){
 		var theme = req.query.color || false;
 		if(theme){
@@ -34,7 +34,11 @@ module.exports = function(app,dir){
 					if(err)
 						return next(err);
 					if(user){
-						res.render("build-form",{hidden : hidden,readOnly : readOnly,fields : Models.user.properties,title:"Information Utilisateur",data : user});	
+						var hidden2 = Object.create(hidden);
+						if(user.id != req.user.id){
+							hidden2.smsPWD = 1;
+						}
+						res.render("build-form",{hidden : hidden2,readOnly : readOnly,fields : Models.user.properties,title:"Information Utilisateur",data : user});	
 					}else{
 						res.status(404);
 						res.render("page-error",{error:{ code:404, message:"User Not found"}});	
@@ -47,12 +51,12 @@ module.exports = function(app,dir){
 				res.status(403);
 				return res.render("page-error",{error : {code:403, message : "Acces interdit"}});
 			}
-			var readOnly = {username:1,id:1},
+			var readOnly = {username:1,id:1,init : 1},
 				update = {};
+				console
 			for(var cle in Models.user.properties){
-				if(readOnly[cle] || (!req.user.isAdmin && Models.user[cle] && Models.user[cle].needAdmin) )
+				if(readOnly[cle] || (!req.user.isAdmin && Models.user.properties[cle] && Models.user.properties[cle].needAdmin) )
 					continue;
-
 				if(Models.user.properties[cle].type == Boolean)
 					update[cle] = false;
 				
@@ -86,9 +90,13 @@ module.exports = function(app,dir){
 				user.save(function(err,user){
 					if(err)
 						return next(err);
-					if(req.user.id == user.id)
+					var hidden2 = Object.create(hidden);
+					if(req.user.id == user.id){
 						req.session.user = user;
-					res.render("build-form",{hidden : hidden,readOnly : readOnly,fields : Models.user.properties,title:"Information Utilisateur",data : user});
+						hidden2.smsPWD = 1;
+					}
+
+					res.render("build-form",{hidden : hidden2,readOnly : readOnly,fields : Models.user.properties,title:"Information Utilisateur",data : user});
 				})
 			});
 		});
@@ -113,7 +121,10 @@ module.exports = function(app,dir){
 			Models.user.find({},function(err,users){
 				if(err)
 					return next(err);
-				res.render("build-resposive-table",{ hidden : hidden, listValues : listValues,fields : heads,title:"Liste des Utilisateurs",data : users, checkboxs : checkbox, listes : listes,getActions : function(j,user){
+
+				var hidden2 = Object.create(hidden);
+				hidden2.smsPWD = 1;
+				res.render("build-resposive-table",{ hidden : hidden2, listValues : listValues,fields : heads,title:"Liste des Utilisateurs",data : users, checkboxs : checkbox, listes : listes,getActions : function(j,user){
 					return '<a title="Edit" href="'+dir+'/user.info/'+j.id+'" class="btn btn-blue btn-sm"><i class="fa fa-edit"></i></a>  '+
 				    		( j.id != user.id ? '<a title="Reset Password" href="javascript:exec(\'/admin/user.reset.pwd/'+j.id+'\',\'Le nouveau mot de passe est : {1}\',\'Mot de passe non change!\')" class="btn btn-violet btn-sm"><i class="fa fa-keyboard-o"></i></a>  '+
 				    		'<a id="user-remove-'+j.id+'" title="Effacer" href="javascript:exec(\'/admin/user.remove/'+j.id+'\',\'Utilisateur Effacé\',\'Error : {1}\',\'#user-remove-'+j.id+'\')" class="btn btn-red btn-sm"><i class="fa fa-trash-o"></i></a>' : '');
@@ -308,7 +319,6 @@ module.exports = function(app,dir){
 						};
 						return false;
 					});
-					console.log(id,user.todo[id],user.todo.items[id],user.todo)
 					if(id != -1 && user.todo.items[id]){
 						user.todo.items[id].complete = !user.todo.items[id].complete;
 						user.todo.items[id].save(function(err,user){

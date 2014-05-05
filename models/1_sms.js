@@ -5,12 +5,14 @@ var path = require('path'),
 var propertiesSMS = { 
 		id : { type : Number, label : "Identifiant", index : true },
 		pdu: { type: MSG  },
+		sms: { type: String,  limit: 50 , label : "Sms"},
 		from: { type: String,  limit: 50 , label : "Sender"},
 		to: { type: String,  limit: 50 , label : "Receiver"},
 		MotCle: { type: String , label : "Mot Cle"},
 		SMSC: { type: String , label : "SMSC"},
 		time: { type: Number,    default: Date.now , label : "Date"},
-		success : { type: Boolean, default: false , label : "Success"}
+		success : { type: Boolean, default: false , label : "Success"},
+		received : { type: Boolean, default: true }
 	},
 	propertiesExpressions = {
 		id : { type : Number, label : "Identifiant", index : true },

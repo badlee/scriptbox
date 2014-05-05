@@ -24,5 +24,9 @@
     "dbProdPath": "app://dbProd",
     "dbProdPool": false,
     "keywordRegExp": false,
-    "defautErrorMSG": "ERREUR"
+    "defautErrorMSG": "ERREUR",
+    "bearerHost": "127.0.0.1",
+    "bearerPort": "14001",
+    "httpPort": "14014",
+    "smsboxId": ""
 }

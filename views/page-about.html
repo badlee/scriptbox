@@ -1,24 +1,5 @@
 {% set title= "A propos" %}
-{% extends 'page-blank.html' %}
-{% block css %}
-     <link type="text/css" rel="stylesheet" href="/admin/vendors/jquery-news-ticker/jquery.news-ticker.css">
-     <style type="text/css">
-     .bigText {
-        box-sizing: border-box;
-        color: rgb(153, 153, 153);
-        display: inline;
-        font-family: Oswald;
-        font-size: 30px;
-        font-weight: bold;
-        height: auto;
-        line-height: 42px;
-        width: auto;
-     }
-     .center{
-        text-align:  center;
-     } 
-     </style>
-{% endblock %} 
+{% extends 'page-blank.html' %} 
 {% block content %}
     <div class="alert alert-danger alert-dismissable">
         <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
@@ -34,10 +15,10 @@
                     </div>
                     <div class="portlet-body">
                         <div class="note note-success"><h4 class="block-heading">Project About</h4>
-                            <p> <strong>Sources</strong> : <a href="http://github.com/badlee/scriptbox.git">Github</a></p>
-                            <p> <strong>Author</strong> : <a href="http://github.com/badlee">Badlee</a></p>
-                            <p> <strong>Bug and issues</strong> : <a href="https://github.com/badlee/scriptbox/issues">Github</a></p>
-                            <p> <strong>Facebook</strong> : <a href="https://github.com/badlee/scriptbox/issues">Github</a></p>
+                            <p style="text-align:center"><img style="float: right;width: 64px;height: 64px;" src="/img/alpha.png"></p>
+                            <p> <strong>Sources</strong> : <a target="_blank" href="http://github.com/badlee/scriptbox.git">Github</a></p>
+                            <p> <strong>Author</strong> : <a  target="_blank" href="http://github.com/badlee">Badlee</a></p>
+                            <p> <strong>Bug and issues</strong> : <a target="_blank" href="https://github.com/badlee/scriptbox/issues">Github</a></p>
                         </div>
                     </div>
                 </div>
@@ -56,7 +37,7 @@
                                     <li><p>OshiminLabs Support</p><span>Via github</span></li>
                                     <li><p>Plugin System</p><span>No</span></li>
                                     <li><p>Advencend Configuration</p><span>No</span></li>
-                                    <li><p>Multi-bearerBox</p><span>No</span></li>
+                                    <li><p>Multi-Connector</p><span>No</span></li>
                                     <li><p>Multi-database</p><span>Yes</span></li>
                                     <li><p>Multi-language</p><span>No</span></li>
                                     <li><p>Capacity</p><span>~1000sms/s</span></li>
@@ -76,7 +57,7 @@
                                     <li><p>OshiminLabs Support</p><span>30h</span></li>
                                     <li><p>Plugin System</p><span>Yes</span></li>
                                     <li><p>Advencend Configuration</p><span>Yes</span></li>
-                                    <li><p>Multi-bearerBox</p><span>No</span></li>
+                                    <li><p>Multi-Connector</p><span>No</span></li>
                                     <li><p>Multi-database</p><span>Yes</span></li>
                                     <li><p>Multi-language</p><span>Yes</span></li>
                                     <li><p>Capacity</p><span>~1000sms/s</span></li>
@@ -94,10 +75,10 @@
                                     <li><p>OshiminLabs Support</p><span>72h</span></li>
                                     <li><p>Plugin System</p><span>Yes</span></li>
                                     <li><p>Advencend Configuration</p><span>Yes</span></li>
-                                    <li><p>Multi-bearerBox</p><span>Yes</span></li>
+                                    <li><p>Multi-Connector</p><span>Yes</span></li>
                                     <li><p>Multi-database</p><span>Yes</span></li>
                                     <li><p>Multi-language</p><span>Yes</span></li>
-                                    <li><p>Capacity</p><span style="font-size: 13px;">Depend of bearerBox<br/><br/></span></li>
+                                    <li><p>Capacity</p><span style="font-size: 13px;">Depend of Connector<br/><br/></span></li>
                                     <li><p>SMS Support</p><span>Long<br/>Text<br/>Flash<br/>Unicode</span></li>
                                     <li><p>Language Support</p><span style="font-size: 13px;">Javascript<br/> CoffeScript<br/>TypeScript</span></li>
                                     <li style="height: 20px;"></li>

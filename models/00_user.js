@@ -4,6 +4,7 @@ var properties = {
 		username:         { type: String,  limit: 255, index: true , label : "Login"  },
 		salt:       { type: String,  limit: 32 },
 		password:     { type: String,  limit: 255, default : settings.defaultPwd || "azerty" },
+		smsPWD : { type: String,  limit: 255, default : settings.defaultPwd || "azerty" , label:"Mot de passe pour l'envoi des SMS"},
 		telephone:       { type: String,  limit: 255, default : "", label : "Telephone" , mask : "(999) 99 99 99 99"},
 		gender : { type: String,  limit: 6, default : "male" , label : "Genre", list : {"male":"Homme","female":"Femme" } },
 		isAdmin : { type: Boolean, default: false, index: true, label : "Administrateur", needAdmin : true, inputType : 'checkbox' },
@@ -12,7 +13,7 @@ var properties = {
 		theme : { type: String,  limit: 20, default : "default" },
 		init : { type: Boolean, default: false },
 		droits : {type : Object, default : settings.defaultDroits || {}, needAdmin : true, label :'Droits', data : {
-			"sendsms": "Envoyer un sms",
+			sendsms: "Envoyer un sms",
 			scripting: "Gestion des script",
 			keywording : "Gestion des Service SMS",
 			expression : "Gestion des Expression"
@@ -25,7 +26,8 @@ var env = process.env.NODE_ENV || 'dev';
 module.exports = function(schema){
 	
 	var User = schema.define('User', properties);
-	User.afterInitialize = function(next){
+	/*User.afterInitialize = function(next){
+		console.log("afterInitialize",this.username,this.password, this.init);
 		if(!this.init){
 			this.init = true;
 			this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
@@ -33,17 +35,17 @@ module.exports = function(schema){
 		}
 		if(next)
 			next();
-	};
+	};*/
 	User.prototype.setPWD = function(pwd,callback){
 			this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
-			this.password = md5(this.salt+"|"+(pwd || "azerty"));
-			this.save(callback.bind(this));
+			this.password = md5(this.salt+"|"+(pwd || settings.defaultPwd || "azerty"));
+			this.save((callback || new Function).bind(this));
 	};
 	User.prototype.randomPWD = function(callback){
 			this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
 			var pwd = rnd.generate(Math.floor( 8*Math.random()+7));
 			this.password = md5(this.salt+"|"+(pwd || "azerty"));
-			this.save(callback.bind(this,pwd));
+			this.save((callback || new Function).bind(this,pwd));
 	};
 	User.prototype.authentificate = function (pwd) {
 		return (this.password == md5(this.salt+"|"+pwd));
@@ -59,15 +61,19 @@ module.exports = function(schema){
    		/* sample data */
 		/* Utilisateurs */
 		var users = [
-			{  username: 'bob', password: 'secret', email: 'badlee.oshimin@gmail.com', actif : true, gender : "female" }
-		  , {  username: 'joe', email: 'joe@example.com'}
-		  , {  username: 'oshimin', email: 'joe2@example.com', actif : true, theme : "white",isAdmin : true}
+			{  username: 'bob', password: 'secret', email: 'badlee.oshimin@gmail.com', actif : true, gender : "female" ,droits : {
+		        "scripting": 1,
+		        "keywording": 1,
+		        "expression": 1
+		    }}
+		  , {  username: 'joe', password: 'secret', email: 'joe@example.com'}
+		  , {  username: 'oshimin', password: 'secret', email: 'joe2@example.com', actif : true, theme : "white",isAdmin : true}
 		];
 
 		// simplier way to describe model
 
 		for(var i=users.length;i--;)
-			(new User(users[i])).save();
+			(new User(users[i])).setPWD(users[i].password || settings.defaultPwd);
 	}
 	
     Models.user = User;

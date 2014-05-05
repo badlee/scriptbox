@@ -1,6 +1,6 @@
 {
   "name": "scriptBox",
-  "version": "0.0.1",
+  "version": "0.0.1a",
   "description": "Script box is a full VAS application",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
   "directories": {
@@ -9,8 +9,10 @@
   "keywords": [
     "kannel",
     "sms",
-    "smsbox",
     "smpp",
+    "smsbox",
+    "kiosque",
+    "gateway",
     "message",
     "vas",
     "script"

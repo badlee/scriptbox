@@ -44,9 +44,10 @@ swig.setFilter('inArray', function(arr, key){
 });
 
 conf = {
-	port : 14001,
-	http_port : 14014,
-	id : "LoveIsMyReligion"
+  host : settings.bearerHost || '127.0.01',
+	port : settings.bearerPort || 14001,
+	http_port : settings.httpPort || 14014,
+	id : settings.smsboxId || "LoveIsMyReligion"
 };
 /* load models */
 Models = {};

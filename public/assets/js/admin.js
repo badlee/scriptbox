@@ -58,7 +58,9 @@ image1.src = "/assets/img/down.png";
 		$.get("/cgi-bin/sendsms?"+$.param({
 			from : $("#sms_from").val(),
 			to : $("#sms_from").val(),
-			text : $("#sms_text").val()
+			text : $("#sms_text").val(),
+			username : $("#sms_user").val(),
+			password : $("#sms_pwd").val(),
 		}),function(){
 			ops.text = "Message send"
 			noty(ops);

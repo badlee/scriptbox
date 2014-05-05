@@ -91,6 +91,7 @@ $(function () {
 
     /***********************************/
     /******* Carousel Customize *******/
+    /*
     $('ul.list-indicators li').click(function (event) {
         event.preventDefault();
         $('ul.list-indicators li').removeClass('active');
@@ -112,11 +113,13 @@ $(function () {
         $('ul.list-indicators li').removeClass('active');
         active.next().addClass('active');
     });
+    */
     /******* Carousel Customize *******/
     /*********************************/
 
     /****************************/
     /******* Full Screen *******/
+    /*
     $('.btn-fullscreen').click(function () {
 
         if (!document.fullscreenElement &&    // alternative standard method
@@ -142,6 +145,7 @@ $(function () {
             }
         }
     });
+    */
     /******* Full Screen *******/
     /**************************/
 

@@ -16,7 +16,6 @@ passport.deserializeUser(function(id, done) {
 passport.use(new LocalStrategy(
   function(username, password, done) {
     // asynchronous verification, for effect...
-    process.nextTick(function () {
       
       // Find the user by username.  If there is no user with the given
       // username, or the password is not correct, set the user to `false` to
@@ -28,13 +27,16 @@ passport.use(new LocalStrategy(
         if (!user.actif ) { return done(null, false, { message: 'Utilisateur desactivé' }); }
         if (!user.authentificate (password)) { return done(null, false, { message: 'Invalid password' }); }
         return done(null, user);
-      })
-    });
+      });
   }
 ));
 
 function ensureAuthenticated(req, res, next) {
   if (/^\/(css|vendors|js|images)/i.test(req.url) || req.isAuthenticated()) { return next(); }
+  if(req.method == "GET"){
+  	console.log(req.url);
+  	req.session.redirect = "/admin"+req.url;
+  }
   res.redirect('/login');
 }
 
@@ -47,10 +49,12 @@ module.exports = function(server){
 	  server.use(function(req,res,next){
 	  	/* Valide l'utilisate */
 	  	if(req.session.user){
-	  		req.user = Object.create(req.session.user);
-	  		//res.clearCookie('%23color-style');
-			res.cookie('%23color-style', req.user.theme || "default",{ expires : false, path: '/admin' });
+	  		req.user = {};
+	  		for(var i in req.session.user)
+	  			req.user[i] = req.session.user[i];
+			res.cookie('%23color-style', req.user.theme || "default",{ expires : false, path: '/' });
 		  	delete req.user.password;
+		  	delete req.user.salt;
 		  	swig.setDefaults({
 			  	locals: {
 			  		siteTitle : settings.title,
@@ -92,7 +96,8 @@ module.exports = function(server){
 	  function(req, res) {
 	  	req.session.user = Object.create(req.user);
 	  	delete req.user.password;
-		res.redirect('/admin/');
+		res.redirect(req.session.redirect || '/admin/');
+		req.session.redirect = undefined;
   	});
   	
 	server.route("/logout").
