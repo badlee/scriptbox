@@ -54,7 +54,7 @@ Fill nom(name), description and script (javascript programme), set Module "off".
 //Nom: hello
 //Description : Hello SMS
 //Module : OFF
-var message = new MSG(); // build a new sms
+var message = new MSG(sms); // build a new sms
 message.msgdata = "Hello SMS!"; // set message text 
 message.sendSMS(); // send message to the sender
 ```
@@ -86,7 +86,7 @@ this module can be used in script  `numeros = require('numeros');`
 var num = require("numeros");
 logger.log(sms.sender); // logger is like `console` in nodejs 
 // sms contain the SMS object 
-var m = new MSG();
+var m = new MSG(sms);
 	m.msgdata = "Hello SMS!";
 	if(num.airtel.test(sms.sender))
 		m.msgdata += " - Airtel";
@@ -128,10 +128,35 @@ var m = new MSG();
     Validateur ^((00|\+)?241) => /^((00|\+)?1)/ => allways start by 241,+241 or 00241
 ```
 
+#### Add a connector
+> Click on "Main Menu" > "Connecteor" > "Ajouter"
+> Fill Identifiant(name), Choose Type
+
+###### Sample connector
+```javascript
+    Nom : KANNEL
+    Type : KANNEL
+```
+
+###### Sample Connfig connector
+```javascript
+    host : 127.0.0.1
+    Port : 13013
+    id : LoveIsMyReligion
+    tls : false
+```
+###### Start a connector
+> Click on "Main Menu" > "Connecteor" > "List" > Start Server
+
+###### Stop a connector
+> Click on "Main Menu" > "Connecteor" > "List" > Stop Server
+
+```
+
 #### Add an Mot cle(keyword)
 > Click on "Main Menu" > "Mot cle" > "Ajouter"
 
-> Fill nom(name), choose Script, Validateur SMS(Check SMS format),Reject Sender(check sender), Optional Regle de reecriture(it's used for rewrite SMS after validation)
+> Fill nom(name), choose Script, Validateur SMS(Check SMS format),Reject Sender(check sender), "Numeros Courts(short Code allowed, no select for all short Codes)
 
 ###### Sample Mot Cle
 ```javascript
