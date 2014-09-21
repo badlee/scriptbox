@@ -5,18 +5,16 @@
     "defaultActif": false,
     "defaultDroits": {
         "sendsms": 1,
-        "scripting": 1,
-        "keywording": 1,
-        "expression": 1
+        "keywording": 1
     },
-    "dbType": "memory",
+    "dbType": "tingodb",
     "dbHost": "",
     "dbPort": "",
     "dbUser": "",
     "dbPwd": "",
     "dbPath": "app://db",
     "dbPool": false,
-    "dbProdType": "memory",
+    "dbProdType": "tingodb",
     "dbProdHost": "",
     "dbProdPort": "",
     "dbProdUser": "",

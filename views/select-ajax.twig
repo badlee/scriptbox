@@ -1,12 +1,10 @@
 {% set autoComplete = random.generate(10) %}
 <div class="form-group">
-    <select id="select-data-url-{{ autoComplete }}" class="form-control">
+    <select id="select-data-url-{{ autoComplete }}" {% if valeur.multiple %} multiple="multiple" {% endif %} class="form-control">
 	   <option value=''>Loading...</option>
     </select>
 </div>
 <script>
-    if(typeof inputAll == "undefined")
-        inputAll =  {};
     /*
     {{ data[cle] | json |raw }};
     */
@@ -25,7 +23,12 @@ $(function(){
             var val =  {{ data[cle] |json |raw }} ;
             var el = $('select#select-data-url-{{ autoComplete }}');
             $.each(data.data, function(i, items){
-               str += "<option value='"+items.value+"' "+(items.value ==  val ? "selected=selected" : "")+">"+items.text+"</option>";7
+               str += "<option value='"+items.value+"' ";
+               if(val instanceof Array)
+                    str += (val.indexOf(items.value) !=  -1 ? "selected=selected" : "")
+               else
+                    str += (items.value ==  val ? "selected=selected" : "");
+               str += ">"+items.text+"</option>";
                if("data" in  items){
                     if(!input)
                         input = $("<input type='hidden' name='{{ cle }}-val'>");
@@ -38,7 +41,6 @@ $(function(){
             el.html( str );
             el.attr("name",{{ cle |json |raw }});
             if(input){
-                inputAll["{{ cle }}"] = input;
                 if(!input.val())
                     input.val(element[el.val()].data);
                 el.on("change",function(){

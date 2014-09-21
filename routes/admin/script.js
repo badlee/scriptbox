@@ -11,7 +11,7 @@ module.exports = function(app,dir){
 		};
 	app.route(/^\/script\.json$/i)
 		.get(function(req,res,next){
-			Models.Script.find({where : {user: req.user.id ,module:false}},function(err,script){
+			Models.Script.find({where : {module:false}},function(err,script){
 				if(err || !script)
 					return res.json({success:false, message : err.message});
 				res.json({success : true,data:(script.length ? script.map(function(item){  return {value : item.id , text: item.name, data: item.data} }) : script),message:"Requete Ok"})

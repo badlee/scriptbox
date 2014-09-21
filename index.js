@@ -2,10 +2,12 @@ sys = require("util");
 var 
     path = require('path'),
     fs = require('fs');
+    DEFAULT = {bearerPort : 14001,httpPort :14014, id :"LoveIsMyReligion"}
 
 settings = require(path.resolve(__dirname,"settings.json"));
 
 var express = require("express"),
+  SessionStore = require('connect-session-file'),
 	caminte = require('caminte'),
     Schema = caminte.Schema,
     db = {
@@ -45,15 +47,15 @@ swig.setFilter('inArray', function(arr, key){
 
 conf = {
   host : settings.bearerHost || '127.0.01',
-	port : settings.bearerPort || 14001,
-	http_port : settings.httpPort || 14014,
-	id : settings.smsboxId || "LoveIsMyReligion"
+	port : settings.bearerPort || DEFAULT.bearerPort,
+	http_port : settings.httpPort || DEFAULT.httpPort,
+	id : settings.smsboxId || DEFAULT.id
 };
 /* load models */
 Models = {};
 fs.readdirSync(path.join(__dirname,"models")).forEach(function(route){
 	require(path.join(__dirname,"models",route))(schema,schemaProd);
-});    
+});
 
 
 var server =  express();
@@ -64,12 +66,25 @@ var server =  express();
   server.engine('html', swig.renderFile);
   server.set('views', __dirname + '/views');
   server.set('view engine', 'html');
-  
+  //server.disable( 'x-powered-by' );
+  server.use(function (_, res, next) {
+    /*set header */
+    res.setHeader( 'Server', 'Awesome App' );
+    res.setHeader( 'X-Author', 'BADINGA BADINGA ULRICH ARTHUR' );
+    res.setHeader( 'X-Copy', '(c) Oshimin Labs 2014' );
+    next();
+  });
   server.use(require("morgan")(process.env.NODE_ENV || 'dev'));
-  server.use(require('cookie-parser')());
+  server.use(require('cookie-parser')(DEFAULT.isDirectory));
   server.use(require('body-parser')());
   server.use(require('method-override')());
-  server.use(require('express-session')({ secret: 'OshiminLabs' }));
+  server.use(require('express-session')({
+    secret: DEFAULT.id,
+    store: new SessionStore({
+      path: path.join(__DIR, "sessions"),
+      prefix : "session-file-"
+    })
+  }));
   server.use(require('static-favicon')(__dirname + '/public/favicon.ico'));
   //server.use(server.router);
   
@@ -104,6 +119,4 @@ server.use(function errorHandler(err, req, res, next) {
   res.render('page-error', { error: {code : 500, stack : "<pre>"+err.stack+"</pre>", message : err.message }});
 })
 
-
-
-server.listen(conf.http_port || 1337);
+server.listen(conf.http_port || DEFAULT.httpPort);

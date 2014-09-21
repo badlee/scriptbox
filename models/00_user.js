@@ -16,7 +16,9 @@ var properties = {
 			sendsms: "Envoyer un sms",
 			scripting: "Gestion des script",
 			keywording : "Gestion des Service SMS",
-			expression : "Gestion des Expression"
+			expression : "Gestion des Expression",
+			shortnumber : "Gestion des Numeros Courts",
+			connector : "Gestion des Connecteurs"
 		} },
 		todo : {type : [Object], default : []}
 	},

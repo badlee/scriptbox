@@ -180,6 +180,24 @@
                         </ul>
                     </li>
                     {% endif %}
+                    {% if user.droits.shortnumber %}
+                    <li><a href="/admin/"><i class="fa fa-mobile fa-fw"></i>&nbsp;
+                        Numeros Courts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ><a href="/admin/shortnumber.list">Liste</a></li>
+                            <li><a href="/admin/shortnumber.add">Ajouter</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if user.droits.connector %}
+                    <li><a href="/admin/"><i class="fa fa-mobile fa-fw"></i>&nbsp;
+                        Connecteur<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ><a href="/admin/connector.list">Liste</a></li>
+                            <li><a href="/admin/connector.add">Ajouter</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
                     <li><a href="/admin/reporting"><i class="fa fa-table fa-fw"></i>&nbsp;
                         Rapport</a>
                     </li>

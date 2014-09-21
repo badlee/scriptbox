@@ -47,7 +47,10 @@
     "tingodb": "^0.2.1",
     "colors": "^0.6.2",
     "string": "^1.8.1",
-    "json2csv": "^2.2.1"
+    "json2csv": "^2.2.1",
+    "connect-session-file": "^1.0.4",
+    "shorty": "^0.5.5",
+    "smpp": "^0.1.0"
   },
   "bugs": {
     "url": "https://github.com/badlee/scriptbox/issues"

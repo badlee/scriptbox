@@ -28,7 +28,7 @@
                                                 {% endfor %}
                                             </div>
 		                                	{% elseif valeur.list %}
-		                                	<div class="form-group"><select name="{{ cle }}" class="form-control">
+		                                	<div class="form-group"><select name="{{ cle }}" {% if valeur.multiple %} multiple="multiple" {% endif %} class="form-control">
 		                                		{% for c,v in valeur.list %}
                                                 <option {% if c == data[cle] %} selected=selected {% endif %} value="{{ c }}" >{{ v }}</option>
                                                 {% endfor %}>
@@ -45,7 +45,7 @@
 		                                	{% else %}
 		                                	<input type="text" value="{{ data[cle] || '' }}" placeholder="{{ valeur.label }}" class="form-control" name="{{ cle }}" {% if lock %} readonly=readonly {% endif %} {% if valeur.mask %} mask="{{valeur.mask}}" {% endif %} {% if valeur.limit %} maxlength="{{ valeur.limit }}" {% endif %} >
 		                                	{% endif %}
-		                                	{% if valeur.help %}<span class="help-block">This is help text</span>{% endif %}
+		                                	{% if valeur.help %}<span class="help-block">{{valeur.help}}</span>{% endif %}
 		                                </div>
 		                            </div>	
                             	{% endif %}

@@ -5,12 +5,15 @@
 ----------
 #### Instalation 
 
-> `git clone https://github.com/badlee/scriptbox.git`
-> ` npm install .`
+```sh
+ git clone https://github.com/badlee/scriptbox.git`
+ cd scriptbox
+ npm install .
+```
 
 #### How use
 
-> run bearebox just the
+> run the bearebox
 
 > `bearebox /path/to/kannel.conf`
 
