@@ -85,7 +85,7 @@ var server =  express();
       prefix : "session-file-"
     })
   }));
-  server.use(require('static-favicon')(__dirname + '/public/favicon.ico'));
+  server.use(require('serve-favicon')(__dirname + '/public/favicon.ico'));
   //server.use(server.router);
   
 

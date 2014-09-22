@@ -38,19 +38,17 @@
     "express-session": "^1.0.2",
     "body-parser": "^1.0.2",
     "ejs": "^1.0.0",
-    "swig": "^1.3.2",
     "caminte": "0.0.16",
     "nodejs-gravatar": "^1.0.2",
     "MD5": "^1.2.1",
     "randomstring": "^1.0.3",
-    "static-favicon": "^1.0.2",
     "tingodb": "^0.2.1",
     "colors": "^0.6.2",
     "string": "^1.8.1",
-    "json2csv": "^2.2.1",
     "connect-session-file": "^1.0.4",
     "shorty": "^0.5.5",
-    "smpp": "^0.1.0"
+    "smpp": "^0.1.0",
+    "serve-favicon": "^2.1.4"
   },
   "bugs": {
     "url": "https://github.com/badlee/scriptbox/issues"
