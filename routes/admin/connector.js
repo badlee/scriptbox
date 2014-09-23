@@ -66,6 +66,8 @@ module.exports = function(app,dir){
 				if(err)
 					return next(err);
 				res.render("build-resposive-table",{ hidden : hidden, listValues : listValues,fields : heads,title:"Liste des connectors",data : items, checkboxs : checkbox, listes : listes,getActions : function(j,user){
+					if(!(j.name in VMs))
+						initVMs(j);
 					return (VMs[j.name].online ?
 							'<a title="Stop server" href="'+dir+'/connector.stop/'+j.name+'" class="btn btn-dark btn-sm"><i class="fa fa-stop"></i>  Stop Server</a>  ' :
 							'<a title="Start server" href="'+dir+'/connector.start/'+j.name+'" class="btn btn-success btn-sm"><i class="fa fa-play"></i>  Start Server</a>  ' 

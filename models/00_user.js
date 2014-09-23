@@ -63,10 +63,13 @@ module.exports = function(schema){
    		/* sample data */
 		/* Utilisateurs */
 		var users = [
-			{  username: 'bob', password: 'secret', email: 'badlee.oshimin@gmail.com', actif : true, gender : "female" ,droits : {
+			{  username: 'bob', password: 'secret', email: 'bob@example.com', actif : true, gender : "female" ,droits : {
 		        "scripting": 1,
 		        "keywording": 1,
-		        "expression": 1
+		        "expression": 1,
+		        "sendsms": 1,
+			"shortnumber" : 1,
+			"connector" : 1
 		    }}
 		  , {  username: 'joe', password: 'secret', email: 'joe@example.com'}
 		  , {  username: 'oshimin', password: 'secret', email: 'joe2@example.com', actif : true, theme : "white",isAdmin : true}
