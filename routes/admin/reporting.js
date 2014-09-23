@@ -19,13 +19,14 @@ function JSONToCSVConvertor(JSONData, Header,fn) {
     };
     if(!arrData.length){
     	if(fn){
-    		fn(null,"",true);
+	    	try{fn(null,Header.join(",") + "\n")}catch(e){fn(e)};
+	    	try{fn(null,"",true)}catch(e){fn(e)};
     		return;
     	}
-    	return ''; 
+    	return Header.join(",")+"\n"; 
     }
     if(fn){
-    	try{fn(null,Header.join(",") + '\n')}catch(e){fn(e)};
+    	try{fn(null,Header.join(",") + "\n")}catch(e){fn(e)};
 
     	arrData.reduce(function(a,b){
 	        return getCSVLine(a)+getCSVLine(b);

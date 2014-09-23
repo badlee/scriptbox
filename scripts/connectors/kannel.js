@@ -20,6 +20,7 @@ var status = kannel.status;
  });
 
 var start = function(conf){
+	console.log("START".yellow,conf);
 	conf.port = Number(conf.port);
 	app = new kannel.smsbox(conf);
 

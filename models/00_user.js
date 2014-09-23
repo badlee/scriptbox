@@ -20,7 +20,7 @@ var properties = {
 			shortnumber : "Gestion des Numeros Courts",
 			connector : "Gestion des Connecteurs"
 		} },
-		todo : {type : [Object], default : []}
+		todo : {type : Array, default : []}
 	},
 	md5 = require('MD5'),
 	rnd = require("randomstring");
@@ -28,16 +28,13 @@ var env = process.env.NODE_ENV || 'dev';
 module.exports = function(schema){
 	
 	var User = schema.define('User', properties);
-	/*User.afterInitialize = function(next){
-		console.log("afterInitialize",this.username,this.password, this.init);
-		if(!this.init){
-			this.init = true;
-			this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
-			this.password = md5(this.salt+"|"+this.password);
-		}
+	User.beforeCreate = function(next){
+		console.log("beforeCreate",this.username,this.password);
+		this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
+		this.password = md5(this.salt+"|"+this.password);
 		if(next)
 			next();
-	};*/
+	};
 	User.prototype.setPWD = function(pwd,callback){
 			this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
 			this.password = md5(this.salt+"|"+(pwd || settings.defaultPwd || "azerty"));

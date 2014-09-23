@@ -34,6 +34,9 @@ var lang = false;
  			tls : require('tls').connect
  		};
  	},
+ 	url : function(){
+ 		return require("url");
+ 	},
  	assert : function(){
  		return require("assert");
  	},
@@ -53,6 +56,39 @@ var lang = false;
  		return require('events');
  	}
  }
+ var adapter = {
+			//"arango" : 	["ArangoDB","arango"],
+			//"firebird" : 	["firebird" ,"node-firebird"],
+			"mongoose" : 	["createConnection","mongodb"],
+			"mongoose::schema" : 	["Schema","mongodb-schema"],
+			"mysql" : 		["createConnection","mysql"],
+			//"nano" : 		["Nano","nano"],
+			//"neo4j" : 	["Neo4J","neo4j"],
+			"pg" : 			["Client","postgres"],
+			"redis" : 		["createClient" ,"redis"],
+			//"rethinkdb" : ["RethinkDB","rethinkdb"],
+			//"riak" : 		["Riak","riak-js"],
+			"node-sqlite-purejs" : 	["open","sqlite"],
+			//"tingodb" : 	["TingoDB", "tingodb"]
+	}
+	console.log("Expose module to VMs".grey, process.argv[4].grey,process.argv[2].grey);
+	for(var i in adapter){
+		try {
+    		require.resolve(i.split('::')[0]);
+    		console.log("resolve ".red,adapter[i][1],'(',i.split('::')[0],')',"...OK");
+    		allowNativeModules[adapter[i][1]] = (function(m,name){
+		 		if(name){
+		 			var mod = require(m);
+		 			var ret = mod[name];
+		 			if(ret instanceof Function)
+		 				return ret.bind(mod);
+		 			else
+		 				return ret;
+		 		}
+		 		return require(m);
+		 	}).bind(null,i.split('::')[0],adapter[i][0]);
+		} catch(e){}
+	}
  process.on("message",function(m){
  	if (m.type === 'settings'){
  		settings = m.data;
@@ -116,7 +152,7 @@ var lang = false;
 						send : {
 							value: function(msg){
 								if(msg)
-									this.msgdata = msgdata;
+									this.msgdata = msg;
 						  		process.send(this);
 						  	},
 							writable: false,
@@ -138,7 +174,7 @@ var lang = false;
 		  		if(modules[name])
 		  			return modules[name];
 		  		if(allowNativeModules[name])
-		  			return modules[name] = allowNativeModules[name];
+		  			return modules[name] = allowNativeModules[name]();
 		  		var n = path.join(__DIR,"scripts","modules" ,name);
 		  		if(!fs.existsSync(n)) throw "Module "+name+" not found";
 		  		try{

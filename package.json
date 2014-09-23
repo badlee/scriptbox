@@ -35,9 +35,8 @@
     "cookie-parser": "^1.0.1",
     "morgan": "^1.0.0",
     "compression": "^1.0.1",
-    "express-session": "^1.0.2",
+    "express-session": "^1.8.2",
     "body-parser": "^1.0.2",
-    "ejs": "^1.0.0",
     "caminte": "0.0.16",
     "nodejs-gravatar": "^1.0.2",
     "MD5": "^1.2.1",
@@ -48,7 +47,8 @@
     "connect-session-file": "^1.0.4",
     "shorty": "^0.5.5",
     "smpp": "^0.1.0",
-    "serve-favicon": "^2.1.4"
+    "serve-favicon": "^2.1.4",
+    "connect-caminte": "0.0.3-2"
   },
   "bugs": {
     "url": "https://github.com/badlee/scriptbox/issues"

@@ -44,13 +44,13 @@ var propertiesSMS = {
 		//id : { type : Number, label : "Identifiant", index : true },
 		keyword:         { type: String  , label : "Mot cle"},
 		"scriptId-val" : {type : String},
-		scriptId:     { type: Number, label : "Script" , dataUrl : '/admin/script.json', saveValue : true},
+		scriptId:     { type: String, label : "Script" , dataUrl : '/admin/script.json', saveValue : true},
 		"validator-val" : {type : String}, 
-		validator:     { type: Number, label : "Validateur  SMS" , dataUrl : '/admin/expression.json', saveValue : true},
+		validator:     { type: String, label : "Validateur  SMS" , dataUrl : '/admin/expression.json', saveValue : true},
 		"blackList-val" : {type : String},
-		blackList:     { type: Number, label : "Reject Sender" , dataUrl : '/admin/expression.json', saveValue : true},
-		shortNumbers:     { type: [Object], label : "Numeros Courts" , dataUrl : '/admin/shortnumber.json', saveValue : true, multiple : true},
-		user : { type : Number }
+		blackList:     { type: String, label : "Reject Sender" , dataUrl : '/admin/expression.json', saveValue : true},
+		shortNumbers:     { type: Array, label : "Numeros Courts" , dataUrl : '/admin/shortnumber.json', saveValue : true, multiple : true, default:null},
+		user : { type : String }
 	},
 	propertiesScript = {
 		//id : { type : Number, label : "Identifiant", index : true },
@@ -58,7 +58,7 @@ var propertiesSMS = {
 		desc:     { type: String, label : "Description" },
 		data:     { type: String, label : "Script" , inputType :"javascript"},
 		module : { type: Boolean, default: false, inputType : 'checkbox', label : "Module"  },
-		user : { type : Number }
+		user : { type : String }
 	},
 	md5 = require('MD5'),
 	rnd = require("randomstring");
@@ -105,7 +105,6 @@ module.exports = function(_,schema){
 
 	}
 	SMS.beforeSave = function(next){
-		console.log(this);
 		delete this.id;
 		next();
 	}

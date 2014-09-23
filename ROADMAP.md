@@ -7,12 +7,13 @@ In the next release the scriptbox must allow :
 - [x] Connect to Kannel, SMS Center and other SMPP servers,
 - [ ] All created users must receive a notification mail (server ip, login and password)
 - [ ] Add More diagram to dashboard,
+- [ ] Write somme tutorial better documentation
 - [ ] A better javascript environement for script execution
-  - [ ]  Add session storage for a client  persistent data
+  - [ ] Add session storage for a client  persistent data
   - [ ] Add local storage for share data across clients who use the same keyword
   - [ ] Add globlal storage for share data across clients who use the same shortcode
-  - [ ] add database access (mysql, mongodb, postgresql etc...)
-  - [x] add network access (http, https, socket, tls, datagrame,dns)
+  - [x] Add database access (mysql, mongodb, postgresql etc...)
+  - [x] Add network access (http, https, socket, tls, datagrame,dns)
 - [ ] Fix all bug and found contributor and testers.
 
 ### Version 0.0.1

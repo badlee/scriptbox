@@ -254,6 +254,7 @@ module.exports = function(app,dir){
 						res.status(403);
 						return res.render("page-error",{error : {code:403, message : "Le mail "+user.email+" existe deja!"}});	
 					}
+					update.password = settings.defaultPwd || "azerty";
 					new Models.user(update).save(function(err,user){
 						if(err)
 							return next(err);

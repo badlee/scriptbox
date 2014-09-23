@@ -16,7 +16,8 @@ var getDir = function (dbProdPath){
 settings = require(path.resolve(__dirname,"settings.json"));
 
 var express = require("express"),
-  //SessionStore = require('connect-session-file'),
+  sessions = require('express-session'),
+  CaminteStore = require('connect-caminte')(sessions),
 	caminte = require('caminte'),
     Schema = caminte.Schema,
     db = {
@@ -76,12 +77,19 @@ var server =  express();
   server.use(require('cookie-parser')(DEFAULT.id));
   server.use(require('body-parser')());
   server.use(require('method-override')());
-  server.use(require('express-session')({
+  server.use(sessions({
     secret: DEFAULT.id,
-    /*store: new SessionStore({
-      path: path.join(__DIR, "sessions"),
-      prefix : "session-file-"
-    })*/
+    proxy: true,
+    resave: true,
+    saveUninitialized: true,
+    name: "osh",
+    store: new CaminteStore({
+        driver: db.driver,
+        collection: 'sessions',
+        db: db,
+        maxAge: 30000000, // 5h
+        clear_interval: 60 // 1 min
+    })
   }));
   server.use(require('serve-favicon')(__dirname + '/public/favicon.ico'));
   //server.use(server.router);
