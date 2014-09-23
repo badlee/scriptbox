@@ -104,7 +104,19 @@ var lang = false;
 					delete this.type;
 					Object.defineProperties(this, {
 						sendSMS : {
-							value: function(){
+							value: function(msg){
+								if(msg)
+									this.msgdata = msgdata;
+						  		process.send(this);
+						  	},
+							writable: false,
+							enumerable: false,
+							configurable: false
+						},
+						send : {
+							value: function(msg){
+								if(msg)
+									this.msgdata = msgdata;
 						  		process.send(this);
 						  	},
 							writable: false,

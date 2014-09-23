@@ -3,7 +3,7 @@ var path = require('path'),
     md5 = require('MD5');
 function JSONToCSVConvertor(JSONData, Header,fn) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-  
+  console.log(arrData);
     var getCSVLine = function (obj){
         if(typeof obj == "string")
             return obj;
@@ -17,8 +17,16 @@ function JSONToCSVConvertor(JSONData, Header,fn) {
         }
         return line;
     };
+    if(!arrData.length){
+    	if(fn){
+    		fn(null,"",true);
+    		return;
+    	}
+    	return ''; 
+    }
     if(fn){
     	try{fn(null,Header.join(",") + '\n')}catch(e){fn(e)};
+
     	arrData.reduce(function(a,b){
 	        return getCSVLine(a)+getCSVLine(b);
 	    });
@@ -51,16 +59,14 @@ module.exports = function(app,dir){
 				where : count,
 				order: 'time DESC'
 			};
-			if(req.params[2] || req.query.iDisplayLength)
-				where.limit = req.params[2] || req.query.iDisplayLength;
-			if(req.params[4] || req.query.skip || req.query.iDisplayStart)
-				where.skip = req.params[4] || req.query.skip || req.query.iDisplayStart;
 
 			if(format){
+				Models.SMS.find({}, function(){
+					console.log(arguments);
+				});
 				return Models.SMS.find(where,function(err,script){
-					return res.json(script);
-					res.setHeader("Content-Type","text/csv");
-					res.setHeader("Content-Disposition",'attachment; filename="report.csv"');
+					//res.setHeader("Content-Type","text/csv");
+					//res.setHeader("Content-Disposition",'attachment; filename="report.csv"');
 					if(err || !script)
 						return res.send(err.message);
 					JSONToCSVConvertor(script,['from', 'to', 'MotCle','sms','SMSC','time','success','received'],function(err,line,end){
@@ -74,6 +80,10 @@ module.exports = function(app,dir){
 			Models.SMS.count(count,function(err,total){
 				if(err)
 					return res.json({success:false, message : err.message});
+				if(req.params[2] || req.query.iDisplayLength)
+					where.limit = req.params[2] || req.query.iDisplayLength;
+				if(req.params[4] || req.query.skip || req.query.iDisplayStart)
+					where.skip = req.params[4] || req.query.skip || req.query.iDisplayStart;
 				Models.SMS.find(where,function(err,script){
 					if(err || !script)
 						return res.json({success:false, message : err.message});

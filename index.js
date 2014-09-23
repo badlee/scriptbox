@@ -12,10 +12,10 @@ var express = require("express"),
     Schema = caminte.Schema,
     db = {
          driver     :  settings.dbType || "memory",
-         host       : settings.dbHost || "",
-         port       : settings.dbPort || "",
-         username   : settings.dbUser || "",
-         password   : settings.dbPwd || "",
+         host       : settings.dbHost || undefined,
+         port       : settings.dbPort || undefined,
+         username   : settings.dbUser || undefined,
+         password   : settings.dbPwd || undefined,
          database   : settings.dbPath ?  
             ( String(settings.dbPath).search(/^app:\//i) === 0 ?
               path.resolve.apply(path,['/'].concat(String(settings.dbPath).replace("app:/",__dirname).split("/").slice(1))) : 
@@ -25,10 +25,10 @@ var express = require("express"),
     },
     dbProd = {
          driver     :  settings.dbProdType || "memory",
-         host       : settings.dbProdHost || "",
-         port       : settings.dbProdPort || "",
-         username   : settings.dbProdUser || "",
-         password   : settings.dbProdPwd || "",
+         host       : settings.dbProdHost || undefined,
+         port       : settings.dbProdPort || undefined,
+         username   : settings.dbProdUser || undefined,
+         password   : settings.dbProdPwd || undefined,
          database   : settings.dbProdPath ?  
             ( String(settings.dbProdPath).search(/^app:\//i) === 0 ?
               path.resolve.apply(path,['/'].concat(String(settings.dbProdPath).replace("app:/",__dirname).split("/").slice(1))) : 
@@ -119,4 +119,6 @@ server.use(function errorHandler(err, req, res, next) {
   res.render('page-error', { error: {code : 500, stack : "<pre>"+err.stack+"</pre>", message : err.message }});
 })
 
-server.listen(conf.http_port || DEFAULT.httpPort);
+server.listen(conf.http_port || DEFAULT.httpPort,function(err){
+  console.log("Server Listen "+(conf.http_port || DEFAULT.httpPort),"port.");
+});

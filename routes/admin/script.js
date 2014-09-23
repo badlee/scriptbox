@@ -176,11 +176,16 @@ module.exports = function(app,dir){
 		})
 		.get(function(req,res,next){
 			var id = req.params[0] || false;
+
 			if(!id)
 				return req.redirect(dir+"/script.list");
-			Models.Script.findOne({where : {id : id}}, function(err, script){
+			Models.Script.findById(id,function(){
+				console.log("Models.Script.",arguments);
+			})
+			Models.Script.findById(id, function(err, script){
 				if(err)
 					return next(err);
+			
 				if(script){
 					var update = {},
 						hidden = {id:1};
@@ -225,7 +230,7 @@ module.exports = function(app,dir){
 							update[cle] = req.body[cle]
 				}
 			}
-			Models.Script.findOne({where : {id : update.id }}, function(err,script){
+			Models.Script.findById(update.id, function(err,script){
 				if(err)
 					return next(err);
 				if(!script){
@@ -257,7 +262,7 @@ module.exports = function(app,dir){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/script.list");
-			Models.Script.findOne({where : {id : req.params[0] }}, function(err,script){
+			Models.Script.findById(id, function(err,script){
 				if(err)
 					return next(err);
 				if(!script){

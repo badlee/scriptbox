@@ -25,7 +25,7 @@ module.exports = function(app,dir){
 	app.route(/^\/keyword\.json(\/([^\/]+)?)?$/i)
 		.get(function(req,res,next){
 			var id = req.params[1] || false;
-			Models.MotCle[ id ? 'findOne' : 'find' ](id? {where : {id : id} } : {},function(err,items){
+			Models.MotCle[ id ? 'findById' : 'find' ](id?  id : {},function(err,items){
 				if(err || !items)
 					return res.json({success:false, message : err.message});
 
@@ -167,7 +167,7 @@ module.exports = function(app,dir){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/keyword.list");
-			Models.MotCle.findOne({where : {id : id}}, function(err, keyword){
+			Models.MotCle.findById(id, function(err, keyword){
 				if(err)
 					return next(err);
 				if(keyword){
@@ -242,7 +242,7 @@ module.exports = function(app,dir){
 					}
 				}
 
-				Models.MotCle.findOne({where : {id : update.id  }}, function(err,keyword){
+				Models.MotCle.findById(update.id, function(err,keyword){
 					if(err)
 						return next(err);
 					if(!keyword){

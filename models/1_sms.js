@@ -4,7 +4,7 @@ var path = require('path'),
     md5 = require('MD5');
 var propertiesSMS = { 
 		id : { type : Number, label : "Identifiant", index : true },
-		pdu: { type: MSG  },
+		pdu: { type: Object  },
 		sms: { type: String,  limit: 50 , label : "Sms"},
 		from: { type: String,  limit: 50 , label : "Sender"},
 		to: { type: String,  limit: 50 , label : "Receiver"},
@@ -19,7 +19,7 @@ var propertiesSMS = {
 		id : { type : Number, label : "Identifiant", index : true },
 		name: { type: String  , label : "Nom"},
 		expression:     { type: String, label : "Validateur" },
-		options:     { type: String, label : "Options", list : { "": "No options", "i":"case insensible","g":"global","m":"multiline","ig":"case insensible, global","im":"case insensible, multiline","gm":"global, multiline","igm":"case insensible, global, multiline"} },
+		opts:     { type: String, label : "Options", list : { "": "No options", "i":"case insensible","g":"global","m":"multiline","ig":"case insensible, global","im":"case insensible, multiline","gm":"global, multiline","igm":"case insensible, global, multiline"} },
 	},
 	propertiesConnector = {
 		id : { type : Number, label : "ID", index : true },
@@ -53,7 +53,7 @@ var propertiesSMS = {
 		user : { type : Number }
 	},
 	propertiesScript = {
-		id : { type : Number, label : "Identifiant", index : true },
+		//id : { type : Number, label : "Identifiant", index : true },
 		name: { type: String  , label : "Nom"},
 		desc:     { type: String, label : "Description" },
 		data:     { type: String, label : "Script" , inputType :"javascript"},
@@ -83,7 +83,7 @@ module.exports = function(_,schema){
 	MotCle.properties = propertiesMotCle;
 	ShortNumber.properties = propertiesShortnumbers;
 	Connector.properties = propertiesConnector;
-	
+
 	var forceString = function(s){
 		var ret = [];
 		for(var i in s)
@@ -103,6 +103,11 @@ module.exports = function(_,schema){
 	MotCle.beforeDestroy = function(next){
 		console.log("beforeDestroy",arguments);
 
+	}
+	SMS.beforeSave = function(next){
+		console.log(this);
+		delete this.id;
+		next();
 	}
 	MotCle.beforeSave = function(next){
 		//console.log("beforeSave",arguments);
@@ -153,7 +158,7 @@ module.exports = function(_,schema){
 	    	validator: this.id
 	    },function(err, items){
 	    	items.forEach(function(item){
-	    		item.updateAttribute("validator-val",(self.expression || "")+"[:ø:]"+(self.options || ""), new Function) /*TODO*/
+	    		item.updateAttribute("validator-val",(self.expression || "")+"[:ø:]"+(self.opts || ""), new Function) /*TODO*/
  	    	});
 
 	    });
@@ -161,7 +166,7 @@ module.exports = function(_,schema){
 	    	blackList: this.id
 	    },function(err, items){
 	    	items.forEach(function(item){
-	    		item.updateAttribute("blackList-val",(self.expression || "")+"[:ø:]"+(self.options || ""),new Function) /*TODO*/
+	    		item.updateAttribute("blackList-val",(self.expression || "")+"[:ø:]"+(self.opts || ""),new Function) /*TODO*/
  	    	});
  	    	
 	    });
