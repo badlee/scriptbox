@@ -1,5 +1,5 @@
 var properties = { 
-		id : { type : Number, label : "Identifiant", index : true },
+		//id : { type : Number, label : "Identifiant", index : true },
 		email:         { type: String,  limit: 255, index: true, label : "Email"  },
 		username:         { type: String,  limit: 255, index: true , label : "Login"  },
 		salt:       { type: String,  limit: 32 },

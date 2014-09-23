@@ -257,6 +257,9 @@ module.exports = function(app,dir){
 					new Models.user(update).save(function(err,user){
 						if(err)
 							return next(err);
+						// TODO
+						/* Envoi du mot de passe par email */
+
 						res.redirect("user.info/"+user.id);
 					})
 				});

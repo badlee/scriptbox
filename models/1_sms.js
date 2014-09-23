@@ -3,7 +3,7 @@ var path = require('path'),
     fs = require('fs'),
     md5 = require('MD5');
 var propertiesSMS = { 
-		id : { type : Number, label : "Identifiant", index : true },
+		//id : { type : Number, label : "Identifiant", index : true },
 		pdu: { type: Object  },
 		sms: { type: String,  limit: 50 , label : "Sms"},
 		from: { type: String,  limit: 50 , label : "Sender"},
@@ -16,13 +16,13 @@ var propertiesSMS = {
 		raison: { type: String , label : "Raison", default:""},
 	},
 	propertiesExpressions = {
-		id : { type : Number, label : "Identifiant", index : true },
+		//id : { type : Number, label : "Identifiant", index : true },
 		name: { type: String  , label : "Nom"},
 		expression:     { type: String, label : "Validateur" },
 		opts:     { type: String, label : "Options", list : { "": "No options", "i":"case insensible","g":"global","m":"multiline","ig":"case insensible, global","im":"case insensible, multiline","gm":"global, multiline","igm":"case insensible, global, multiline"} },
 	},
 	propertiesConnector = {
-		id : { type : Number, label : "ID", index : true },
+		//id : { type : Number, label : "ID", index : true },
 		name: { type: String  , label : "Identifiant"},
 		conf:     { type: Object, label : "Validateur" },
 		type: {
@@ -36,12 +36,12 @@ var propertiesSMS = {
 		},
 	},
 	propertiesShortnumbers = {
-		id : { type : Number, label : "Identifiant", index : true },
+		//id : { type : Number, label : "Identifiant", index : true },
 		num : { type: String  , label : "Numero Courts"},
 		desc :     { type: String, label : "Description" },
 	},
 	propertiesMotCle = {
-		id : { type : Number, label : "Identifiant", index : true },
+		//id : { type : Number, label : "Identifiant", index : true },
 		keyword:         { type: String  , label : "Mot cle"},
 		"scriptId-val" : {type : String},
 		scriptId:     { type: Number, label : "Script" , dataUrl : '/admin/script.json', saveValue : true},

@@ -146,14 +146,13 @@ var lang = false;
 			  		var sand = {
 			  			exports : {},
 			  			module : {
-				  			id : n,
+				  			id : name,
 				  			exports : null
 				  		},
 						get sessions () { return sessions[_id].data },
 						get localStorage (){ return localStorage[m.keywords[0]] },
-						logger : new logger(new VMStream(path.basename(m.file), m.id),new VMStream(path.basename(m.file), m.id,true)),
+						logger : new logger(new VMStream(name, "module-"+name),new VMStream(name, "module-"+name,true)),
 						Buffer : Buffer,
-					  	now : Date.now(),
 					  	require : require,
 					  	get MSG() {return MSG }
 					};
