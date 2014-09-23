@@ -117,4 +117,6 @@ server.use(function errorHandler(err, req, res, next) {
   res.render('page-error', { error: {code : 500, stack : "<pre>"+err.stack+"</pre>", message : err.message }});
 })
 
-server.listen(conf.http_port || DEFAULT.httpPort);
+server.listen(conf.http_port || DEFAULT.httpPort,function(err){
+  console.log("Server Listen "+(conf.http_port || DEFAULT.httpPort),"port.");
+});

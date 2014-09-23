@@ -1,7 +1,8 @@
 var flash = require('connect-flash'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
-	rnd = require("randomstring");
+	rnd = require("randomstring"),
+	adminUrl = "/admin";
 	
 // Passport Strategy.
 passport.serializeUser(function(user, done) {
@@ -34,8 +35,7 @@ passport.use(new LocalStrategy(
 function ensureAuthenticated(req, res, next) {
   if (/^\/(css|vendors|js|images)/i.test(req.url) || req.isAuthenticated()) { return next(); }
   if(req.method == "GET"){
-  	console.log(req.url);
-  	req.session.redirect = "/admin"+req.url;
+  	req.session.redirect = adminUrl+req.url;
   }
   res.redirect('/login');
 }
@@ -52,7 +52,7 @@ module.exports = function(server){
 	  		req.user = {};
 	  		for(var i in req.session.user)
 	  			req.user[i] = req.session.user[i];
-			res.cookie('%23color-style', req.user.theme || "default",{ expires : false, path: '/' });
+			res.cookie('%23color-style', req.user.theme || "default",{ expires : false, path: adminUrl });
 		  	delete req.user.password;
 		  	delete req.user.salt;
 		  	swig.setDefaults({
@@ -74,7 +74,7 @@ module.exports = function(server){
 		}
 	  	next();
 	  });
-	  server.use("/admin/",function(req,res,next){
+	  server.use(adminUrl+"/",function(req,res,next){
 	  	/* Valide l'utilisateur */
 	  	if(req.user){
 	  		return Models.user.findOne({where : {username : req.user.username}}, function(err,user){
@@ -89,14 +89,14 @@ module.exports = function(server){
 	  });
 	  server.route("/login").
 	get(function(req, res){
-		if(req.isAuthenticated()) return res.redirect('/admin/');
+		if(req.isAuthenticated()) return res.redirect(adminUrl+'/');
 	  res.render('page-signin', { user: req.user || {}, message: req.flash('error') });
 	}).post( 
 	  passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
 	  function(req, res) {
 	  	req.session.user = Object.create(req.user);
 	  	delete req.user.password;
-		res.redirect(req.session.redirect || '/admin/');
+		res.redirect(req.session.redirect ||( adminUrl+'/'));
 		req.session.redirect = undefined;
   	});
   	
@@ -109,18 +109,18 @@ module.exports = function(server){
 		  
 		});
 		
-	  server.use('/admin', ensureAuthenticated);
+	  server.use(adminUrl, ensureAuthenticated);
 	  
 	  //server.get(/^\/admin$/i,function(_,res){
-	  //	res.redirect('/admin/');
+	  //	res.redirect(adminUrl+'/');
 	  //})
-	  server.route("/admin/")
+	  server.route(adminUrl+"/")
 			.get(function(req,res){
 				res.render("admin",{user: req.user, messages : req.flash(), title : "Dashboard"});
 			});
 
 	  server.use("/login",function(req,res,next){
-		if (req.isAuthenticated()) { return res.redirect('/admin'); }
+		if (req.isAuthenticated()) { return res.redirect(adminUrl); }
 		next();
 	  });
 }

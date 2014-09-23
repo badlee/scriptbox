@@ -4,7 +4,7 @@ module.exports = function(app,dir){
 		var theme = req.query.color || false;
 		if(theme){
 			req.user.theme = theme;
-			Models.user.findOne({where : {id : req.user.id}}, function(err, user){
+			Models.user.findById(req.user.id, function(err, user){
 				if(err)
 					return next(err.codes);
 				user.updateAttribute('theme', theme, function(err){
@@ -30,7 +30,7 @@ module.exports = function(app,dir){
 					res.status(403);
 					return res.render("page-error",{error : {code:403, message : "Acces interdit"}});
 				}
-				Models.user.findOne({where : {id : id}}, function(err, user){
+				Models.user.findById(id, function(err, user){
 					if(err)
 						return next(err);
 					if(user){
@@ -75,7 +75,7 @@ module.exports = function(app,dir){
 							update[cle] = req.body[cle]
 				}
 			}
-			Models.user.findOne({where : {id : req.params[1] || update.id || req.user.id }},function(err,user){
+			Models.user.findById(req.params[1] || update.id || req.user.id ,function(err,user){
 				if(err)
 					return next(err);
 				if(!user){
@@ -140,7 +140,7 @@ module.exports = function(app,dir){
 				res.status(403);
 				return res.render("page-error",{error : {code:403, message : "Acces interdit"}});
 			}
-			Models.user.findOne({where : {id : req.params[1] || req.user.id }},function(err,user){
+			Models.user.findById( req.params[1] || req.user.id ,function(err,user){
 				if(err)
 					return next(err);
 				if(!user){
@@ -168,7 +168,7 @@ module.exports = function(app,dir){
 				res.status(403);
 				return res.render("page-error",{error : {code:403, message : "Acces interdit"}});
 			}
-			Models.user.findOne({where : {id : req.params[0] }},function(err,user){
+			Models.user.findById( req.params[0],function(err,user){
 				if(err)
 					return next(err);
 				if(!user){
@@ -257,6 +257,9 @@ module.exports = function(app,dir){
 					new Models.user(update).save(function(err,user){
 						if(err)
 							return next(err);
+						// TODO
+						/* Envoi du mot de passe par email */
+
 						res.redirect("user.info/"+user.id);
 					})
 				});
@@ -270,7 +273,7 @@ module.exports = function(app,dir){
 		}).delete(function(req,res){
 			if(!req.body.data)
 				return res.json({success : false,message : "no data"});
-			Models.user.findOne({where : {id : req.user.id }}, function(err,user){
+			Models.user.findById(req.user.id , function(err,user){
 					if(err)
 						return next(err);
 					if(!user){
@@ -302,7 +305,7 @@ module.exports = function(app,dir){
 		}).put(function(req,res){
 			if(!req.body.data)
 				return res.json({success : false,message : "no data"});
-			Models.user.findOne({where : {id : req.user.id }}, function(err,user){
+			Models.user.findById( req.user.id , function(err,user){
 					if(err)
 						return next(err);
 					if(!user){
@@ -334,7 +337,7 @@ module.exports = function(app,dir){
 		}).post(function(req,res){
 			if(!req.body.data)
 				return res.json({success : false,message : "no data"});
-			Models.user.findOne({where : {id : req.user.id }}, function(err,user){
+			Models.user.findById( req.user.id , function(err,user){
 					if(err)
 						return next(err);
 					if(!user){

@@ -36,7 +36,7 @@ module.exports = function(app,dir){
 	app.route(/^\/connector\.json(\/([^\/]+)?)?$/i)
 		.get(function(req,res,next){
 			var id = req.params[1] || false;
-			Models.Connector[ id ? 'findOne' : 'find' ](id? {where : {id : id} } : {},function(err,connectors){
+			Models.Connector[ id ? 'findById' : 'find' ](id? id : {},function(err,connectors){
 				if(err || !connectors)
 					return res.json({success:false, message : err.message});
 
@@ -168,7 +168,7 @@ module.exports = function(app,dir){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/connector.list");
-			Models.Connector.findOne({where : {id : id}}, function(err, connector){
+			Models.Connector.findById(id, function(err, connector){
 				if(err)
 					return next(err);
 				if(connector){
@@ -201,7 +201,7 @@ module.exports = function(app,dir){
 				return req.redirect(dir+"/connector.list")
 			var readOnly = {},
 				update = {id:id};
-			Models.Connector.findOne({where : {id : update.id  }}, function(err,connector){
+			Models.Connector.findById(update.id  , function(err,connector){
 				if(err)
 					return next(err);
 				if(!connector){
@@ -262,7 +262,7 @@ module.exports = function(app,dir){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/connector.list");
-			Models.Connector.findOne({where : {id : req.params[0]  }}, function(err,connector){
+			Models.Connector.findById(id, function(err,connector){
 				if(err)
 					return next(err);
 				if(!connector){

@@ -107,7 +107,7 @@ module.exports = function(app,dir){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/shortnumber.list");
-			Models.Shortnumber.findOne({where : {id : id}}, function(err, shortnumber){
+			Models.Shortnumber.findById(id, function(err, shortnumber){
 				if(err)
 					return next(err);
 				if(shortnumber){
@@ -149,7 +149,7 @@ module.exports = function(app,dir){
 							update[cle] = req.body[cle]
 				}
 			}
-			Models.Shortnumber.findOne({where : {id : update.id  }}, function(err,shortnumber){
+			Models.Shortnumber.findById(update.id, function(err,shortnumber){
 				if(err)
 					return next(err);
 				console.log(err,shortnumber);

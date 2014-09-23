@@ -20,9 +20,9 @@
     "dbProdPort": "",
     "dbProdUser": "",
     "dbProdPwd": "",
-    "dbProdPath": "app://dbProd",
+    "dbProdPath": "dbProd",
     "dbProdPool": false,
     "keywordRegExp": false,
-    "defautErrorMSG": "ERREUR",
+    "defautErrorMSG": "ERROR ON EXEC",
     "httpPort": "13014"
 }

@@ -10,10 +10,10 @@ module.exports = function(app,dir){
 	app.route(/^\/expression\.json(\/([^\/]+)?)?$/i)
 		.get(function(req,res,next){
 			var id = req.params[1] || false;
-			Models.Expression[id ? 'findOne' : 'find' ](id? {where : {id : id} } : {},function(err,expressions){
+			Models.Expression[id ? 'findById' : 'find' ](id? {where : {id : id} } : {},function(err,expressions){
 				if(err || !expressions)
 					return res.json({success:false, message : err.message});
-				res.json({success : true,data:(expressions.length ? expressions.map(function(item){  return {value : item.id , text: item.name, data : (item.expression || "") +"[:ø:]"+(item.options || "")} }) : expressions),message:"Requete Ok"})
+				res.json({success : true,data:(expressions.length ? expressions.map(function(item){  return {value : item.id , text: item.name, data : (item.expression || "") +"[:ø:]"+(item.opts || "")} }) : expressions),message:"Requete Ok"})
 			})
 		})
 	app.route("/expression.list")
@@ -109,7 +109,7 @@ module.exports = function(app,dir){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/expression.list");
-			Models.Expression.findOne({where : {id : id}}, function(err, expression){
+			Models.Expression.findById(id, function(err, expression){
 				if(err)
 					return next(err);
 				if(expression){
@@ -151,7 +151,7 @@ module.exports = function(app,dir){
 							update[cle] = req.body[cle]
 				}
 			}
-			Models.Expression.findOne({where : {id : update.id  }}, function(err,expression){
+			Models.Expression.findById(update.id, function(err,expression){
 				if(err)
 					return next(err);
 				console.log(err,expression);
