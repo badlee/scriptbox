@@ -179,6 +179,18 @@ module.exports = function(_,schema){
 
 		for(var i=expression.length;i--;)
 			(new Expression(expression[i])).save();
+
+		/* connector */
+		new Connector({
+			name: "kannel",
+			conf: { 
+				host :  "127.0.0.1",
+				port : 13001,
+				id :   "LoveIsMyReligion",
+				tls : false
+			},
+			type: "kannel.js"
+		}).save();
 	}
 
 	Models.SMS = SMS;
