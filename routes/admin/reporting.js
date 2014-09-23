@@ -65,13 +65,8 @@ module.exports = function(app,dir){
 					console.log(arguments);
 				});
 				return Models.SMS.find(where,function(err,script){
-<<<<<<< HEAD
 					res.setHeader("Content-Type","text/csv");
 					res.setHeader("Content-Disposition",'attachment; filename="report.csv"');
-=======
-					//res.setHeader("Content-Type","text/csv");
-					//res.setHeader("Content-Disposition",'attachment; filename="report.csv"');
->>>>>>> 84825e4937ccf6d2b16abdd286a0b47d228cc03f
 					if(err || !script)
 						return res.send(err.message);
 					JSONToCSVConvertor(script,['from', 'to', 'MotCle','sms','SMSC','time','success','received'],function(err,line,end){
