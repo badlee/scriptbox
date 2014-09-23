@@ -24,7 +24,6 @@ process.on("message",function(m){
  });
 
 var start = function(conf){
-	console.log("START".yellow,conf);
 	conf.port = Number(conf.port);
 	app = new kannel.smsbox(conf);
 	var retryToConnect = function(){
