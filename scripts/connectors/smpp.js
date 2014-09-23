@@ -4,19 +4,24 @@ var app = null;
 var path = require('path');
 
 var connector = require(path.join(__dirname,'..','..','connector.js'));
-
+var retryConnect = null;
+var connect = false;
 process.on("message",function(m){
  	if (m === 'stop'){
  		if(app){
  			app.close();
+ 			clearTimeout(retryConnect);
+ 			app = null;
  		}
  	}else if (m.type === 'start'){
- 		if(!app){
- 			start(m.data);
- 		}else if(app && !app.connected)
- 				app.connect(); 		
+ 		if(app && !connect){
+ 			clearTimeout(retryConnect);
+ 			app = null;
+ 		}
+ 		start(m.data); 		
  	}
- });
+
+
 var sendSMS = function(data){
 	app.sendMessage(data);
 }
@@ -50,11 +55,12 @@ var fromPDU = function(data){
 var start = function(conf){
 	conf.port = Number(conf.port);
 	app = smpp.connect(conf.host, conf.port);
+
 	app.bind_transceiver({
 	    system_id: conf.system_id,
 	    password: conf.password
 	});
-	var retryConnect = null;
+	
 	var retryToConnect = function(){
 		clearTimeout(retryConnect);
 		retryConnect = setTimeout(function(){
@@ -83,6 +89,7 @@ var start = function(conf){
 	 */
 	app.on('connect', function(pdu) {
 		clearInterval(retryConnect);
+		connect = true;
 		console.log(("SMS LOG scripting box is connected to "+conf["host"]+":"+conf['port']).grey);
 		
 	    //console.log('connect successful');
@@ -125,6 +132,7 @@ var start = function(conf){
 	 */
 	app.on('close', function() {
 	    //console.log('disconnected');
+	    connect = false;
 	    process.send({
 			"type": "online",
 			"online" : false,
@@ -134,6 +142,7 @@ var start = function(conf){
 
 	app.on('error', function() {
 	    //console.log('disconnected error');
+	    connect = false;
 	    retryToConnect();
 	    process.send({
 			"type": "online",
