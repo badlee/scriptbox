@@ -2,12 +2,21 @@ sys = require("util");
 var 
     path = require('path'),
     fs = require('fs');
-    DEFAULT = {bearerPort : 14001,httpPort :14014, id :"LoveIsMyReligion"}
+    DEFAULT = {httpPort :13014,id : "OshiminSecret"};
+var getDir = function (dbProdPath){
+	var pwd = process.cwd();
+	if(typeof __dirname != "undefined")
+		pwd = __dirname;
+		
+	return String(dbProdPath).search(/^app:\/\//i) === 0 ? 
+		path.resolve.apply(path,[path.sep].concat(String(dbProdPath).replace(/\//g,path.sep).replace("app:"+(path.sep),pwd).split(path.sep).slice(1)))
+		: dbProdPath
+}
 
 settings = require(path.resolve(__dirname,"settings.json"));
 
 var express = require("express"),
-  SessionStore = require('connect-session-file'),
+  //SessionStore = require('connect-session-file'),
 	caminte = require('caminte'),
     Schema = caminte.Schema,
     db = {
@@ -16,11 +25,7 @@ var express = require("express"),
          port       : settings.dbPort || "",
          username   : settings.dbUser || "",
          password   : settings.dbPwd || "",
-         database   : settings.dbPath ?  
-            ( String(settings.dbPath).search(/^app:\//i) === 0 ?
-              path.resolve.apply(path,['/'].concat(String(settings.dbPath).replace("app:/",__dirname).split("/").slice(1))) : 
-              settings.dbPath
-            ) :  "",
+         database   : settings.dbPath ?  getDir(settings.dbPath) :  "",
          pool       : settings.dbPool || false // optional for use pool directly 
     },
     dbProd = {
@@ -29,11 +34,7 @@ var express = require("express"),
          port       : settings.dbProdPort || "",
          username   : settings.dbProdUser || "",
          password   : settings.dbProdPwd || "",
-         database   : settings.dbProdPath ?  
-            ( String(settings.dbProdPath).search(/^app:\//i) === 0 ?
-              path.resolve.apply(path,['/'].concat(String(settings.dbProdPath).replace("app:/",__dirname).split("/").slice(1))) : 
-              settings.dbProdPath
-            ) :  "",
+         database   : settings.dbProdPath ? getDir(settings.dbProdPath) :  "",
          pool       : settings.dbProdPool || false // optional for use pool directly 
     };
     schema = new Schema(db.driver, db);
@@ -46,10 +47,7 @@ swig.setFilter('inArray', function(arr, key){
 });
 
 conf = {
-  host : settings.bearerHost || '127.0.01',
-	port : settings.bearerPort || DEFAULT.bearerPort,
-	http_port : settings.httpPort || DEFAULT.httpPort,
-	id : settings.smsboxId || DEFAULT.id
+	http_port : settings.httpPort || DEFAULT.httpPort
 };
 /* load models */
 Models = {};
@@ -75,15 +73,15 @@ var server =  express();
     next();
   });
   server.use(require("morgan")(process.env.NODE_ENV || 'dev'));
-  server.use(require('cookie-parser')(DEFAULT.isDirectory));
+  server.use(require('cookie-parser')(DEFAULT.id));
   server.use(require('body-parser')());
   server.use(require('method-override')());
   server.use(require('express-session')({
     secret: DEFAULT.id,
-    store: new SessionStore({
+    /*store: new SessionStore({
       path: path.join(__DIR, "sessions"),
       prefix : "session-file-"
-    })
+    })*/
   }));
   server.use(require('serve-favicon')(__dirname + '/public/favicon.ico'));
   //server.use(server.router);
@@ -98,7 +96,7 @@ var loadroute = function(dir,module){
 	fs.readdirSync(dir).forEach(function(route){
 		var file = path.join(dir,route);
 		if(fs.statSync(file).isDirectory())
-			return loadroute(file,path.join(module || "/",route)); 
+			return loadroute(file,path.join(module || "/",route).replace(path.sep,'/')); 
 		require(file)(app || server, module || "/");
 		if(module)
 			server.use(module,app);			
