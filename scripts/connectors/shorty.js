@@ -9,6 +9,8 @@ process.on("message",function(m){
  	if (m === 'stop'){
  		if(app){
  			app.unbind();
+ 			app.shouldReconnect = false;
+ 			app = null;
  		}
  	}else if (m.type === 'start'){
  		if(!app){
@@ -54,7 +56,6 @@ var start = function(conf){
 		smpp : conf,
 		debug : true
 	});
-	app.shouldReconnect = false;
 	/**
 	 * The submit_sm_resp is emitted when the server sends a submit_sm_resp in
 	 * response to a submit_sm. It is not aware of status or any error codes. It's

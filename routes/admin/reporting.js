@@ -58,7 +58,6 @@ module.exports = function(app,dir){
 
 			if(format){
 				return Models.SMS.find(where,function(err,script){
-					return res.json(script);
 					res.setHeader("Content-Type","text/csv");
 					res.setHeader("Content-Disposition",'attachment; filename="report.csv"');
 					if(err || !script)

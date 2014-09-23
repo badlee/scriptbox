@@ -104,10 +104,10 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("sendSMS",data);}catch(e){}
 			new Models.SMS({ 
 				pdu: data,
-				sms : (data.msgdata || "").toString(),
-				from: data.sender.toString(),
-				to: data.receiver.toString(),
-				SMSC: (data.smsc_id || "").toString(),
+				sms : new Buffer(data.msgdata || "").toString(),
+				from: new Buffer(data.sender || "").toString(),
+				to: new Buffer(data.receiver || "").toString(),
+				SMSC: new Buffer(data.smsc_id || "").toString(),
 				MotCle : "",
 				success : false,
 				received : false
@@ -126,10 +126,10 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("failSMS",data,raison);}catch(e){};
 			var save = { 
 				pdu: data,
-				sms : (data.msgdata || "").toString(),
-				from: data.sender.toString(),
-				to: data.receiver.toString(),
-				SMSC: data.smsc_id.toString(),
+				sms : new Buffer(data.msgdata || "").toString(),
+				from: new Buffer(data.sender || "").toString(),
+				to: new Buffer(data.receiver || "").toString(),
+				SMSC: new Buffer(data.smsc_id || "").toString(),
 				MotCle : "",
 				success : false,
 				raison : raison
@@ -148,10 +148,10 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("successSMS",data);}catch(e){}
 			new Models.SMS({ 
 				pdu: data,
-				sms : (data.msgdata || "").toString(),
-				from: data.sender.toString(),
-				to: data.receiver.toString(),
-				SMSC: data.smsc_id.toString(),
+								sms : new Buffer(data.msgdata || "").toString(),
+				from: new Buffer(data.sender || "").toString(),
+				to: new Buffer(data.receiver || "").toString(),
+				SMSC: new Buffer(data.smsc_id || "").toString(),
 				MotCle : keyword,
 				script : script,
 				success : true

@@ -6,29 +6,31 @@ var path = require('path');
 var connector = require(path.join(__dirname,'..','..','connector.js'));
 
 var status = kannel.status;
- process.on("message",function(m){
+var retryConnect = null;
+process.on("message",function(m){
  	if (m === 'stop'){
  		if(app){
  			app.close();
+ 			clearTimeout(retryConnect);
+ 			app = null;
  		}
  	}else if (m.type === 'start'){
- 		if(!app){
- 			start(m.data);
- 		}else if(app && !app.connected)
- 				app.connect(); 		
+ 		if(app && !app.connected){
+ 			clearTimeout(retryConnect);
+ 			app = null;
+ 		}
+ 		start(m.data); 		
  	}
  });
 
 var start = function(conf){
 	conf.port = Number(conf.port);
 	app = new kannel.smsbox(conf);
-
-	var retryConnect = null;
 	var retryToConnect = function(){
 		clearTimeout(retryConnect);
 		retryConnect = setTimeout(function(){
 			console.log("SMS WARN\t\t...retry to connect".yellow);
-			app.connect();
+			start(conf);
 		},10000);
 		return retryConnect;
 	}
