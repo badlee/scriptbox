@@ -1,3 +1,4 @@
+
 {
     "maxPool": 1,
     "title": "Oshimin SMS",
@@ -14,7 +15,7 @@
     "dbPwd": "",
     "dbPath": "app://db",
     "dbPool": false,
-    "dbProdType": "tingodb",
+    "dbProdType": "memory",
     "dbProdHost": "",
     "dbProdPort": "",
     "dbProdUser": "",
@@ -23,8 +24,5 @@
     "dbProdPool": false,
     "keywordRegExp": false,
     "defautErrorMSG": "ERREUR",
-    "bearerHost": "127.0.0.1",
-    "bearerPort": "14001",
-    "httpPort": "14014",
-    "smsboxId": ""
+    "httpPort": "14014"
 }
