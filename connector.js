@@ -10,18 +10,27 @@ var argv = process.argv;
 	argv.shift();
 	argv.shift();
 		
+function initVm(j){
+	try{VMs[j].kill();}catch(e){};
+	VMs[j] = null;
+	VMs[j] = require('child_process').fork(path.resolve(__dirname,'vm.js'),argv);
+	VMs[j].send({type:"setDIR", data:__dirname});
+	VMs[j].send({type:"settings", data:settings});
+	VMs[j].on('message', (function(m) {
+		if (m.type === 'sms'){
+			this.sendSMS(m,new Buffer(m.receiver).toString());
+		}
+	}).bind(this));
+	VMs[j].on('error',(function(j){
+		initVm.call(this,j);			
+		console.log(process.argv,"VMs ERROR", arguments);
+	}).bind(this,j))
+}
 function Connector() {
     events.EventEmitter.call(this);
-	for(var j = (settings.maxPool || 5); j--;){
-		VMs[j] = require('child_process').fork(path.resolve(__dirname,'vm.js'),argv);
-		VMs[j].send({type:"setDIR", data:__dirname});
-		VMs[j].send({type:"settings", data:settings});
-		VMs[j].on('message', (function(m) {
-			if (m.type === 'sms'){
-				this.sendSMS(m,new Buffer(m.receiver).toString());
-			}
-		}).bind(this));
-	}
+	for(var j = (settings.maxPool || 5); j--;)
+		initVm.call(this,j);
+	
 }
 util.inherits(Connector, events.EventEmitter);
 
@@ -30,6 +39,9 @@ var VMs = {};
 process.on('exit', function(){
 	for(var i in VMs)
 		VMs[i].kill();
+});
+process.on('uncaughtException', function(err) {
+  console.log('Caught exception: ' + err);
 });
 /* load models */
 Models = {};
@@ -91,7 +103,7 @@ Object.defineProperties(Connector.prototype, {
 	},
 	sendSMS  : {
 		value: function(data,id){
-			console.log("send SMS",id,data.receiver.toString(),data.sender.toString(),data.msgdata.toString());
+			console.log("send SMS",id,new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats++",id);
 			this._sendSMS(data);
 		},
@@ -167,7 +179,7 @@ Object.defineProperties(Connector.prototype, {
 	runSMS : {
 		value : function(data,err,items){
 			var id = (data && data.receiver ? data.receiver : "unknow").toString();
-			console.log("receive SMS",id,data.receiver.toString(),data.sender.toString(),data.msgdata.toString());
+			console.log("receive SMS",id,new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats--",id);
 			if(err || !items)
 				return this.failSMS(data);

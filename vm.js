@@ -19,7 +19,8 @@ var colors = require('colors');
 
 	var sessions = {};
 	var localStorage = {};
-
+var preScript = "if(!Array.prototype.rnd)Object.defineProperty(Array.prototype,'rnd',{get:function (){ var randscript = -1, max = this.length-1; while (randscript < 0 || randscript > max || isNaN(randscript))\
+						randscript = parseInt(Math.random()*(max+1)); return this[randscript]; }}); ";
 var lang = false;
  var script = {};
  var modules = {};
@@ -89,6 +90,7 @@ var lang = false;
 		 	}).bind(null,i.split('::')[0],adapter[i][0]);
 		} catch(e){}
 	}
+ var currSMS;
  process.on("message",function(m){
  	if (m.type === 'settings'){
  		settings = m.data;
@@ -100,19 +102,18 @@ var lang = false;
 		  	var tmp = m.receiver;
 			m.receiver = m.sender;
 			m.sender = tmp;
-		  	console.log(("SMS SEND Exec Error", process.argv[2],m.file, err.stack || err).grey);
+		  	console.log(("SMS SEND Exec Error".red, process.argv[2],m.file, err.stack || err).grey);
 		  	m.msgdata =   settings.defautErrorMSG || "EXEC ERROR";
 		  	process.send(m);
 		};
- 		if(true || !script[m.file]){
+ 		if(!script[m.file]){
 			try{data = fs.readFileSync(m.file);}catch(e){return sendError(e);}
-			  script[m.file] = vm.createScript("if(!Array.prototype.rnd)Object.defineProperty(Array.prototype,'rnd',{\
-					get:function (){\
-					var randscript = -1, max = this.length-1;\
-					while (randscript < 0 || randscript > max || isNaN(randscript))\
-						randscript = parseInt(Math.random()*(max+1));\
-					return this[randscript];\
-				}});\n\n"+data, m.file);
+			script[m.file] = vm.createScript(preScript+";"+data, m.file);
+		  	fs.watchFile(m.file, (function (file,sendError,curr, prev) {
+		  		console.log('VM script reload: '.grey, process.argv[4].grey,process.argv[2].grey , file);
+				try{data = fs.readFileSync(file);}catch(err){return   console.log('VM Script Exception: '.grey, process.argv[4].grey,process.argv[2].grey , err);}
+				script[file] = vm.createScript(preScript+";"+data, file);
+		  	}).bind(null,m.file,sendError));
 		}
 		/* definition de la session et du storage */
 			var _id = new Buffer(m.sender).toString();
@@ -142,7 +143,7 @@ var lang = false;
 						sendSMS : {
 							value: function(msg){
 								if(msg)
-									this.msgdata = msgdata;
+									this.msgdata = msg;
 						  		process.send(this);
 						  	},
 							writable: false,
@@ -207,10 +208,17 @@ var lang = false;
 		  	now : Date.now(),
 		  	require : require,
 		  	get MSG() {return MSG }
-		})); }catch(e){return sendError(e);}
+		})); }catch(e){
+			return sendError(e);
+		}
 		//console.log("[",process.argv[2],"]","OUT : " , sandbox._stdout.data);	  
 		//console.log("[",process.argv[2],"]","ERR : " , sandbox._stderr.data);
 		//console.log("[",process.argv[2],"]","Session : " , sessions[_id]);
 		delete sandbox;
 	}
  });
+
+
+process.on('uncaughtException', function(err) {
+  console.log('VM Caught exception: '.grey, process.argv[4].grey,process.argv[2].grey , err);
+});
