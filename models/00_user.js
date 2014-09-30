@@ -71,10 +71,8 @@ module.exports = function(schema){
 		  , {  username: 'oshimin', password: 'secret', email: 'joe2@example.com', actif : true, theme : "white",isAdmin : true}
 		];
 
-		// simplier way to describe model
-
-		for(var i=users.length;i--;)
-			(new User(users[i])).save();
+		// create all users
+		for(var i=users.length;i--;) new User(users[i]).save();
 	}
 	
     Models.user = User;

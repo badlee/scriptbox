@@ -11,6 +11,8 @@
  npm install .
 ```
 
+*[See detailed instructions here](https://github.com/badlee/scriptbox/wiki/Install-Instructions)*
+
 #### How use
 
 > run the bearebox
