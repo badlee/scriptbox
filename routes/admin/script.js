@@ -95,11 +95,13 @@ module.exports = function(app,dir){
 			Models.Script.find({where : { module : true }},function(err,items){
 				if(err)
 					return next(err);
-				res.render("build-resposive-table",{ hidden : hidden, listValues : listValues,fields : heads,title:"Liste des Script",data : items, checkboxs : checkbox, listes : listes,getActions : function(j,user){
-					if(j.user != user.id) return "";
-					return '<a title="Edit" href="'+dir+'/script.info/'+j.id+'" class="btn btn-blue btn-sm"><i class="fa fa-edit"></i></a>  '+
-				    		'<a id="user-remove-'+j.id+'" title="Effacer" href="javascript:exec(\'/admin/script.remove/'+j.id+'\',\'{1}\',\'Error : {1}\',\'#user-remove-'+j.id+'\')" class="btn btn-red btn-sm"><i class="fa fa-trash-o"></i></a>';
-				}  });
+				res.render("build-resposive-table",{ hidden : hidden, listValues : listValues,fields : heads,title:"Liste des Script",data : items, checkboxs : checkbox, listes : listes,
+					getActions : function(j,user){
+						if(j.user != user.id) return "";
+						return '<a title="Edit" href="'+dir+'/script.info/'+j.id+'" class="btn btn-blue btn-sm"><i class="fa fa-edit"></i></a>  '+
+					    		'<a id="user-remove-'+j.id+'" title="Effacer" href="javascript:exec(\'/admin/script.remove/'+j.id+'\',\'{1}\',\'Error : {1}\',\'#user-remove-'+j.id+'\')" class="btn btn-red btn-sm"><i class="fa fa-trash-o"></i></a>';
+					}
+				});
 			})
 		})
 	app.route("/script.add")

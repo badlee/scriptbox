@@ -8,10 +8,11 @@ In the next release the scriptbox must allow :
 - [ ] All created users must receive a notification mail (server ip, login and password)
 - [ ] Add More diagram to dashboard,
 - [ ] Write somme tutorial better documentation
-- [ ] A better javascript environement for script execution
-  - [ ] Add session storage for a client  persistent data
-  - [ ] Add local storage for share data across clients who use the same keyword
-  - [ ] Add globlal storage for share data across clients who use the same shortcode
+- [ ] Add a keyword embedded data for a better script optimisation
+- [x] A better javascript environement for script execution
+  - [x] Add session storage for a client  persistent data
+  - [x] Add local storage for share data across clients who use the same keyword
+  - [x] Add globlal storage for share data across clients who use the same shortcode
   - [x] Add database access (mysql, mongodb, postgresql etc...)
   - [x] Add network access (http, https, socket, tls, datagrame,dns)
 - [ ] Fix all bug and found contributor and testers.

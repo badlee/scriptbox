@@ -182,7 +182,7 @@ Object.defineProperties(Connector.prototype, {
 			console.log("receive SMS",id,new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats--",id);
 			if(err || !items)
-				return this.failSMS(data);
+				return this.failSMS(data, err ? err : "Pas d'items" );
 
 			var sms = data.msgdata.toString();
 			var keyword = sms.split(" ");
@@ -232,11 +232,11 @@ Object.defineProperties(Connector.prototype, {
 		value : function(data){
 			/* looking for keyword */
 			var sms = data.msgdata.toString();
-			var keyword = sms.split(" ");
+			var keyword = sms.trim().split(" ");
 			var name = path.join(__dirname,"scripts","keywords", md5(keyword[0].toLowerCase()));
 			fs.exists(name,(function (exists) {
 				if(!exists)
-			  		return this.runSMS(data,"Not found");
+			  		return this.runSMS(data,name+" Not found"+keyword);
 			  	fs.readFile(name, (function (err, json) {
 					if(err) return this.runSMS(data,err);
 					this.runSMS(data,null,JSON.parse(json));

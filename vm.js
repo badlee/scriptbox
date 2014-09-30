@@ -3,10 +3,11 @@ var path = require('path'),
 	fs = require("fs"),
 	logger = require("console").Console,
 	util = require("util"),
+	memory = require("./memory"),
 	events = require("events");
 var colors = require('colors');
+
 	function VMStream(filename,id,error) {
-		//this.data = [];
 		this.filename = filename;
 		this.id = id;
 		this.error = !!error;
@@ -76,7 +77,7 @@ var lang = false;
 	for(var i in adapter){
 		try {
     		require.resolve(i.split('::')[0]);
-    		console.log("resolve ".red,adapter[i][1],'(',i.split('::')[0],')',"...OK");
+    		console.log("resolve ".grey,adapter[i][1].grey,'(',i.split('::')[0].yellow,')',"...OK".grey);
     		allowNativeModules[adapter[i][1]] = (function(m,name){
 		 		if(name){
 		 			var mod = require(m);
@@ -98,6 +99,10 @@ var lang = false;
  		__DIR = m.data;
  	}else if (m.type === 'sms'){
  		console.log("recieve SMS",m.time);
+ 		m.msgdata_orig = m.msgdata;
+		m.msgdata = new Buffer(m.msgdata).toString().trim();
+		m.receiver = new Buffer(m.receiver).toString().toLowerCase();
+		m.sender = new Buffer(m.sender).toString().toLowerCase();
 		var sendError = function(err){	
 		  	var tmp = m.receiver;
 			m.receiver = m.sender;
@@ -117,17 +122,6 @@ var lang = false;
 		}
 		/* definition de la session et du storage */
 			var _id = new Buffer(m.sender).toString();
-			/* Session*/
-		sessions[_id] = sessions[_id] || {} ;
-		// remove obsolete data
-		if(sessions[_id].lastAccess && sessions[_id].lastAccess + 360000 < Date.now() )
-			sessions[_id].data = {};
-		else
-			sessions[_id].data = sessions[_id].data || {};	
-		sessions[_id].lastAccess = Date.now();
-			/* Storage share memory */
-		localStorage[m.keywords[0]] = localStorage[m.keywords[0]] || {};
-		/* end */
 		m.filename = path.basename(m.file);
 		var MSG = function(conf){
 		  		conf = conf || {};
@@ -186,8 +180,9 @@ var lang = false;
 				  			id : name,
 				  			exports : null
 				  		},
-						get sessions () { return sessions[_id].data },
-						get localStorage (){ return localStorage[m.keywords[0]] },
+						session : new memory.Client(_id),
+						localStorage : new memory.Client(m.keywords[0].toLowerCase()),
+						globalStorage : new memory.Client(m.receiver),
 						logger : new logger(new VMStream(name, "module-"+name),new VMStream(name, "module-"+name,true)),
 						Buffer : Buffer,
 					  	require : require,
@@ -199,15 +194,18 @@ var lang = false;
 			  		throw e;
 			  	}
 		  	};
-		try{ script[m.file].runInContext(vm.createContext({
-			get sessions () { return sessions[_id].data },
+		try{
+
+			script[m.file].runInContext(vm.createContext({
 			sms : m ,
-			get localStorage (){ return localStorage[m.keywords[0]] },
 			logger : new logger(new VMStream(path.basename(m.file), m.id),new VMStream(path.basename(m.file), m.id,true)),
 			Buffer : Buffer,
 		  	now : Date.now(),
 		  	require : require,
-		  	get MSG() {return MSG }
+		  	get MSG() {return MSG },
+			session : new memory.Client(_id),
+			localStorage : new memory.Client(m.keywords[0].toLowerCase()),
+			globalStorage : new memory.Client(m.receiver)
 		})); }catch(e){
 			return sendError(e);
 		}
@@ -220,5 +218,5 @@ var lang = false;
 
 
 process.on('uncaughtException', function(err) {
-  console.log('VM Caught exception: '.grey, process.argv[4].grey,process.argv[2].grey , err);
+  console.log('VM Caught exception: '.grey, process.argv[4].grey,process.argv[2].grey , err.stack);
 });

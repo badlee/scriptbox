@@ -1,6 +1,7 @@
 sys = require("util");
 var 
     path = require('path'),
+    memory = require("./memory"),
     fs = require('fs');
     DEFAULT = {httpPort :13014,id : "OshiminSecret"};
 var getDir = function (dbProdPath){
@@ -127,4 +128,17 @@ server.use(function errorHandler(err, req, res, next) {
 
 server.listen(conf.http_port || DEFAULT.httpPort,function(err){
   console.log("Server Listen "+(conf.http_port || DEFAULT.httpPort),"port.");
+  mem = memory.server();
 });
+
+
+process.on('exit', function(){
+  mem.close();
+  server.close();
+});
+
+function shutdown() {
+    server.close(); // socket file is automatically removed here
+    mem.close();
+    process.exit();
+}

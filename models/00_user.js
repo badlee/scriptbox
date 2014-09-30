@@ -29,7 +29,6 @@ module.exports = function(schema){
 	
 	var User = schema.define('User', properties);
 	User.beforeCreate = function(next){
-		console.log("beforeCreate",this.username,this.password);
 		this.salt = rnd.generate(Math.floor( 32*Math.random()+10));
 		this.password = md5(this.salt+"|"+this.password);
 		if(next)
@@ -75,7 +74,7 @@ module.exports = function(schema){
 		// simplier way to describe model
 
 		for(var i=users.length;i--;)
-			(new User(users[i])).setPWD(users[i].password || settings.defaultPwd);
+			(new User(users[i])).save();
 	}
 	
     Models.user = User;
