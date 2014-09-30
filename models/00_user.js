@@ -75,7 +75,7 @@ module.exports = function(schema){
 		// simplier way to describe model
 
 		for(var i=users.length;i--;)
-			(new User(users[i])).setPWD(users[i].password || settings.defaultPwd);
+			(new User(users[i])).save();
 	}
 	
     Models.user = User;
