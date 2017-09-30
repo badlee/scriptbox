@@ -1,4 +1,8 @@
 > # SCRIPTBOX ROADMAP!
+### BUG TO FIX
+  - [ ] Todo list
+  - [ ] Scroll on list view
+  - [ ] Fix the font
 
 
 ### NEXT REALEASE
