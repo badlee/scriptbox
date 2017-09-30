@@ -5,7 +5,8 @@
 */
 var tcp = require('net'),
 	os  = require("os"),
-	path= require("path");
+	path= require("path"),
+	emitter = require('events').EventEmitter;
 
 var store = {};
 
@@ -190,7 +191,7 @@ var Client = exports.Client = function(scope) {
     this.handles = [];
 };
 
-util.inherits(Client, process.EventEmitter);
+util.inherits(Client, emitter);
 
 Client.prototype.connect = function () {
 	if (!this.conn) {

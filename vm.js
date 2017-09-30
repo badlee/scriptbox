@@ -12,7 +12,8 @@ var colors = require('colors');
 		this.id = id;
 		this.error = !!error;
 	}
-
+	util.inherits(VMStream,events.EventEmitter)
+	
 	VMStream.prototype.write = function() {
 	    process.stdout
 	    	.write( ("VM-SMS " + (this.error ? "ERROR" : "LOG") +' "' +this.filename + '" "'+ this.id +'" > '+ util.format.apply(this, arguments)).grey);

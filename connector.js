@@ -9,7 +9,22 @@ var events = require("events");
 var argv = process.argv;
 	argv.shift();
 	argv.shift();
-		
+var forceString = function(s){
+	var ret = [];
+	for(var i in s)
+		if(!isNaN(i))
+			ret[Number(i)] = s[i];
+	return ret.join("");
+}
+var s = function (shortNumbers){
+	if(!shortNumbers)
+		return [];
+	if(shortNumbers.items)
+		shortNumbers = shortNumbers.items;
+	return (shortNumbers instanceof Array ? shortNumbers : [shortNumbers.stripColors ? shortNumbers.stripColors : shortNumbers] ).map(function(i){
+			return forceString(i.stripColors ? i.stripColors : i)
+		});
+}
 function initVm(j){
 	try{VMs[j].kill();}catch(e){};
 	VMs[j] = null;
@@ -191,7 +206,10 @@ Object.defineProperties(Connector.prototype, {
 				items = items[to];
 			else if(items["*"]) // default service
 				items = items["*"];
-			else
+			else if(!("keyword" in items))
+				return this.failSMS(data,'No route found');
+			//items.shortNumbers = s(items.shortNumbers);
+			if(Array.isArray(items.shortNumbers) && items.shortNumbers.length && items.shortNumbers.indexOf(to) == -1)
 				return this.failSMS(data,'No route found');
 			/*if(items.length){
 				for(var i in items){
@@ -236,12 +254,43 @@ Object.defineProperties(Connector.prototype, {
 			var name = path.join(__dirname,"scripts","keywords", md5(keyword[0].toLowerCase()));
 			fs.exists(name,(function (exists) {
 				if(!exists)
-			  		return this.runSMS(data,name+" Not found"+keyword);
+			  		return this.execDBKeyword(data);
 			  	fs.readFile(name, (function (err, json) {
 					if(err) return this.runSMS(data,err);
 					this.runSMS(data,null,JSON.parse(json));
 				}).bind(this));
 			}).bind(this));
+		},
+		writable: false,
+		enumerable: false,
+		configurable: false
+	},
+	execDBKeyword : {
+		value : function(data){
+			/* looking for keyword */
+			var sms = data.msgdata.toString();
+			var keyword = sms.trim().split(" ");
+			console.log({keyword:{$eq:keyword[0]}})
+			Models.MotCle.find({keyword:keyword[0]}).exec((function(err, items) {
+				console.log(err,items)
+				if(err)
+					return this.runSMS(data,err);
+				if(!items)
+					return this.runSMS(data,name+" Not found"+keyword[0]);
+				
+				var to = (data && data.receiver ? data.receiver : "unknow").toString();
+				var items = items.map(function(item){
+					item.shortNumbers = s(item.shortNumbers);
+					return item;
+				}).filter(function(item){
+					if(Array.isArray(item.shortNumbers) && item.shortNumbers.indexOf(to) !== -1)
+						return true;
+					if(Array.isArray(item.shortNumbers) && item.shortNumbers.length === 0)
+						return true;
+					return false;				
+				})
+				this.runSMS(data,null,items.length ? items[0] : null);
+			  }).bind(this))
 		},
 		writable: false,
 		enumerable: false,

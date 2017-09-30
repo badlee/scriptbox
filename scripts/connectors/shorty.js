@@ -6,7 +6,7 @@ var path = require('path');
 var connector = require(path.join(__dirname,'..','..','connector.js'));
 
 process.on("message",function(m){
- 	if (m === 'stop'){
+	if (m === 'stop'){
  		if(app){
  			app.unbind();
  			app.shouldReconnect = false;

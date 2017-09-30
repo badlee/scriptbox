@@ -16,20 +16,20 @@ VMs = {};
 initVMs = function(item){
 	if(!connectors[item.type]) return;
 	VMs[item.name] = require('child_process').fork(connectors[item.type],[item.id,item.name,item.type]);	
-	VMs[item.name]._send = VMs[item.name].send;
+	var sendMessage = VMs[item.name].send.bind(VMs[item.name]);
 	VMs[item.name].send = function(m){
 		try{
-			this._send(m);
+			sendMessage(m);
 		}catch(e){
 			if(e.message == "channel closed"){
 				initVMs(VMs[item.name].item);
 				try{
-					VMs[item.name]._send(m);
+					VMs[item.name].send(m);
 				}catch(e){
-					console.log("ERROR ON RE-SEND",JSON.stringify(e.message));
+					console.log("ERROR ON RE-SEND",JSON.stringify(e.message), e.stack);
 				}
 			}
-			console.log("ERROR ON SEND",JSON.stringify(e.message));
+			console.log("ERROR ON SEND",JSON.stringify(e.message), e.stack);
 		}
 	}
 	VMs[item.name].sent = 0;

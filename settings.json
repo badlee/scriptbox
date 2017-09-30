@@ -1,0 +1,28 @@
+
+{
+    "maxPool": 1,
+    "title": "Oshimin SMS",
+    "defaultPwd": "azerty",
+    "defaultActif": false,
+    "defaultDroits": {
+        "sendsms": 1,
+        "keywording": 1
+    },
+    "dbType": "tingodb",
+    "dbHost": "",
+    "dbPort": "",
+    "dbUser": "",
+    "dbPwd": "",
+    "dbPath": "app://db",
+    "dbPool": false,
+    "dbProdType": "tingodb",
+    "dbProdHost": "",
+    "dbProdPort": "",
+    "dbProdUser": "",
+    "dbProdPwd": "",
+    "dbProdPath": "app://dbProd",
+    "dbProdPool": false,
+    "keywordRegExp": false,
+    "defautErrorMSG": "ERROR ON EXEC",
+    "httpPort": "13014"
+}
