@@ -6,6 +6,7 @@
 In the next release the scriptbox must allow :
 - [x] Connect to Kannel, SMS Center and other SMPP servers,
 - [ ] All created users must receive a notification mail (server ip, login and password)
+- [ ] Add socketio for realtime notifications,
 - [ ] Add More diagram to dashboard,
 - [ ] Write somme tutorial better documentation
 - [ ] Add a keyword embedded data for a better script optimisation
