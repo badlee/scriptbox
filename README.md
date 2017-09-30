@@ -1,6 +1,6 @@
 ----------
 
-# ScriptBox (Kannel Smsbox remplacement)
+# ScriptBox SMS gateway
 
 ----------
 #### Instalation 
