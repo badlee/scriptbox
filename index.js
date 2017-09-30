@@ -49,7 +49,7 @@ swig.setFilter('inArray', function(arr, key){
 });
 
 conf = {
-	http_port : settings.httpPort || DEFAULT.httpPort
+	http_port : process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || settings.httpPort || DEFAULT.httpPort
 };
 /* load models */
 Models = {};
