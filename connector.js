@@ -9,6 +9,15 @@ var events = require("events");
 var argv = process.argv;
 	argv.shift();
 	argv.shift();
+var getDir = function (dbProdPath){
+	var pwd = process.cwd();
+	if(typeof __dirname != "undefined")
+		pwd = __dirname;
+		
+	return String(dbProdPath).search(/^app:\/\//i) === 0 ? 
+		path.resolve.apply(path,[path.sep].concat(String(dbProdPath).replace(/\//g,path.sep).replace("app:"+(path.sep),pwd).split(path.sep).slice(1)))
+		: dbProdPath
+}
 var forceString = function(s){
 	var ret = [];
 	for(var i in s)
@@ -69,11 +78,7 @@ var	caminte = require('caminte'),
          port       : settings.dbPort || "",
          username   : settings.dbUser || "",
          password   : settings.dbPwd || "",
-         database   : settings.dbPath ?  
-            ( String(settings.dbPath).search(/^app:\//i) === 0 ?
-              path.resolve.apply(path,['/'].concat(String(settings.dbPath).replace("app:/",__dirname).split("/").slice(1))) : 
-              settings.dbPath
-            ) :  "",
+         database   : settings.dbPath ? getDir(settings.dbPath) :  "",
          pool       : settings.dbPool || false // optional for use pool directly 
     },
     dbProd = {
@@ -82,11 +87,7 @@ var	caminte = require('caminte'),
          port       : settings.dbProdPort || "",
          username   : settings.dbProdUser || "",
          password   : settings.dbProdPwd || "",
-         database   : settings.dbProdPath ?  
-            ( String(settings.dbProdPath).search(/^app:\//i) === 0 ?
-              path.resolve.apply(path,['/'].concat(String(settings.dbProdPath).replace("app:/",__dirname).split("/").slice(1))) : 
-              settings.dbProdPath
-            ) :  "",
+         database   : settings.dbProdPath ? getDir(settings.dbProdPath) :  "",
          pool       : settings.dbProdPool || false // optional for use pool directly 
     },
 	schema = new Schema(db.driver, db),
@@ -200,7 +201,7 @@ Object.defineProperties(Connector.prototype, {
 				return this.failSMS(data, err ? err : "Pas d'items" );
 
 			var sms = data.msgdata.toString();
-			var keyword = sms.trim().split(/\s+/);;
+			var keyword = sms.toLowerCase().trim().split(/\s+/);;
 			var to = data.receiver.toString();
 			if(items[to]) // service binded to shortCode
 				items = items[to];
@@ -234,7 +235,7 @@ Object.defineProperties(Connector.prototype, {
 			if(items.rewriter){
 				data.msgdata_orig = data.msgdata;
 				sms = sms.replace(valid,items.rewriter);
-				keyword = sms.trim().split(/\s+/);;
+				keyword = sms.toLowerCase().trim().split(/\s+/);;
 				data.msgdata = sms;
 			}
 			data.id = true;
@@ -250,7 +251,7 @@ Object.defineProperties(Connector.prototype, {
 		value : function(data){
 			/* looking for keyword */
 			var sms = data.msgdata.toString();
-			var keyword = sms.trim().split(/\s+/);
+			var keyword = sms.toLowerCase().trim().split(/\s+/);
 			var name = path.join(__dirname,"scripts","keywords", md5(keyword[0].toLowerCase()));
 			fs.exists(name,(function (exists) {
 				if(!exists)
@@ -269,7 +270,7 @@ Object.defineProperties(Connector.prototype, {
 		value : function(data){
 			/* looking for keyword */
 			var sms = data.msgdata.toString();
-			var keyword = sms.trim().split(/\s+/);
+			var keyword = sms.toLowerCase().trim().split(/\s+/);
 			console.log({keyword:{$eq:keyword[0]}})
 			Models.MotCle.find({keyword:keyword[0]}).exec((function(err, items) {
 				console.log(err,items)
