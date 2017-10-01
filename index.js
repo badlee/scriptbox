@@ -69,9 +69,10 @@ var server =  express();
   //server.disable( 'x-powered-by' );
   server.use(function (_, res, next) {
     /*set header */
-    res.setHeader( 'Server', 'Awesome App' );
+    res.setHeader( 'Server', 'scriptbox' );
     res.setHeader( 'X-Author', 'BADINGA BADINGA ULRICH ARTHUR' );
     res.setHeader( 'X-Copy', '(c) Oshimin Labs 2014' );
+    res.removeHeader('X-Powered-By');
     next();
   });
   server.use(require("morgan")(process.env.NODE_ENV || 'dev'));

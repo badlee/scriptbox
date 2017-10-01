@@ -200,7 +200,7 @@ Object.defineProperties(Connector.prototype, {
 				return this.failSMS(data, err ? err : "Pas d'items" );
 
 			var sms = data.msgdata.toString();
-			var keyword = sms.split(" ");
+			var keyword = sms.trim().split(/\s+/);;
 			var to = data.receiver.toString();
 			if(items[to]) // service binded to shortCode
 				items = items[to];
@@ -234,7 +234,7 @@ Object.defineProperties(Connector.prototype, {
 			if(items.rewriter){
 				data.msgdata_orig = data.msgdata;
 				sms = sms.replace(valid,items.rewriter);
-				keyword = sms.split(" ");
+				keyword = sms.trim().split(/\s+/);;
 				data.msgdata = sms;
 			}
 			data.id = true;
@@ -250,7 +250,7 @@ Object.defineProperties(Connector.prototype, {
 		value : function(data){
 			/* looking for keyword */
 			var sms = data.msgdata.toString();
-			var keyword = sms.trim().split(" ");
+			var keyword = sms.trim().split(/\s+/);
 			var name = path.join(__dirname,"scripts","keywords", md5(keyword[0].toLowerCase()));
 			fs.exists(name,(function (exists) {
 				if(!exists)
@@ -269,7 +269,7 @@ Object.defineProperties(Connector.prototype, {
 		value : function(data){
 			/* looking for keyword */
 			var sms = data.msgdata.toString();
-			var keyword = sms.trim().split(" ");
+			var keyword = sms.trim().split(/\s+/);
 			console.log({keyword:{$eq:keyword[0]}})
 			Models.MotCle.find({keyword:keyword[0]}).exec((function(err, items) {
 				console.log(err,items)
