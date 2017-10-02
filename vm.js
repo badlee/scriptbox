@@ -63,7 +63,7 @@ var lang = false;
 			//"arango" : 	["ArangoDB","arango"],
 			//"firebird" : 	["firebird" ,"node-firebird"],
 			"mongoose" : 	["createConnection","mongodb"],
-			"mongoose::schema" : 	["Schema","mongodb-schema"],
+			"mongoose/schema" : 	["Schema","mongodb-schema"],
 			"mysql" : 		["createConnection","mysql"],
 			//"nano" : 		["Nano","nano"],
 			//"neo4j" : 	["Neo4J","neo4j"],
@@ -77,8 +77,8 @@ var lang = false;
 	console.log("Expose module to VMs".grey, process.argv[4].grey,process.argv[2].grey);
 	for(var i in adapter){
 		try {
-    		require.resolve(i.split('::')[0]);
-    		console.log("resolve ".grey,adapter[i][1].grey,'(',i.split('::')[0].yellow,')',"...OK".grey);
+    		require.resolve(i.split('/')[0]);
+    		console.log("resolve ".grey,adapter[i][1].grey,'(',i.split('/')[0].yellow,')',"...OK".grey);
     		allowNativeModules[adapter[i][1]] = (function(m,name){
 		 		if(name){
 		 			var mod = require(m);
@@ -89,7 +89,7 @@ var lang = false;
 		 				return ret;
 		 		}
 		 		return require(m);
-		 	}).bind(null,i.split('::')[0],adapter[i][0]);
+		 	}).bind(null,i.split('/')[0],adapter[i][0]);
 		} catch(e){}
 	}
  var currSMS;
@@ -196,7 +196,6 @@ var lang = false;
 			  	}
 		  	};
 		try{
-
 			script[m.file].runInContext(vm.createContext({
 			sms : m ,
 			logger : new logger(new VMStream(path.basename(m.file), m.id),new VMStream(path.basename(m.file), m.id,true)),
@@ -210,9 +209,6 @@ var lang = false;
 		})); }catch(e){
 			return sendError(e);
 		}
-		//console.log("[",process.argv[2],"]","OUT : " , sandbox._stdout.data);	  
-		//console.log("[",process.argv[2],"]","ERR : " , sandbox._stderr.data);
-		//console.log("[",process.argv[2],"]","Session : " , sessions[_id]);
 		delete sandbox;
 	}
  });

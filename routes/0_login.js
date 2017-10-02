@@ -63,15 +63,15 @@ module.exports = function(server){
 			  		gravatar : require("nodejs-gravatar").imageUrl
 			  	}
 			  });
-		}else{
-			swig.setDefaults({
-			  	locals: {
-			  		siteTitle : settings.title,
-			  		random : rnd,
-			  		gravatar : require("nodejs-gravatar").imageUrl
-			  	}
-			});
-		}
+			}else{
+				swig.setDefaults({
+						locals: {
+							siteTitle : settings.title,
+							random : rnd,
+							gravatar : require("nodejs-gravatar").imageUrl
+						}
+				});
+			}
 	  	next();
 	  });
 	  server.use(adminUrl+"/",function(req,res,next){
