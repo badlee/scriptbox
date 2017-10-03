@@ -46,6 +46,7 @@
     "string": "^1.8.1",
     "connect-session-file": "^1.0.4",
     "shorty": "git://github.com/badlee/shorty#0.5.6",
+    "swig": "git://github.com/badlee/swig",
     "smpp": "^0.1.0",
     "serve-favicon": "^2.1.4",
     "connect-caminte": "0.0.3-2"
