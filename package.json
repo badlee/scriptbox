@@ -1,10 +1,18 @@
 {
   "name": "scriptbox",
-  "version": "0.0.1-a",
+  "version": "0.0.1-b1",
   "description": "Script box is a full VAS application",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
+  "preferGlobal": true,
   "directories": {
     "lib": "./lib"
+  },
+  "bin": {
+    "scriptbox": "bin/cli.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "kannel",
@@ -25,40 +33,41 @@
     "url": "http://github.com/badlee/scriptbox.git"
   },
   "dependencies": {
-    "coffee-script": "1.7.1",
-    "kannel": "0.0.5",
-    "express": "^4.0.0",
-    "passport": "^0.2.0",
-    "passport-local": "^1.0.0",
-    "connect-flash": "^0.1.1",
-    "method-override": "^1.0.0",
-    "cookie-parser": "^1.0.1",
-    "morgan": "^1.0.0",
-    "compression": "^1.0.1",
-    "express-session": "^1.8.2",
+    "MD5": "^1.2.1",
     "body-parser": "^1.0.2",
     "caminte": "0.0.16",
-    "nodejs-gravatar": "^1.0.2",
-    "MD5": "^1.2.1",
-    "randomstring": "^1.0.3",
-    "tingodb": "^0.2.1",
+    "cli-spinner": "^0.2.6",
+    "coffee-script": "1.7.1",
     "colors": "^0.6.2",
-    "string": "^1.8.1",
+    "compression": "^1.0.1",
+    "connect-caminte": "0.0.3-2",
+    "connect-flash": "^0.1.1",
     "connect-session-file": "^1.0.4",
-    "shorty": "git://github.com/badlee/shorty#0.5.6",
-    "swig": "git://github.com/badlee/swig",
-    "smpp": "^0.1.0",
+    "cookie-parser": "^1.0.1",
+    "daemonize2": "^0.4.2",
+    "express": "^4.0.0",
+    "express-session": "^1.8.2",
+    "inquirer": "^3.3.0",
+    "inquirer-select-line": "^1.1.1",
+    "kannel": "0.0.5",
+    "method-override": "^1.0.0",
+    "morgan": "^1.0.0",
+    "node-emoji": "^1.8.1",
+    "nodejs-gravatar": "^1.0.2",
+    "passport": "^0.2.0",
+    "passport-local": "^1.0.0",
+    "randomstring": "^1.0.3",
     "serve-favicon": "^2.1.4",
-    "connect-caminte": "0.0.3-2"
+    "shorty": "git://github.com/badlee/shorty#0.5.6",
+    "smpp": "^0.1.0",
+    "string": "^1.8.1",
+    "swig": "git://github.com/badlee/swig",
+    "tingodb": "^0.2.1"
   },
   "bugs": {
     "url": "https://github.com/badlee/scriptbox/issues"
   },
   "homepage": "https://github.com/badlee/scriptbox",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "license": "MIT",
   "main": "index.js",
   "devDependencies": {}

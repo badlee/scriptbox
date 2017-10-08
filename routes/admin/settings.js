@@ -1,5 +1,8 @@
 var path = require('path'),
-    fs = require('fs');
+	fs = require('fs'),
+	osHomedir = require('os').homedir(),
+	package = require("../../package.json"),
+	altSettings = path.resolve(osHomedir,"."+package.name+".json");
 
 module.exports = function(app){
 	var adapter = {
@@ -58,12 +61,13 @@ module.exports = function(app){
 			next();
 		})
 		.get(function(req,res){
+			require("../../settings");
 			for(var cle in fields)
 				if(!settings[cle] && "default" in fields[cle])
 					settings[cle] = fields[cle].default;
 			res.render("build-form",{readOnly:{},fields : fields,title:"Application Settings",data : settings});
 		})
-		.post(function(req,res,next){
+		.post(function(req,res,next){			
 			var readOnly = {},
 				update = {};
 			for(var cle in fields){
@@ -92,7 +96,8 @@ module.exports = function(app){
 			for(var cle in update)
 				settings[cle] = update[cle];
 			settings.maxPool = settings.maxPool < 1 ? 1 : Number(settings.maxPool);
-			fs.writeFile(path.resolve(__DIR,'settings.json'), JSON.stringify(settings,null,4), function (err) {
+
+			fs.writeFile(altSettings, JSON.stringify(settings,null,4), function (err) {
 			  if (err) next(err);
 			  
 			if(!settings.defaultPwd)

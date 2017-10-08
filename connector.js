@@ -69,7 +69,7 @@ process.on('uncaughtException', function(err) {
 });
 /* load models */
 Models = {};
-settings = require(path.resolve(__dirname,"settings.json"))
+require("./settings");
 var	caminte = require('caminte'),
     Schema = caminte.Schema,
     db = {

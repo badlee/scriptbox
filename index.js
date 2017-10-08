@@ -1,3 +1,4 @@
+process.title = require("./package.json").name;
 sys = require("util");
 var 
     path = require('path'),
@@ -14,7 +15,7 @@ var getDir = function (dbProdPath){
 		: dbProdPath
 }
 
-settings = require(path.resolve(__dirname,"settings.json"));
+require("./settings");
 
 var express = require("express"),
   sessions = require('express-session'),
