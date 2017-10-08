@@ -6,21 +6,19 @@
 #### Instalation 
 
 ```sh
- git clone https://github.com/badlee/scriptbox.git`
- cd scriptbox
- npm install .
+ npm install -g scriptbox
 ```
 
-*[See detailed instructions here](https://github.com/badlee/scriptbox/wiki/Install-Instructions)*
+*[For contributors see detailed instructions here](https://github.com/badlee/scriptbox/wiki/Install-Instructions)*
 
 #### How use
 
-> run the bearebox
+> In first you need configure the scriptbox
 
-> `bearebox /path/to/kannel.conf`
+> `scriptbox config`
 
-> run scriptBox
-> `node /path/to/scriptBox`
+> After config, run scriptBox
+> `scriptbox start`
 
 > By default scriptBox listen the port 13014
 
@@ -127,7 +125,7 @@ var m = new MSG(sms);
     Validateur ^[^\w\W]$ => /^[^\w\W]$/ => allways false
 
     Nom : Gaboneese number
-    Validateur ^((00|\+)?241) => /^((00|\+)?1)/ => allways start by 241,+241 or 00241
+    Validateur ^((00|\+)?241) => /^((00|\+)?241)/ => allways start by 241,+241 or 00241
 ```
 
 #### Add a connector
@@ -153,8 +151,6 @@ var m = new MSG(sms);
 ###### Stop a connector
 > Click on "Main Menu" > "Connecteor" > "List" > Stop Server
 
-```
-
 #### Add an Mot cle(keyword)
 > Click on "Main Menu" > "Mot cle" > "Ajouter"
 
@@ -169,17 +165,12 @@ var m = new MSG(sms);
 ```
 
 #### Test Script
-> if you have run fakesmsc
-
-> ` /path/to/fakesmsc -m 1 "sender reciever text hello"`
-
-> Or send an SMS to kannel it willl reply "Hello SMS"
+Configue and start the connector (SMPP or kannel) and send "hello" to the connector, scriptbox willl reply "Hello SMS"
 
 #### TODO
 
  - More documentation
- - More samples
- - Multi SMSC (kannel.js, SMPP v5, shorty)
+ - More samples (Ex. voting system)
  - Routing system
  - Script installer for production instance 
  
