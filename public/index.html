@@ -12,7 +12,7 @@
     <link href="assets/css/font-style.css" rel="stylesheet">
     <link href="assets/css/flexslider.css" rel="stylesheet">
     
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
 
     <style type="text/css">
       body {
@@ -216,7 +216,9 @@ Paramametres (query string)
                       <textarea style="height: 195px;margin: 0px -1px 18px 0px;" id="sms_text" name="message" placeholder="Message" ref="sms_field"></textarea>
                       <input type="text" id="sms_user" name="user" placeholder="Username" ref="sms_field">
                       <input type="text" id="sms_pwd" name="pws" placeholder="Password for SMS" ref="sms_field">
-                    
+                      <select id="connector" name="connector">
+                        <option value="" disabled selected>Select the connector</option>
+                      </select>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

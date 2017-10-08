@@ -103,6 +103,16 @@ module.exports = function(server){
 			connectors : (function(){ var ret = {};for(i in VMs) ret[i] = VMs[i].getInfo(); return ret;})()
 		});
 	});
+
+	server.get("/connector-online.json",function(req,res){
+		res.json((function(){
+			var ret = [];
+			for(i in VMs)
+				if(VMs[i].online)
+					ret.push[i];
+			return ret;
+		})());
+	});
 	server.get(/^\/numStats(\/)?$/i,function(req,res){
 		res.json(stats.byNum);
 	})
@@ -124,25 +134,30 @@ module.exports = function(server){
 		res.charset = 'utf-8';
 		res.set('Content-Type', 'text/plain');
 		if(!sms.msgdata)
-			return res.send(403,"Missing text");
+			return res.status(403).send("Missing text");
 		if(!sms.receiver)
-			return res.send(403,"Missing receiver");
+			return res.status(403).send("Missing receiver");
 		if(!query.username)
-			return res.send(403,"Missing username");
+			return res.status(403).send("Missing username");
 		if(!query.password)
-			return res.send(403,"Missing password");
+			return res.status(403).send("Missing password");
 
 		Models.user.findOne({where: {username : query.username }}, function(err, user) {
-	        if (err) { return res.send(500,"Unknown Error"); }
-	        if (!user) { return res.send(404,'Unknown user ' + query.username); }
-	        if (!user.actif) { return res.send(403,'Invalid user ' + query.username)}
-	        if ('undefined' === typeof user.droits.sendsms || ('undefined' !== typeof user.droits.sendsms && !user.droits.sendsms)) { return res.send(403,'Unautorized')}
-	        if (user.smsPWD != query.password) { return res.send(403,'Invalid password') }
+	        if (err) { return res.status(500).send("Unknown Error"); }
+	        if (!user) { return res.status(404).send('Unknown user ' + query.username); }
+	        if (!user.actif) { return res.status(403).send('Invalid user ' + query.username)}
+	        if ('undefined' === typeof user.droits.sendsms || ('undefined' !== typeof user.droits.sendsms && !user.droits.sendsms)) { return res.status(403).send('Unautorized')}
+	        if (user.smsPWD != query.password) { return res.status(403).send('Invalid password') }
+	        if (!(query.connector in VMs)) { return res.status(404).send('Unknow/Not started connector') }
+			if (!VMs[query.connector].online) { return res.status(403).send('Offline connector') }
+			VMs[query.connector].send({
+				type : "message",
+				connector : query.connector,
+				message : sms
+			});
 			//sendSMS(sms,'KANEL');
-			return res.send(200,"Message sent");
+			return res.status(200).send("Message sent");
 	      })
 	})
 };
-
-
 /* Charge les connecteurs */

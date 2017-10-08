@@ -17,10 +17,13 @@ process.on("message",function(m){
  			start(m.data);
  		}else if(app && !app.connected)
  				app.connect(); 		
- 	}
+ 	}else if(m.type == "message"){
+		sendSMS(m.message);
+		//console.log(arguments,Object.keys(VMs));
+	}
  });
 var sendSMS = function(data){
-	app.sendMessage(data);
+	app.sendMessage(toPDU(data));
 }
 var toPDU = function(data){
 	return {

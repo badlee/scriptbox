@@ -87,7 +87,8 @@ $(function () {
       }
     });
   var prevSent = 0;
-  var prevRecieve = 0;    
+  var prevRecieve = 0;
+  var last = "";
   var statusFn = function(){
     $.getJSON("/stats.json",function(data){
       document.querySelector('p[ref="sent"] bold').innerHTML = data.sent;
@@ -96,11 +97,22 @@ $(function () {
       chart.series[0].addPoint(prevRecieve ==0 || data.received < prevRecieve ? 0 : data.received - prevRecieve  , true, true);
       prevSent = data.sent;
       prevRecieve = data.received; 
+      var c = [],options = '<option value="" disabled selected>Select the connector</option>';
+      for(var i in data.connectors){
+        if(data.connectors[i].online !== "offline"){
+          c.push(i);
+          options += "<option>"+i+"</option>";
+        }
+      }
+      if(last != c.join("")){
+        last = c.join("");
+        document.querySelector("#connector").innerHTML = options;
+        console.log(c,document.querySelector("#connector").innerHTML);        
+      }
+      setTimeout(statusFn, 1000);
     });
   };
   statusFn();
-  
-    setInterval(statusFn, 1000);
   });
   
 });

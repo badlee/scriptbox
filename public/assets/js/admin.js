@@ -61,12 +61,13 @@ image1.src = "/assets/img/down.png";
 			text : $("#sms_text").val(),
 			username : $("#sms_user").val(),
 			password : $("#sms_pwd").val(),
+			connector : $("#connector").val()
 		}),function(){
 			ops.text = "Message send"
 			noty(ops);
 			$('[ref="sms_field"]').val("");
-		}).fail(function(){
-			ops.text = "Message not send";
+		}).fail(function(res){
+			ops.text = "Message not send"+(res.responseText ? ("<br><i style='font-weight:normal;'>"+res.responseText+"</i>") : "");
 			ops.type = 'error';
 			noty(ops);
 		});

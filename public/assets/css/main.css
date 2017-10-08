@@ -295,7 +295,7 @@ input[type=submit] {
           border-radius: 4px;
 
 }
-input[type=text], textarea {
+select,input[type=text], textarea {
 	background: #cdcbcc;
 	font-size: 13px;
 	display: block;
@@ -307,6 +307,7 @@ input[type=text], textarea {
 	padding: 0;
 	text-indent: 18px;
 	margin: 0 0 18px;
+	border-radius:0px; 
 }
 textarea {
 	line-height: 18px;

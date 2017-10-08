@@ -19,11 +19,15 @@ process.on("message",function(m){
  			app = null;
  		}
  		start(m.data); 		
- 	}
-
+	 }
+	 else if(m.type == "message"){
+		sendSMS(m.message);
+		//console.log(arguments,Object.keys(VMs));
+	}
+});
 
 var sendSMS = function(data){
-	app.sendMessage(data);
+	app.sendMessage(toPDU(data));
 }
 var toPDU = function(data){
 	return {

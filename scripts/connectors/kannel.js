@@ -20,7 +20,10 @@ process.on("message",function(m){
  			app = null;
  		}
  		start(m.data); 		
- 	}
+ 	}else if(m.type == "message"){
+		app.sendSMS(m.message);
+		//console.log(arguments,Object.keys(VMs));
+	}
  });
 
 var start = function(conf){

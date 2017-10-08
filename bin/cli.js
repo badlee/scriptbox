@@ -2,11 +2,12 @@
 require('../settings');
 var path = require('path'),
     fs = require('fs'),
-    osHomedir = require('os').homedir(),
+    os = require('os'),
+    osHomedir = os.homedir(),
     package = require("../package.json"),
     Spinner = require('cli-spinner').Spinner,
     altSettings = path.resolve(osHomedir,"."+package.name+".json");
-
+    
 var spinner = new Spinner();
 spinner.setSpinnerString('|/-\\');
     
@@ -25,7 +26,7 @@ switch(process.argv[2]){
     case 'stop':
         daemon.on("notrunning",function(){
             spinner.stop();
-            process.stdout.write(emoji.get('no_entry')+' NOT RUNNING\n');  
+            process.stderr.write(emoji.get('no_entry')+' NOT RUNNING\n');  
             process.exit();      
         })
         daemon.on("stopped",function(){
@@ -42,7 +43,7 @@ switch(process.argv[2]){
     case 'start':
         daemon.on("error",function(e){
             spinner.stop();
-            process.stdout.write(emoji.get('no_entry')+' ERROR\n');  
+            process.stderr.write(emoji.get('no_entry')+' ERROR\n');  
             console.log(error.message);
             process.exit();      
         })
@@ -53,7 +54,12 @@ switch(process.argv[2]){
         })
         daemon.on("started",function(){
             spinner.stop();
-            process.stdout.write(emoji.get('+1')+' \n');  
+            process.stdout.write(emoji.get('+1')+' \n');
+            var interfaces = os.getNetworkInterfaces();
+            interfaces = Object.keys(interfaces).map(x=>interfaces[x].filter(x=>x.family == 'IPv4').map(x=>x.address).join(":"+settings.httpPort+", http://")).filter(x=>x).join(":"+settings.httpPort+", http://");
+
+            console.log("Web interfaces at : http://"+interfaces+":"+settings.httpPort);
+            
             process.exit();   
         })
         spinner.setSpinnerTitle('%s Server start... ');
