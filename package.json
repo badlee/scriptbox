@@ -2,7 +2,7 @@
   "name": "scriptbox",
   "version": "0.0.3patch1",
   "description": "Script box is a full VAS application",
-  "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
+  "author": "Ulrich Badinga <badinga.ulrich@gmail.com>",
   "preferGlobal": true,
   "directories": {
     "lib": "./lib"
