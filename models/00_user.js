@@ -13,12 +13,12 @@ var properties = {
 		theme : { type: String,  limit: 20, default : "default" },
 		init : { type: Boolean, default: false },
 		droits : {type : Object, default : settings.defaultDroits || {}, needAdmin : true, label :'Droits', data : {
-			sendsms: "Envoyer un sms",
-			scripting: "Gestion des script",
-			keywording : "Gestion des Service SMS",
-			expression : "Gestion des Expression",
-			shortnumber : "Gestion des Numeros Courts",
-			connector : "Gestion des Connecteurs"
+			sendsms: "Send a text message",
+			scripting: "Script Management",
+			keywording : "SMS Service Management",
+			expression : "Expression Management",
+			shortnumber : "Management of Short Numbers",
+			connector : "Connector Management"
 		} },
 		todo : {type : Array, default : []}
 	},
@@ -52,7 +52,7 @@ module.exports = function(schema){
 	User.validatesPresenceOf('email', 'email');
 	User.validatesUniquenessOf('email', {message: 'email is not unique'});
 	User.validatesInclusionOf('gender', {in: ['male', 'female']});
-	User.validatesInclusionOf('actif', {in: [true, false]});
+	User.validatesInclusionOf('active', {in: [true, false]});
 	User.validatesUniquenessOf('username', {message: 'username is not unique'});
 	
 	if ('dev' == env) {
@@ -77,3 +77,4 @@ module.exports = function(schema){
 	
     Models.user = User;
 }
+s
