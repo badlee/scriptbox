@@ -41,7 +41,7 @@ switch(process.argv[2]){
         },200)
     break;
     case 'start':
-        daemon.on("error",function(e){
+        daemon.on("error",function(error){
             spinner.stop();
             process.stderr.write(emoji.get('no_entry')+' ERROR\n');  
             console.log(error.message);
