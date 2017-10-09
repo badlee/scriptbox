@@ -82,11 +82,11 @@ function e(choix){
     // console.log(Models.user.properties.droits.data)
     var fields = {
         global : {
-            title : 			{label : "Nom du site web" },
-            defaultPwd : 		{label : "Mot de passe par defaut"},
-            defaultActif : 		{label : "Utilisateur Actif par defaut", type : "confirm"},
-            defautErrorMSG : 	{label : "SMS d'erreur par defaut", type : "editor"},
-            defaultDroits : 	{label :'Droits Utilisateur par defaut', type : "checkbox", default : Object.keys(settings.defaultDroits), choices : Object.keys(Models.user.properties.droits.data).map(x=>{
+            title : 			{label : "Name of website" },
+            defaultPwd : 		{label : "Password Default"},
+            defaultActif : 		{label : "User Active by default", type : "confirm"},
+            defautErrorMSG : 	{label : "Default error message", type : "editor"},
+            defaultDroits : 	{label :'Default User Rights', type : "checkbox", default : Object.keys(settings.defaultDroits), choices : Object.keys(Models.user.properties.droits.data).map(x=>{
                 x = {
                     name : Models.user.properties.droits.data[x],
                     value : x,
@@ -101,21 +101,21 @@ function e(choix){
         },
         db:{
             dbType : 			{label : "storage Type", type:"list",choices : [{value : 'memory',name : "Memory"}]},
-            dbHost : 			{label : "Serveur de base de donnée"},
-            dbPort : 			{label : "Port du serveur de BD"},
-            dbUser : 			{label : "Utilisateur de la BD"},
-            dbPwd  : 			{label : "Mot de passe de Connexion à la BD" },
-            dbPath : 			{label : "Nom de la base de donnée" },
-            dbPool : 			{label : "Connexion Pool à la BD", type : "confirm"},
+            dbHost : 			{label : "Database Server"},
+            dbPort : 			{label : "Combo Server Port"},
+            dbUser : 			{label : "User of the Comic"},
+            dbPwd  : 			{label : "Login Password" },
+            dbPath : 			{label : "Name of the database" },
+            dbPool : 			{label : "Pool Connection", type : "confirm"},
         },
         dbProd : {
             dbProdType : 		{label : "storage Type", type:"list",choices : [{value : 'memory',name : "Memory"}]},
-            dbProdHost : 		{label : "Serveur de base de donnée"},
-            dbProdPort : 		{label : "Port du serveur de BD"},
-            dbProdUser : 		{label : "Utilisateur de la BD"},
-            dbProdPwd  : 		{label : "Mot de passe de Connexion à la BD" },
-            dbProdPath : 		{label : "Nom de la base de donnée" },
-            dbProdPool : 		{label : "Connexion Pool à la BD", type : "confirm" }
+            dbProdHost : 		{label : "Database Server"},
+            dbProdPort : 		{label : "Combo Server Port"},
+            dbProdUser : 		{label : "User of the Comic"},
+            dbProdPwd  : 		{label : "Login Password" },
+            dbProdPath : 		{label : "Name of the database" },
+            dbProdPool : 		{label : "Pool Connection", type : "confirm" }
         }
     };
 
