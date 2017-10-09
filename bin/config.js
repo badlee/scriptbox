@@ -102,8 +102,8 @@ function e(choix){
         db:{
             dbType : 			{label : "storage Type", type:"list",choices : [{value : 'memory',name : "Memory"}]},
             dbHost : 			{label : "Database Server"},
-            dbPort : 			{label : "Combo Server Port"},
-            dbUser : 			{label : "User of the Comic"},
+            dbPort : 			{label : "Database Server Port"},
+            dbUser : 			{label : "Database username"},
             dbPwd  : 			{label : "Login Password" },
             dbPath : 			{label : "Name of the database" },
             dbPool : 			{label : "Pool Connection", type : "confirm"},
@@ -111,8 +111,8 @@ function e(choix){
         dbProd : {
             dbProdType : 		{label : "storage Type", type:"list",choices : [{value : 'memory',name : "Memory"}]},
             dbProdHost : 		{label : "Database Server"},
-            dbProdPort : 		{label : "Combo Server Port"},
-            dbProdUser : 		{label : "User of the Comic"},
+            dbProdPort : 		{label : "Database Server Port"},
+            dbProdUser : 		{label : "Database username"},
             dbProdPwd  : 		{label : "Login Password" },
             dbProdPath : 		{label : "Name of the database" },
             dbProdPool : 		{label : "Pool Connection", type : "confirm" }
