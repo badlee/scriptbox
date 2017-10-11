@@ -1,6 +1,6 @@
 {
   "name": "scriptbox",
-  "version": "0.0.3patch1",
+  "version": "0.0.3patch5",
   "description": "Script box is a full VAS application",
   "author": "Ulrich Badinga <badinga.ulrich@gmail.com>",
   "preferGlobal": true,
@@ -58,10 +58,10 @@
     "passport-local": "^1.0.0",
     "randomstring": "^1.0.3",
     "serve-favicon": "^2.1.4",
-    "shorty": "git://github.com/badlee/shorty#0.5.6",
+    "shorty": "https://github.com/badlee/shorty/archive/0.5.6.tar.gz",
     "smpp": "^0.1.0",
     "string": "^1.8.1",
-    "swig": "git://github.com/badlee/swig",
+    "swig": "https://github.com/badlee/swig/archive/0.1.0.tar.gz",
     "tingodb": "^0.2.1"
   },
   "bugs": {

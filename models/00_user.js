@@ -77,4 +77,3 @@ module.exports = function(schema){
 	
     Models.user = User;
 }
-s
