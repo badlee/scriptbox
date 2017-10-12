@@ -29,6 +29,7 @@ var propertiesSMS = {
 			type: String,
 			label : "Type",
 			list : {
+			"modem.js": "Modem",
 			"kannel.js": "KANNEL",
 			"shorty.js":"SMPP 3.4",
 			"smpp.js":"SMPP 5.0"

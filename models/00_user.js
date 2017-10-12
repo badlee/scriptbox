@@ -54,7 +54,7 @@ module.exports = function(schema){
 	User.validatesInclusionOf('gender', {in: ['male', 'female']});
 	User.validatesInclusionOf('active', {in: [true, false]});
 	User.validatesUniquenessOf('username', {message: 'username is not unique'});
-	User.count({where:{}},(error,x)=>{if(!err && !x){addDefaultUsers();}});
+	User.count({where:{}},(error,x)=>{if(!error && !x){addDefaultUsers();}});
 	function addDefaultUser(){
    		/* sample data */
 		/* Utilisateurs */

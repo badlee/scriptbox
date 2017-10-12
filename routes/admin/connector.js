@@ -1,4 +1,8 @@
 var Properties = {
+	"modem.js" : {
+		device : { type : String, label : "Device"},	
+		number : { type : String, label : "Number"}	
+	},
 	"kannel.js":{
 		host : { type : String, label : "Kannel Host", help : "Defaut : 127.0.0.1", default : "127.0.0.1" },
 		port : { type: String  , label : "Kannel Port", help : "Defaut : 13001", default : 13001},
