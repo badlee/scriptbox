@@ -2,7 +2,19 @@
 var shorty = require('shorty');
 var app = null;
 var path = require('path');
-var modem = require('modem').Modem;
+var modem = require('modem').Modem;modem.open('/dev/ttyUSB0', function() {
+	modem.sms({
+	  receiver:receiver,
+	  text:text,
+	  encoding:'7bit'
+	}, function(err, sent_ids) {
+	  console.log('>>', arguments);
+	  if(err)
+		console.log('Error sending sms:', err);
+	  else
+		console.log('Message sent successfully, here are reference ids:', sent_ids.join(','));
+	});
+  });
 
 var connector = require(path.join(__dirname,'..','..','connector.js'));
 
