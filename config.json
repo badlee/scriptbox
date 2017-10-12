@@ -1,0 +1,18 @@
+{
+    "smpp": {
+        "mode":         "transceiver",
+        "host":         "127.0.0.1",
+        "port":         2775,
+        "system_id":    "9090",
+        "password":     "password",
+        "system_type":  "SHORTY",
+        "addr_ton":     0,
+        "addr_npi":     1,
+        "addr_range":   "",
+        "timeout":      30,
+        "client_keepalive":  false,
+        "client_reconnect_interval": 2500,
+        "strict":       1
+    },
+    "debug":    true
+}
