@@ -54,8 +54,8 @@ module.exports = function(schema){
 	User.validatesInclusionOf('gender', {in: ['male', 'female']});
 	User.validatesInclusionOf('active', {in: [true, false]});
 	User.validatesUniquenessOf('username', {message: 'username is not unique'});
-	User.count({where:{}},(error,x)=>{if(!error && !x){addDefaultUsers();}});
-	function addDefaultUsers() {
+	User.count({where:{}},(error,x)=>{if(!err && !x){addDefaultUsers();}});
+	function addDefaultUser(){
    		/* sample data */
 		/* Utilisateurs */
 		var users = [
@@ -64,8 +64,8 @@ module.exports = function(schema){
 		        "keywording": 1,
 		        "expression": 1,
 		        "sendsms": 1,
-			    "shortnumber" : 1,
-			    "connector" : 1
+			"shortnumber" : 1,
+			"connector" : 1
 		    }}
 		  , {  username: 'joe', password: 'secret', email: 'joe@example.com'}
 		  , {  username: 'oshimin', password: 'secret', email: 'joe2@example.com', actif : true, theme : "white",isAdmin : true}
@@ -76,8 +76,4 @@ module.exports = function(schema){
 	}
 	
     Models.user = User;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d880f578d023d1f8f22476ec9c56510b990ac2c9
