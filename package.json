@@ -47,7 +47,7 @@
     "daemonize2": "^0.4.2",
     "express": "^4.0.0",
     "express-session": "^1.8.2",
-    "inquirer": "^3.3.0",
+    "inquirer": "^6.2.0",
     "inquirer-select-line": "^1.1.1",
     "kannel": "0.0.5",
     "method-override": "^1.0.0",
@@ -61,6 +61,7 @@
     "serve-favicon": "^2.1.4",
     "shorty": "https://github.com/badlee/shorty/archive/0.5.6.tar.gz",
     "smpp": "^0.1.0",
+    "socket.io": "^2.1.1",
     "string": "^1.8.1",
     "swig": "https://github.com/badlee/swig/archive/0.1.0.tar.gz",
     "tingodb": "^0.2.1"

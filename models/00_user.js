@@ -51,11 +51,10 @@ module.exports = function(schema){
 	User.properties = properties;
 	User.validatesPresenceOf('email', 'email');
 	User.validatesUniquenessOf('email', {message: 'email is not unique'});
-	User.validatesInclusionOf('gender', {in: ['male', 'female']});
-	User.validatesInclusionOf('active', {in: [true, false]});
+	User.validatesInclusionOf('gender', {in: ['male', 'female'],message: 'Bad value of gender'});
+	User.validatesInclusionOf('actif', {in: [true, false],message: 'Actif must be a boolean'});
 	User.validatesUniquenessOf('username', {message: 'username is not unique'});
-	User.count({where:{}},(error,x)=>{if(!error && !x){addDefaultUsers();}});
-	function addDefaultUser(){
+	async function addDefaultUsers(){
    		/* sample data */
 		/* Utilisateurs */
 		var users = [
@@ -64,16 +63,18 @@ module.exports = function(schema){
 		        "keywording": 1,
 		        "expression": 1,
 		        "sendsms": 1,
-			"shortnumber" : 1,
-			"connector" : 1
+				"shortnumber" : 1,
+				"connector" : 1
 		    }}
 		  , {  username: 'joe', password: 'secret', email: 'joe@example.com'}
-		  , {  username: 'oshimin', password: 'secret', email: 'joe2@example.com', actif : true, theme : "white",isAdmin : true}
+		  , {  username: 'oshimin', password: 'secret', email: 'oshimin@example.com', actif : true, theme : "white",isAdmin : true}
 		];
 
 		// create all users
-		for(var i=users.length;i--;) new User(users[i]).save();
+		for(var i=users.length;i--;) await(new User(users[i]).save());
 	}
-	
+	User.count({where:{}},async (error,x)=>{if(!error && !x){
+		await addDefaultUsers();
+	}});
     Models.user = User;
 }

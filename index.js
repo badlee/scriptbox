@@ -135,12 +135,16 @@ server.listen(conf.http_port || DEFAULT.httpPort,function(err){
 
 
 process.on('exit', function(){
-  mem.close();
-  server.close();
+  try{
+    server.close(); // socket file is automatically removed here
+    mem.close();
+  }catch(e){}
 });
 
 function shutdown() {
-    server.close(); // socket file is automatically removed here
-    mem.close();
+    try{
+      server.close(); // socket file is automatically removed here
+      mem.close();
+    }catch(e){}
     process.exit();
 }

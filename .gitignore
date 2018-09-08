@@ -4,3 +4,4 @@ dbProd/*
 .npmignore
 *.log
 *.pid
+test.js
