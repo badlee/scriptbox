@@ -60,19 +60,20 @@ var lang = false;
  	}
  }
  var adapter = {
-			// "arango" : 	["ArangoDB","arango"],
-			//"firebird" : 	["firebird" ,"node-firebird"],
-			"mongoose" : 	["createConnection","mongodb"],
-			"mongoose/schema" : 	["Schema","mongodb-schema"],
+			"arango" : 	["","arango"],
+			"firebird" : 	["" ,"node-firebird"],
+			"mongodb" : 	["createConnection","mongodb"],
+			"mongoose" : 	["createConnection","mongoose"],
+			"mongoose/schema" : 	["Schema","mongoose-schema"],
 			"mysql" : 		["createConnection","mysql"],
-			//"nano" : 		["Nano","nano"],
-			//"neo4j" : 	["Neo4J","neo4j"],
+			"nano" : 		["","nano"],
+			"neo4j" : 		["","neo4j"],
 			"pg" : 			["Client","postgres"],
 			"redis" : 		["createClient" ,"redis"],
-			//"rethinkdb" : ["RethinkDB","rethinkdb"],
-			//"riak" : 		["Riak","riak-js"],
-			"node-sqlite-purejs" : 	["open","sqlite"],
-			//"tingodb" : 	["TingoDB", "tingodb"]
+			"rethinkdb" : 	["","rethinkdb"],
+			"riak" : 		["","riak-js"],
+			"sqlite3" : 	["","sqlite"],
+			"tingodb" : 	["", "tingodb"]
 	}
 	console.log("Expose module to VMs".grey, process.argv[4].grey,process.argv[2].grey);
 	for(var i in adapter){
