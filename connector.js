@@ -119,7 +119,7 @@ Object.defineProperties(Connector.prototype, {
 	},
 	sendSMS  : {
 		value: function(data,id){
-			console.log("send SMS",id,new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
+			console.log("send SMS",new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats++",id);
 			this._sendSMS(data);
 		},
@@ -195,7 +195,7 @@ Object.defineProperties(Connector.prototype, {
 	runSMS : {
 		value : function(data,err,items){
 			var id = (data && data.receiver ? data.receiver : "unknow").toString();
-			console.log("receive SMS",id,new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
+			console.log("receive SMS",new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats--",id);
 			if(err || !items)
 				return this.failSMS(data, err ? err : "Pas d'items" );
@@ -221,7 +221,6 @@ Object.defineProperties(Connector.prototype, {
 				}
 			}*/
 
-			console.log(("receive SMS "+data.id+" MotCle "+keyword[0]).grey);
 			var expression = items["validator-val"].split("[:ø:]");
 			var valid = new RegExp(expression[0] || "",expression[1] || "");
 			if(!valid.test(sms))
@@ -229,15 +228,25 @@ Object.defineProperties(Connector.prototype, {
 			expression = items["blackList-val"].split("[:ø:]");
 			if((new RegExp(expression[0] || "",expression[1] || "")).test(sms))
 				return this.failSMS(data,"blackList Validation Test OK");
-			
+			console.log("send ok");
 			this.successSMS(data,items.scriptId,keyword[0]);
 			/* reecri le sms */
 			if(items.rewriter){
 				data.msgdata_orig = data.msgdata;
-				sms = sms.replace(valid,items.rewriter);
-				keyword = sms.toLowerCase().trim().split(/\s+/);;
-				data.msgdata = sms;
+				try{
+					let sandbox = {
+						sms : data.msgdata.toString()
+					};
+					require('vm').runInNewContext(items.rewriter,sandbox,{
+						timeout : 25, //fails after 25ms
+						contextName : items.keyword+"-rewriter"
+					});
+					sms = sandbox.sms;
+					keyword = sms.toLowerCase().trim().split(/\s+/);;
+					data.msgdata = sms;
+				}catch(e){}
 			}
+			console.log((">> receive SMS "+data.id+" MotCle : "+keyword[0]+", SMS :"+sms).grey);
 			data.id = true;
 			data.sender = data.sender.toString();
 			data.receiver = data.receiver.toString();
@@ -271,9 +280,9 @@ Object.defineProperties(Connector.prototype, {
 			/* looking for keyword */
 			var sms = data.msgdata.toString();
 			var keyword = sms.toLowerCase().trim().split(/\s+/);
-			console.log({keyword:{$eq:keyword[0]}})
+			// console.log({keyword:{$eq:keyword[0]}})
 			Models.MotCle.find({keyword:keyword[0]}).exec((function(err, items) {
-				console.log(err,items)
+				// console.log(err,items)
 				if(err)
 					return this.runSMS(data,err);
 				if(!items)
@@ -298,6 +307,5 @@ Object.defineProperties(Connector.prototype, {
 		configurable: false
 	}
 });
-
 
 module.exports = Connector;

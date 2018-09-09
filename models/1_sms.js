@@ -51,15 +51,16 @@ var propertiesSMS = {
 		"blackList-val" : {type : String},
 		blackList:     { type: String, label : "Reject Sender" , dataUrl : '/admin/expression.json', saveValue : true},
 		shortNumbers:     { type: Array, label : "Numeros Courts" , dataUrl : '/admin/shortnumber.json', saveValue : true, multiple : true, default:null},
-		user : { type : String }
+		user : { type : String },
+		rewriter:     { type: String, label : "Rewriter", comment : "For rewrite  the message modify the 'sms' variable.", inputType :"javascript" },
 	},
 	propertiesScript = {
 		//id : { type : Number, label : "Identifiant", index : true },
 		name: { type: String  , label : "Nom"},
 		desc:     { type: String, label : "Description" },
-		data:     { type: String, label : "Script" , inputType :"javascript"},
 		module : { type: Boolean, default: false, inputType : 'checkbox', label : "Module"  },
-		user : { type : String }
+		user : { type : String },
+		data:     { type: String, label : "Script" , inputType :"javascript"}
 	},
 	md5 = require('MD5'),
 	rnd = require("randomstring");

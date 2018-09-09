@@ -223,7 +223,7 @@ module.exports = function(app,dir){
 
 					var wasNumber = null;
 					keyword.shortNumbers = s(keyword.shortNumbers);
-					console.log(keyword,update);
+					// console.log(keyword,update);
 					if(update.shortNumbers.length == 0 && keyword.shortNumbers.length == 0){
 						res.status(403);
 						return res.render("page-error",{error : {code:403, message : "Le MotCle "+update.keyword+" existe deja entant de service global!"}});	

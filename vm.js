@@ -14,9 +14,9 @@ var colors = require('colors');
 	}
 	util.inherits(VMStream,events.EventEmitter)
 	
-	VMStream.prototype.write = function() {
+	VMStream.prototype.write = function(message) {
 	    process.stdout
-	    	.write( ("VM-SMS " + (this.error ? "ERROR" : "LOG") +' "' +this.filename + '" "'+ this.id +'" > '+ util.format.apply(this, arguments)).grey);
+	    	.write( ("VM-SMS " + (this.error ? "ERROR" : "LOG") +' "' +this.filename + '" "'+ this.id +'" > '+ message).grey);
 	}
 
 	var sessions = {};
@@ -60,7 +60,7 @@ var lang = false;
  	}
  }
  var adapter = {
-			//"arango" : 	["ArangoDB","arango"],
+			// "arango" : 	["ArangoDB","arango"],
 			//"firebird" : 	["firebird" ,"node-firebird"],
 			"mongoose" : 	["createConnection","mongodb"],
 			"mongoose/schema" : 	["Schema","mongodb-schema"],
@@ -99,7 +99,7 @@ var lang = false;
  	}else if (m.type === 'setDIR'){
  		__DIR = m.data;
  	}else if (m.type === 'sms'){
- 		console.log("recieve SMS",m.time);
+ 		// console.log("recieve SMS",m.time);
  		m.msgdata_orig = m.msgdata;
 		m.msgdata = new Buffer(m.msgdata).toString().trim();
 		m.receiver = new Buffer(m.receiver).toString().toLowerCase();

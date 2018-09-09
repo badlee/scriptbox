@@ -276,7 +276,7 @@ module.exports = function(app,dir){
 				Models.Connector.remove({where : {id : req.params[0] }},function(err){
 					if(err)
 						return next(err);
-					console.log(arguments);
+					// console.log(arguments);
 					if(connector.name in VMs)
 						try{
 							VMs[connector.name].kill();

@@ -34,7 +34,7 @@
 
 > the unactive user : login: **joe**, password: **secret** 
 
-#### Explain SMS service philosophie
+#### Explain SMS service philosophy
 > Each SMS service is a 'Mot Cle' (keyword in english)
 
 > Each Mot Cle must be link to a script
@@ -43,7 +43,9 @@
 
 > Each Mot Cle must be have a reject expression(RegEx)
 
-> A service can rewrite SMS, the RegEx used for rewrite is the validator expression.
+> A service can rewrite SMS, with Rewriter script.
+
+> The Rewriter script it's only for modify sms value, it run in an isolate js context and the runing time cannot exced  25ms.
 
 #### Add a script
 > Click on "Main Menu" > "Script" > "Ajouter"
@@ -51,14 +53,13 @@ Fill nom(name), description and script (javascript programme), set Module "off".
 
 ###### Sample script
 ```javascript
-//Nom: hello
-//Description : Hello SMS
+//Nom: echo
+//Description : Echo SMS
 //Module : OFF
 var message = new MSG(sms); // build a new sms
-message.msgdata = "Hello SMS!"; // set message text 
 message.sendSMS(); // send message to the sender
 ```
-this script reply "Hello SMS" on each request.
+this script resend the recieved message .
 
 #### Add a module
 > Click on "Main Menu" > "Script" > "Ajouter"
@@ -66,47 +67,44 @@ Fill nom(name), description and script (javascript programme), set Module "on".
 
 ###### Sample module
 ```javascript
-//Nom: numeros
-//Description : Hello SMS
+//Nom: gabonNumber
+//Description : Validate gaboneese numbers
 //Module : ON
 /*Your script Here*/
 exports.airtel = /^((\+|00)?241)?0(4|7)\d{6}$/;
 exports.libertis = /^((\+|00)?241)?0(2|6)\d{6}$/;
 exports.moov = /^((\+|00)?241)?05\d{6}$/;
-exports.azur = /^((\+|00)?241)?03\d{6}$/;
 exports.GT = /^((\+|00)?241)?(01)?\d{6}$/;
 ```
-this module can be used in script  `numeros = require('numeros');`
+this module can be used in script  `numeros = require('gabonNumber');`
 
 ###### Sample script who use module
 ```javascript
-//Nom: hello2
-//Description : Hello SMS and get information network
+//Nom: hello
+//Description : Send Hello SMS and get information network
 //Module : OFF
-var num = require("numeros");
+var num = require("gabonNumber");
 logger.log(sms.sender); // logger is like `console` in nodejs 
 // sms contain the SMS object 
 var m = new MSG(sms);
-	m.msgdata = "Hello SMS!";
-	if(num.airtel.test(sms.sender))
-		m.msgdata += " - Airtel";
-	else if(num.libertis.test(sms.sender))
-		m.msgdata += " - Libertis";
-	else if(num.azur.test(sms.sender))
-		m.msgdata += " - Azur";
-	else if(num.moov.test(sms.sender))
-		m.msgdata += " - MOOV";
-	else if(num.GT.test(sms.sender))
-		m.msgdata += " - GT";
-	else 
-		m.msgdata += " - Je sais pas d'ou vient ce numero";
-	
-	m.sendSMS();
+m.msgdata = "Hello SMS!";
+if(num.airtel.test(sms.sender))
+	m.msgdata += " - Airtel";
+else if(num.libertis.test(sms.sender))
+	m.msgdata += " - Libertis";
+else if(num.moov.test(sms.sender))
+	m.msgdata += " - MOOV";
+else if(num.GT.test(sms.sender))
+	m.msgdata += " - GT";
+else 
+	m.msgdata += " - Unknow";
+
+m.sendSMS();
 ```
 > You can juste create a Mot Cle (keyword) , and send sms for test it;
 ```javascript
     Nom : test
-    Script : hello2
+    Script : hello
     Validateur SMS : Oui
     Reject Sender : Non
 ```
@@ -125,7 +123,7 @@ var m = new MSG(sms);
     Validateur ^[^\w\W]$ => /^[^\w\W]$/ => allways false
 
     Nom : Gaboneese number
-    Validateur ^((00|\+)?241) => /^((00|\+)?241)/ => allways start by 241,+241 or 00241
+    Validateur ^((00|\+)?241)0[1234567]\d{6} => /^((00|\+)?241)0[1234567]\d{6}/ => allways start by 241,+241 or 00241
 ```
 
 #### Add a connector
@@ -162,6 +160,7 @@ var m = new MSG(sms);
     Script : hello
     Validateur SMS : Oui
     Reject Sender : Non
+    Rewriter Script : /*Empty*/
 ```
 
 #### Test Script

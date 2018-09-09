@@ -16,7 +16,7 @@
 		                        	{% else %}
 		                        		{% set lock = false %}
 		                        	{% endif %}
-                            		<div class="form-group"><label for="inputFirstName" class="col-md-3 control-label">{{ valeur.label }}
+                            		<div class="form-group"><label for="{{cle}}" class="col-md-3 control-label">{{ valeur.label }}
 		                                {% if !lock && valeur.index %}<span class="require">*</span>{% endif %}
 		                             </label>
 		                                <div class="col-md-4">

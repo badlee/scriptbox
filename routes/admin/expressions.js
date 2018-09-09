@@ -91,7 +91,7 @@ module.exports = function(app,dir){
 					res.status(403);
 					return res.render("page-error",{error : {code:403, message : "Le Expression "+req.body.name+" Existe deja"}});	
 				}
-				console.log(update);
+				// console.log(update);
 				new Models.Expression(update).save(function(err,expression){
 					if(err)
 						return next(err);
@@ -154,7 +154,7 @@ module.exports = function(app,dir){
 			Models.Expression.findById(update.id, function(err,expression){
 				if(err)
 					return next(err);
-				console.log(err,expression);
+				// console.log(err,expression);
 				if(!expression){
 					res.status(404);
 					return res.render("page-error",{error:{ code:404, message:"Expression Not found"}});

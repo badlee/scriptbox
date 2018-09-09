@@ -5,7 +5,10 @@
 <link rel="stylesheet" type="text/css" href="/assets/css/codemirror-theme.css">
 {% endif %}
 {% set codemirrorInclude = random.generate(10) %}
-<textarea id="codemirror-include-{{ codemirrorInclude }}" name="{{ cle }}" >{{ data[cle] || "/*Your script Here*/"}}</textarea>
+<textarea id="codemirror-include-{{ codemirrorInclude }}" name="{{ cle }}" >{% if data[cle] %}{{ data[cle] }}{% else %}/*
+ [{{valeur.label}}] : Write Here{% if valeur.comment %}
+ {{ valeur.comment }}{% endif %}
+*/{% endif %}</textarea>
 <script>
 	(function () {
 		var el = document.getElementById('codemirror-include-{{ codemirrorInclude }}')
@@ -19,9 +22,10 @@
 	        	"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor());}
 	        },
 	        foldGutter: true,
-		    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+		    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
 		});
-		el.parentElement.className = "col-md-9";
+		el.parentElement.className = "col-md-12";
+		document.querySelector("label[for={{cle}}]").style="display:none";
 	})();
 		
 </script>

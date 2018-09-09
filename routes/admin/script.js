@@ -5,7 +5,7 @@ var path = require('path'),
 
 module.exports = function(app,dir){
 	var hidden = {id:1,data : 1,},
-		readOnly={id:1,name:1},
+		readOnly={id:1,name:1,module:1},
 		liens = {
 			//"script.list" : "Liste des Script"
 		};
@@ -110,7 +110,7 @@ module.exports = function(app,dir){
 				return res.redirect(dir+"/script.list");
 			next();
 		})
-		.get(function(req,res){
+		.get(function(req,res,next){
 			var update = {},
 				hidden = {id:1};
 			for(var cle in Models.Script.properties){
@@ -181,9 +181,7 @@ module.exports = function(app,dir){
 
 			if(!id)
 				return req.redirect(dir+"/script.list");
-			Models.Script.findById(id,function(){
-				console.log("Models.Script.",arguments);
-			})
+			
 			Models.Script.findById(id, function(err, script){
 				if(err)
 					return next(err);
@@ -260,22 +258,26 @@ module.exports = function(app,dir){
 				return req.redirect(dir+"/script.list");
 			next();
 		})
-		.get(function(req,res){
+		.get(function(req,res,next){
 			var id = req.params[0] || false;
 			if(!id)
 				return req.redirect(dir+"/script.list");
 			Models.Script.findById(id, function(err,script){
-				if(err)
+				if(err){
+				  		// console.log(">>",err.stack)
 					return next(err);
+				}
 				if(!script){
 					res.status(404);
 					return res.render("page-error",{error:{ code:404, message:"Script Not found"}});
 				}
 				var data = script.data;
 				script.data = path.join(__DIR,"scripts",script.module ? "modules" : "services",script.module ? script.name.split(/[ -]/).join("-").replace(/[^\w\-]+/g,"").toLowerCase() : md5(script.name));
-				fs.unlink(script.data, data, function (err) {
-				  	if (err)
+				fs.unlink(script.data, function (err) {
+				  	if (err){
+				  		// console.log(err.stack)
 				  		next(err);
+				  	}
 				  	Models.Script.remove({where : {id : req.params[0] }},function(err){
 						if(err)
 							return next(err);

@@ -3,7 +3,7 @@ var path = require('path'),
     md5 = require('MD5');
 function JSONToCSVConvertor(JSONData, Header,fn) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-  console.log(arrData);
+  // console.log(arrData);
     var getCSVLine = function (obj){
         if(typeof obj == "string")
             return obj;
@@ -62,9 +62,6 @@ module.exports = function(app,dir){
 			};
 
 			if(format){
-				Models.SMS.find({}, function(){
-					console.log(arguments);
-				});
 				return Models.SMS.find(where,function(err,script){
 					res.setHeader("Content-Type","text/csv");
 					res.setHeader("Content-Disposition",'attachment; filename="report.csv"');

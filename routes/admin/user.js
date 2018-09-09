@@ -53,7 +53,7 @@ module.exports = function(app,dir){
 			}
 			var readOnly = {username:1,id:1,init : 1},
 				update = {};
-				console
+
 			for(var cle in Models.user.properties){
 				if(readOnly[cle] || (!req.user.isAdmin && Models.user.properties[cle] && Models.user.properties[cle].needAdmin) )
 					continue;

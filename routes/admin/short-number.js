@@ -89,7 +89,7 @@ module.exports = function(app,dir){
 					res.status(403);
 					return res.render("page-error",{error : {code:403, message : "Le Numero court "+req.body.name+" Existe deja"}});	
 				}
-				console.log(update);
+				// console.log(update);
 				new Models.Shortnumber(update).save(function(err,shortnumber){
 					if(err)
 						return next(err);
@@ -152,7 +152,7 @@ module.exports = function(app,dir){
 			Models.Shortnumber.findById(update.id, function(err,shortnumber){
 				if(err)
 					return next(err);
-				console.log(err,shortnumber);
+				// console.log(err,shortnumber);
 				if(!shortnumber){
 					res.status(404);
 					return res.render("page-error",{error:{ code:404, message:"Numero court Not found"}});

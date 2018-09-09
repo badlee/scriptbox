@@ -33,7 +33,7 @@ shortyServer.on('bind', function(pdu, client, callback) {
 });
 
 shortyServer.on('bindSuccess', function(client, pdu) {
-    console.log('bind success');
+    console.log('bind success',client.system_id);
 });
 
 shortyServer.on('deliver_sm_resp', function(client, pdu) {
