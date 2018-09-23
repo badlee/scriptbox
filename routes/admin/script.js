@@ -5,7 +5,7 @@ var path = require('path'),
 
 module.exports = function(app,dir){
 	var hidden = {id:1,data : 1,},
-		readOnly={id:1,name:1,module:1},
+		readOnly={id:1,name:1,module:1, type:1},
 		liens = {
 			//"script.list" : "Liste des Script"
 		};
@@ -145,7 +145,7 @@ module.exports = function(app,dir){
 							update[cle] = req.body[cle]
 				}
 			}
-			update.name = update.module ? S(update.name).camelize().s : update.name;
+			update.name = S(update.name.replace(/[ ]+/,"-")).camelize().s;
 			Models.Script.findOne({ where : {name : update.name }}, function(err,script){
 				if(err)
 					return next(err);

@@ -15,6 +15,7 @@
     "dbPwd": "",
     "dbPath": "app://db",
     "dbPool": false,
+    "dbSSL": false,
     "dbProdType": "tingodb",
     "dbProdHost": "",
     "dbProdPort": "",
@@ -22,6 +23,7 @@
     "dbProdPwd": "",
     "dbProdPath": "app://dbProd",
     "dbProdPool": false,
+    "dbProdSSL": false,
     "keywordRegExp": false,
     "defautErrorMSG": "ERROR ON EXEC",
     "httpPort": "13014"

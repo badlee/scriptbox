@@ -171,14 +171,13 @@ else {
 }
 var settings = require(path.resolve(__dirname,"settings.json"));
 
-exports.PIPE = parseInt(settings.httpPort || 13014)+10;
+exports.PIPE = parseInt(settings.memcachedSocket || 13024);
 
 exports.server = function(){
-	server.listen(exports.PIPE );
-	console.log("Memory server start ",exports.PIPE);	
+	server.listen(exports.PIPE,'127.0.0.1', function(){
+		console.log("Memory server start at 127.0.0.1:"+exports.PIPE);
+	});
 };
-
-
 
 var Client = exports.Client = function(scope) {
     this.pipe = exports.PIPE;

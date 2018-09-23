@@ -1,8 +1,12 @@
 {% if ! codemirrorInclude %}
-<script src="/assets/js/codemirror-compressed.js"></script>
-<script src="/assets/js/codemirror-hint.js"></script>
-<link rel="stylesheet" type="text/css" href="/assets/css/codemirror.css">
-<link rel="stylesheet" type="text/css" href="/assets/css/codemirror-theme.css">
+<script src="/vendor/codemirror/codemirror.js"></script>
+<script src="/vendor/codemirror/addon/edit/matchbrackets.js"></script>
+<script src="/vendor/codemirror/addon/comment/continuecomment.js"></script>
+<script src="/vendor/codemirror/addon/comment/comment.js"></script>
+<script src="/vendor/codemirror/mode/javascript/javascript.js"></script>
+<script src="/vendor/codemirror/mode/coffeescript/coffeescript.js"></script>
+<link rel="stylesheet" type="text/css" href="/vendor/codemirror/codemirror.css">
+<link rel="stylesheet" type="text/css" href="/vendor/codemirror/theme/twilight.css">
 {% endif %}
 {% set codemirrorInclude = random.generate(10) %}
 <textarea id="codemirror-include-{{ codemirrorInclude }}" name="{{ cle }}" >{% if data[cle] %}{{ data[cle] }}{% else %}/*
@@ -13,19 +17,21 @@
 	(function () {
 		var el = document.getElementById('codemirror-include-{{ codemirrorInclude }}')
 	  	var editor = CodeMirror.fromTextArea(el, {
-		    mode: {name: "javascript", json: true, globalVars: true},
+		    mode: {% if data.type %}'{{ data.type }}'{% else %}"text/javascript"{% endif %},/*{name: "javascript", json: true, globalVars: true},*/
 		    theme : "twilight",
 		    lineNumbers: true,
-		    keyMap : "sublime",
-	        extraKeys: {
-	        	"Ctrl-Space": "autocomplete",
-	        	"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor());}
-	        },
-	        foldGutter: true,
-		    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		    // keyMap : "sublime",
+	     //    extraKeys: {
+	     //    	"Ctrl-Space": "autocomplete",
+	     //    	"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor());}
+	     //    },
+	        // foldGutter: true,
+		    // gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
 		});
 		el.parentElement.className = "col-md-12";
 		document.querySelector("label[for={{cle}}]").style="display:none";
+		el.editor = editor;
+		//.setOption("mode", looksLikeScheme(editor.getValue()) ? "scheme" : "javascript");
 	})();
 		
 </script>

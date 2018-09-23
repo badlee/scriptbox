@@ -24,11 +24,11 @@
 		                                	<div class="checkbox-list">
 		                                		{% for c,v in valeur.data %}
 		                                		<label>
-		                                			<div class="make-switch switch-mini"><input value="{{c}}" name="{{cle}}[]" {% if data[cle] && data[cle][c] %} checked=checked {% endif %} type="checkbox" {% if lock %} disabled=disabled {% endif %}></div>&nbsp;{{ v }}</label>
+		                                			<div class="make-switch switch-mini"><input value="{{c}}" name="{{cle}}[]" {% if data[cle] && data[cle][c] %} checked=checked {% endif %} type="checkbox" {% if lock %} disabled=disabled {% endif %} {% if valeur.onchange %} onchange="{{valeur.onchange | raw}}" {% endif %}></div>&nbsp;{{ v }}</label>
                                                 {% endfor %}
                                             </div>
 		                                	{% elseif valeur.list %}
-		                                	<div class="form-group"><select name="{{ cle }}" {% if valeur.multiple %} multiple="multiple" {% endif %} class="form-control">
+		                                	<div class="form-group"><select name="{{ cle }}" {% if lock %} disabled="disabled" {% endif %} {% if valeur.multiple %} multiple="multiple" {% endif %} {% if valeur.onchange %} onchange="{{valeur.onchange | raw}}" {% endif %} class="form-control">
 		                                		{% for c,v in valeur.list %}
                                                 <option {% if c == data[cle] %} selected=selected {% endif %} value="{{ c }}" >{{ v }}</option>
                                                 {% endfor %}>
@@ -36,14 +36,14 @@
 		                                	{% elseif valeur.inputType == 'checkbox' %}
 		                                	<div data-on="primary" data-off="info" class="make-switch">
 		                                		<input {% if data[cle] %} checked="checked" {% endif %} type="checkbox"  name="{{ cle }}"
-		                                			{% if lock %} disabled=disabled {% endif %}>
+		                                			{% if lock %} disabled=disabled {% endif %}  {% if valeur.onchange %} onchange="{{valeur.onchange | raw}}" {% endif %}>
 		                                	</div>
 		                                	{% elseif valeur.inputType == 'javascript' %}
 		                                		{% include "editor.twig" %}
 		                                	{% elseif valeur.dataUrl %}
 		                                		{% include "select-ajax.twig" %}
 		                                	{% else %}
-		                                	<input type="text" value="{{ data[cle] || '' }}" placeholder="{{ valeur.label }}" class="form-control" name="{{ cle }}" {% if lock %} readonly=readonly {% endif %} {% if valeur.mask %} mask="{{valeur.mask}}" {% endif %} {% if valeur.limit %} maxlength="{{ valeur.limit }}" {% endif %} >
+		                                	<input type="text" value="{{ data[cle] || '' }}" placeholder="{{ valeur.label }}" class="form-control" name="{{ cle }}" {% if lock %} readonly=readonly {% endif %} {% if valeur.mask %} mask="{{valeur.mask}}" {% endif %} {% if valeur.limit %} maxlength="{{ valeur.limit }}" {% endif %}  {% if valeur.onchange %} onchange="{{valeur.onchange | raw}}" {% endif %} >
 		                                	{% endif %}
 		                                	{% if valeur.help %}<span class="help-block">{{valeur.help}}</span>{% endif %}
 		                                </div>

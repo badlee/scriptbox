@@ -22,8 +22,14 @@ var daemon = require("daemonize2").setup({
     silent:true,
     pidfile: path.resolve(require("os").tmpdir(),name+".pid")
 });
-switch(process.argv[2]){
+switch((process.argv[2]||"").replace(/^(-|--|\/)/,"")){
     case 'stop':
+        daemon.on("error",function(error){
+            spinner.stop();
+            process.stderr.write(emoji.get('no_entry')+' ERROR\n');  
+            console.log(error.message);
+            process.exit();      
+        })
         daemon.on("notrunning",function(){
             spinner.stop();
             process.stderr.write(emoji.get('no_entry')+' NOT RUNNING\n');  
@@ -57,10 +63,8 @@ switch(process.argv[2]){
             process.stdout.write(emoji.get('+1')+' \n');
             var interfaces = os.getNetworkInterfaces();
             interfaces = Object.keys(interfaces).map(x=>interfaces[x].filter(x=>x.family == 'IPv4').map(x=>x.address).join(":"+settings.httpPort+", http://")).filter(x=>x).join(":"+settings.httpPort+", http://");
-
-            console.log("Web interfaces at : http://"+interfaces+":"+settings.httpPort);
-            
-            process.exit();   
+            console.log("Web interfaces at : http://"+interfaces+":"+settings.httpPort);            
+            process.exit();
         })
         spinner.setSpinnerTitle('%s Server start... ');
         spinner.start();
@@ -70,6 +74,33 @@ switch(process.argv[2]){
         break;
     case 'config':
         require('./config');
+        break;
+    case 'smsc':
+        require('./server');
+        break;
+    case 'smsc5':
+        console.log("Coming soon");
+        process.exit(0);
+        break;
+    case 'ussd':
+        console.log("Coming soon");
+        process.exit(0);
+        break;
+    case 'help':
+    case '?':
+        console.log(`
+Usage : ${package.name} [option]
+
+Option is one of:
+    help      print this help
+    start     start the server
+    stop      stop the server
+    config    lauch cli configuration tools
+    smsc      start a dummy smpp 3.4 server
+    smsc5     start a dummy smpp 5 server
+    ussd      start a dummy ussd server
+        `);
+        process.exit(0);
         break;
     case 'status':
     default:

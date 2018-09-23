@@ -17,7 +17,7 @@ process.on("message",function(m){
  			start(m.data);
  		}else if(app && !app.connected)
  				app.connect(); 		
- 	}else if(m.type == "message"){
+ 	}else if(m.type == "message" || m.type == "sms" ){
 		sendSMS(m.message);
 		//console.log(arguments,Object.keys(VMs));
 	}
@@ -25,14 +25,15 @@ process.on("message",function(m){
 var sendSMS = function(data){
 	app.sendMessage(toPDU(data));
 }
-var toPDU = function(data){
-	return {
+var toPDU = data=>{
+ 	return {
        source_addr_ton: Number(app.config.addr_ton),
-       source_addr: data.sender,
+       source_addr: data.sender || data.source_addr,
        dest_addr_ton: Number(app.config.addr_ton),
-       destination_addr: data.receiver,
-       data_coding: data.coding,
-       short_message: data.msgdata
+       destination_addr: data.receiver || data.destination_addr,
+       data_coding: data.coding || data.data_coding,
+       short_message: data.msgdata || data.short_message,
+       esm_class: data.mclass || data.esm_class,
 	}
 }
 

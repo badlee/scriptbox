@@ -79,7 +79,8 @@ var	caminte = require('caminte'),
          username   : settings.dbUser || "",
          password   : settings.dbPwd || "",
          database   : settings.dbPath ? getDir(settings.dbPath) :  "",
-         pool       : settings.dbPool || false // optional for use pool directly 
+         pool       : settings.dbPool || false, // optional for use pool directly 
+         ssl        : settings.dbSSL || false // optional for use pool directly 
     },
     dbProd = {
          driver     :  settings.dbProdType || "memory",
@@ -88,7 +89,8 @@ var	caminte = require('caminte'),
          username   : settings.dbProdUser || "",
          password   : settings.dbProdPwd || "",
          database   : settings.dbProdPath ? getDir(settings.dbProdPath) :  "",
-         pool       : settings.dbProdPool || false // optional for use pool directly 
+         pool       : settings.dbProdPool || false, // optional for use pool directly 
+         ssl        : settings.dbProdSSL || false // optional for use pool directly 
     },
 	schema = new Schema(db.driver, db),
     schemaProd = new Schema(dbProd.driver, dbProd);
@@ -100,10 +102,10 @@ fs.readdirSync(path.join(__dirname,"models")).forEach(function(route){
 
 Object.defineProperties(Connector.prototype, {
 	execScript : {
-		value: function(script,sms,keyword) {
+		value: function(script,sms,keyword,type) {
 			this.currVM = this.currVM+1 >= (settings.maxPool||5) ? 0 :  this.currVM+1;
 			sms.type = "sms";
-			sms.file = script;
+			sms.script = script;
 			sms.keywords = keyword;	
 			VMs[this.currVM].send(sms);
 		},
@@ -129,7 +131,7 @@ Object.defineProperties(Connector.prototype, {
 	},
 	_sendSMS  : {
 		value: function(data){
-			try{this.emit("sendSMS",data);}catch(e){}
+			try{this.emit("sendSMS",data);}catch(e){console.log("Error",e)}
 			new Models.SMS({ 
 				pdu: data,
 				sms : new Buffer(data.msgdata || "").toString(),
@@ -139,7 +141,7 @@ Object.defineProperties(Connector.prototype, {
 				MotCle : "",
 				success : false,
 				received : false
-			}).save(function(err){
+			}).save(function(err,doc){
 				//if(err)
 					//console.log(err);
 			});
@@ -176,7 +178,7 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("successSMS",data);}catch(e){}
 			new Models.SMS({ 
 				pdu: data,
-								sms : new Buffer(data.msgdata || "").toString(),
+				sms : new Buffer(data.msgdata || "").toString(),
 				from: new Buffer(data.sender || "").toString(),
 				to: new Buffer(data.receiver || "").toString(),
 				SMSC: new Buffer(data.smsc_id || "").toString(),
@@ -250,7 +252,17 @@ Object.defineProperties(Connector.prototype, {
 			data.id = true;
 			data.sender = data.sender.toString();
 			data.receiver = data.receiver.toString();
-			this.execScript(items["scriptId-val"],data,keyword);
+			Models.Script.all({
+                where: {
+                    id : items["scriptId"]
+                }
+            }, (function(err, script) {
+				console.log("<<<< [-] >>>>", err,items, script);
+				this.execScript({
+					type : (script[0]||{type:'text/javascript'}).type || 'text/javascript',
+					file : items["scriptId-val"]
+				},data,keyword);
+			}).bind(this));
 		},
 		writable: false,
 		enumerable: false,
@@ -281,13 +293,20 @@ Object.defineProperties(Connector.prototype, {
 			var sms = data.msgdata.toString();
 			var keyword = sms.toLowerCase().trim().split(/\s+/);
 			// console.log({keyword:{$eq:keyword[0]}})
-			Models.MotCle.find({keyword:keyword[0]}).exec((function(err, items) {
-				// console.log(err,items)
+			Models.MotCle.all({
+                where: {
+                    keyword : { inq : [keyword[0],'*'] }
+                },
+                order: 'keyword ASC'
+            }, (function(err, items) {
 				if(err)
 					return this.runSMS(data,err);
 				if(!items)
 					return this.runSMS(data,name+" Not found"+keyword[0]);
-				
+				if(items.length == 2)
+					items = [items.find(x=>x.keyword !== "*")];
+
+				// console.log(">>>>", items);
 				var to = (data && data.receiver ? data.receiver : "unknow").toString();
 				var items = items.map(function(item){
 					item.shortNumbers = s(item.shortNumbers);

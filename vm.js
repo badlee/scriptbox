@@ -5,8 +5,16 @@ var path = require('path'),
 	util = require("util"),
 	memory = require("./memory"),
 	events = require("events");
+	CoffeeScript = require('coffee-script');
 var colors = require('colors');
-
+var convertCode = function (data, type) {
+	switch(type){
+		case 'text/coffeescript':
+			return CoffeeScript.compile(data.toString());
+		default:
+			return data;
+	}
+}
 	function VMStream(filename,id,error) {
 		this.filename = filename;
 		this.id = id;
@@ -21,8 +29,34 @@ var colors = require('colors');
 
 	var sessions = {};
 	var localStorage = {};
-var preScript = "if(!Array.prototype.rnd)Object.defineProperty(Array.prototype,'rnd',{get:function (){ var randscript = -1, max = this.length-1; while (randscript < 0 || randscript > max || isNaN(randscript))\
-						randscript = parseInt(Math.random()*(max+1)); return this[randscript]; }}); ";
+var preScript = "("+(function(){
+	if(!Array.prototype.rnd){
+		Object.defineProperty(Array.prototype,'rnd',{
+			get:function (){
+				var randscript = -1, 
+					max = this.length-1;
+				while (randscript < 0 || randscript > max || isNaN(randscript))
+					randscript = parseInt(Math.random()*(max+1));
+				return this[randscript]; 
+			}
+		});
+	};
+	if(!Array.prototype.sql){
+		/*
+		Usage : 
+			var data = [{a:1,b:1,c:1},{a:1,b:2,c:1},{a:1,b:3,c:1}, {a:2,b:1,c:1}];
+			var res = data.sql('SELECT a, COUNT(*) AS b FROM ? GROUP BY a');
+			console.log(res);
+		*/
+		Object.defineProperty(Array.prototype,'sql',{
+			value : function (sql){
+				var alasql = require("alasql");
+				alasql.databases.alasql.tables.data = this ;
+				return alasql(sql);   
+			}
+		});
+	};
+}).toString()+")()";
 var lang = false;
  var script = {};
  var modules = {};
@@ -57,11 +91,14 @@ var lang = false;
  	},
  	events : function(){
  		return require('events');
- 	}
+	},
+	alasql : function(){
+		return require('alasql');
+   }
  }
  var adapter = {
 			"arango" : 	["","arango"],
-			"firebird" : 	["" ,"node-firebird"],
+			"node-firebird" : 	["" ,"firebird"],
 			"mongodb" : 	["createConnection","mongodb"],
 			"mongoose" : 	["createConnection","mongoose"],
 			"mongoose/schema" : 	["Schema","mongoose-schema"],
@@ -71,7 +108,7 @@ var lang = false;
 			"pg" : 			["Client","postgres"],
 			"redis" : 		["createClient" ,"redis"],
 			"rethinkdb" : 	["","rethinkdb"],
-			"riak" : 		["","riak-js"],
+			"riak-js" : 		["","riak"],
 			"sqlite3" : 	["","sqlite"],
 			"tingodb" : 	["", "tingodb"]
 	}
@@ -91,9 +128,13 @@ var lang = false;
 		 		}
 		 		return require(m);
 		 	}).bind(null,i.split('/')[0],adapter[i][0]);
-		} catch(e){}
+		} catch(e){
+    		console.log("resolve ".grey,adapter[i][1].grey,'(',i.split('/')[0].yellow,')',"...FAILS".grey);
+    		console.log("\t",e)
+
+		}
 	}
- var currSMS;
+
  process.on("message",function(m){
  	if (m.type === 'settings'){
  		settings = m.data;
@@ -105,6 +146,10 @@ var lang = false;
 		m.msgdata = new Buffer(m.msgdata).toString().trim();
 		m.receiver = new Buffer(m.receiver).toString().toLowerCase();
 		m.sender = new Buffer(m.sender).toString().toLowerCase();
+		var priv = Symbol(m.sender);
+		m[priv] = true;
+		m.fileType = m.script.type;
+		m.file = m.script.file;
 		var sendError = function(err){	
 		  	var tmp = m.receiver;
 			m.receiver = m.sender;
@@ -115,11 +160,11 @@ var lang = false;
 		};
  		if(!script[m.file]){
 			try{data = fs.readFileSync(m.file);}catch(e){return sendError(e);}
-			script[m.file] = vm.createScript(preScript+";"+data, m.file);
+			script[m.file] = vm.createScript(preScript+";"+convertCode(data,m.fileType), m.file);
 		  	fs.watchFile(m.file, (function (file,sendError,curr, prev) {
 		  		console.log('VM script reload: '.grey, process.argv[4].grey,process.argv[2].grey , file);
 				try{data = fs.readFileSync(file);}catch(err){return   console.log('VM Script Exception: '.grey, process.argv[4].grey,process.argv[2].grey , err);}
-				script[file] = vm.createScript(preScript+";"+data, file);
+				script[file] = vm.createScript(preScript+";"+convertCode(data,m.fileType), file);
 		  	}).bind(null,m.file,sendError));
 		}
 		/* definition de la session et du storage */
@@ -130,10 +175,11 @@ var lang = false;
 				if(this instanceof arguments.callee){
 					for (var property in conf)
 						this[property] = conf[property];
-					
-					var tmp = this.receiver;
-					this.receiver = this.sender;
-					this.sender = tmp;
+					if(conf[priv]){
+						var tmp = this.receiver;
+						this.receiver = this.sender;
+						this.sender = tmp;
+					}
 					delete this.type;
 					Object.defineProperties(this, {
 						sendSMS : {
@@ -175,7 +221,7 @@ var lang = false;
 		  		var n = path.join(__DIR,"scripts","modules" ,name);
 		  		if(!fs.existsSync(n)) throw "Module "+name+" not found";
 		  		try{
-			  		var n = fs.readFileSync(n);
+			  		var data = fs.readFileSync(n);
 			  		var sand = {
 			  			exports : {},
 			  			module : {
@@ -190,7 +236,13 @@ var lang = false;
 					  	require : require,
 					  	get MSG() {return MSG }
 					};
-			  		vm.runInNewContext(n, sand);
+			  		vm.runInNewContext(preScript+";"+data, sand);
+			  		fs.watchFile(n, (function (file,curr, prev) {
+				  		console.log('Module VM script reload: '.grey, process.argv[4].grey,process.argv[2].grey , file);
+						try{data = fs.readFileSync(file);}catch(err){return   console.log('Module VM Script Exception: '.grey, process.argv[4].grey,process.argv[2].grey , err);}
+						vm.runInNewContext(preScript+";"+data, sand);
+						modules[name]=sand.module.exports ? sand.module.exports : sand.exports;
+				  	}).bind(null,n));
 			  		return modules[name]=sand.module.exports ? sand.module.exports : sand.exports;
 			  	}catch(e){
 			  		throw e;
@@ -198,16 +250,17 @@ var lang = false;
 		  	};
 		try{
 			script[m.file].runInContext(vm.createContext({
-			sms : m ,
-			logger : new logger(new VMStream(path.basename(m.file), m.id),new VMStream(path.basename(m.file), m.id,true)),
-			Buffer : Buffer,
-		  	now : Date.now(),
-		  	require : require,
-		  	get MSG() {return MSG },
-			session : new memory.Client(_id),
-			localStorage : new memory.Client(m.keywords[0].toLowerCase()),
-			globalStorage : new memory.Client(m.receiver)
-		})); }catch(e){
+				sms : m ,
+				logger : new logger(new VMStream(path.basename(m.file), m.id),new VMStream(path.basename(m.file), m.id,true)),
+				Buffer : Buffer,
+			  	now : Date.now(),
+			  	require : require,
+			  	get MSG() {return MSG },
+				session : new memory.Client(_id),
+				localStorage : new memory.Client(m.keywords[0].toLowerCase()),
+				globalStorage : new memory.Client(m.receiver)
+			})); 
+		}catch(e){
 			return sendError(e);
 		}
 		delete sandbox;

@@ -20,7 +20,7 @@ process.on("message",function(m){
  			app = null;
  		}
  		start(m.data); 		
- 	}else if(m.type == "message"){
+ 	}else if(m.type == "message" || m.type == "sms"){
 		app.sendSMS(m.message);
 		//console.log(arguments,Object.keys(VMs));
 	}

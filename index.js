@@ -5,19 +5,20 @@ var
     memory = require("./memory"),
     fs = require('fs');
     DEFAULT = {httpPort :13014,id : "OshiminSecret"};
-var getDir = function (dbProdPath){
+var getDir = function (dirPath){
 	var pwd = process.cwd();
 	if(typeof __dirname != "undefined")
 		pwd = __dirname;
 		
-	return String(dbProdPath).search(/^app:\/\//i) === 0 ? 
-		path.resolve.apply(path,[path.sep].concat(String(dbProdPath).replace(/\//g,path.sep).replace("app:"+(path.sep),pwd).split(path.sep).slice(1)))
-		: dbProdPath
+	return String(dirPath).search(/^app:\/\//i) === 0 ? 
+		path.resolve.apply(path,[path.sep].concat(String(dirPath).replace(/\//g,path.sep).replace("app:"+(path.sep),pwd).split(path.sep).slice(1)))
+		: dirPath
 }
 
 require("./settings");
 
 var express = require("express"),
+  pluginRouter = express.Router(),
   sessions = require('express-session'),
   CaminteStore = require('connect-caminte')(sessions),
 	caminte = require('caminte'),
@@ -29,7 +30,8 @@ var express = require("express"),
          username   : settings.dbUser || "",
          password   : settings.dbPwd || "",
          database   : settings.dbPath ?  getDir(settings.dbPath) :  "",
-         pool       : settings.dbPool || false // optional for use pool directly 
+         pool       : settings.dbPool || false, // optional for use pool directly 
+         ssl        : settings.dbSSL || false // optional for use pool directly 
     },
     dbProd = {
          driver     :  settings.dbProdType || "memory",
@@ -38,7 +40,8 @@ var express = require("express"),
          username   : settings.dbProdUser || "",
          password   : settings.dbProdPwd || "",
          database   : settings.dbProdPath ? getDir(settings.dbProdPath) :  "",
-         pool       : settings.dbProdPool || false // optional for use pool directly 
+         pool       : settings.dbProdPool || false, // optional for use pool directly 
+         ssl        : settings.dbProdSSL || false // optional for use pool directly 
     };
     schema = new Schema(db.driver, db);
     schemaProd = new Schema(dbProd.driver, dbProd);
@@ -87,9 +90,11 @@ var server =  express();
     saveUninitialized: true,
     name: "osh",
     store: new CaminteStore({
-        driver: db.driver,
+        driver: 'tingodb',
         collection: 'sessions',
-        db: db,
+        db: {
+          database : getDir("app://db")
+        },
         maxAge: 30000000, // 5h
         clear_interval: 60 // 1 min
     })
@@ -110,12 +115,15 @@ var loadroute = function(dir,module){
 			return loadroute(file,path.join(module || "/",route).replace(path.sep,'/')); 
 		require(file)(app || server, module || "/");
 		if(module)
-			server.use(module,app);			
+			server.use(module,app);
 	});
 }
 
 /* add public route */
 loadroute(path.join(__dirname,"routes"));
+
+// register pligin router
+server.use(pluginRouter);
 
 //The 404 Route (ALWAYS Keep this as the last route)
 server.get('*', function(req, res){
@@ -131,6 +139,11 @@ server.use(function errorHandler(err, req, res, next) {
 server.listen(conf.http_port || DEFAULT.httpPort,function(err){
   console.log("Server Listen "+(conf.http_port || DEFAULT.httpPort),"port.");
   mem = memory.server();
+  setTimeout(function(){
+    pluginRouter.get('/toto', (req,res)=>{
+      res.send("toto")
+    })
+  },5000)
 });
 
 

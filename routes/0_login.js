@@ -25,7 +25,7 @@ passport.use(new LocalStrategy(
 	Models.user.findOne({where: {username : username}}, function(err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-        if (!user.actif ) { return done(null, false, { message: 'Utilisateur desactivé' }); }
+        if (!user.actif ) { return done(null, false, { message: 'Inactive user' }); }
         if (!user.authentificate (password)) { return done(null, false, { message: 'Invalid password' }); }
         return done(null, user);
       });
@@ -58,6 +58,7 @@ module.exports = function(server){
 		  	swig.setDefaults({
 			  	locals: {
 			  		siteTitle : settings.title,
+			  		"package" : require("../package.json"),
 			  		random : rnd,
 			  		user : req.user ,
 			  		gravatar : require("nodejs-gravatar").imageUrl
@@ -94,7 +95,7 @@ module.exports = function(server){
 	}).post( 
 	  passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
 	  function(req, res) {
-	  	req.session.user = Object.create(req.user);
+	  	req.session.user = JSON.parse(JSON.stringify(req.user));
 	  	delete req.user.password;
 		res.redirect(req.session.redirect ||( adminUrl+'/'));
 		req.session.redirect = undefined;

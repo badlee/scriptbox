@@ -927,6 +927,9 @@ hr {
 /******* Page Content ********/
 .page-content {
     padding: 20px;
+    height: calc(100% - 87px) !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
 }
 
 .page-content #tab-general {

@@ -58,8 +58,13 @@ var propertiesSMS = {
 		//id : { type : Number, label : "Identifiant", index : true },
 		name: { type: String  , label : "Nom"},
 		desc:     { type: String, label : "Description" },
-		module : { type: Boolean, default: false, inputType : 'checkbox', label : "Module"  },
+		module : { type: Boolean, default: false, inputType : 'checkbox', label : "Module" 
+		, onchange : "if(document.querySelector('input[name=module]').checked){ document.querySelector('select[name=type]').value='text/javascript'; document.querySelector('textarea[name=data]').editor.setOption('mode','text/javascript'); document.querySelector('select[name=type]').disabled=true; } else {document.querySelector('select[name=type]').removeAttribute('disabled');}" },
 		user : { type : String },
+		type: { type: String, label : "Language", list : {
+			"text/javascript": "Javascript",
+			"text/coffeescript":"CoffeeScript"
+		}, onchange : "document.querySelector('textarea[name=data]').editor.setOption('mode',this.value);" },
 		data:     { type: String, label : "Script" , inputType :"javascript"}
 	},
 	md5 = require('MD5'),

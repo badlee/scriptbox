@@ -28,7 +28,8 @@ var path = require('path'),
          username   : settings.dbUser || "",
          password   : settings.dbPwd || "",
          database   : settings.dbPath ?  getDir(settings.dbPath) :  "",
-         pool       : settings.dbPool || false // optional for use pool directly 
+         pool       : settings.dbPool || false, // optional for use pool directly 
+         ssl        : settings.dbSSL || false // optional for use pool directly 
     },
     dbProd = {
          driver     :  settings.dbProdType || "memory",
@@ -37,7 +38,8 @@ var path = require('path'),
          username   : settings.dbProdUser || "",
          password   : settings.dbProdPwd || "",
          database   : settings.dbProdPath ? getDir(settings.dbProdPath) :  "",
-         pool       : settings.dbProdPool || false // optional for use pool directly 
+         pool       : settings.dbProdPool || false, // optional for use pool directly 
+         ssl        : settings.dbProdSSL || false // optional for use pool directly 
     },
     schema = new Schema(db.driver, db),
     schemaProd = new Schema(dbProd.driver, dbProd);
@@ -63,17 +65,13 @@ let
         if(values.dbType == "memory") return "";
         var database = adapter[Object.keys(adapter).find(i=>values.dbType == adapter[i][1])];
         let ret = database[2][this] || "";
-        return this == 'dbPool' ? !!(ret) : ret.toString()+(
-            this == 'dbPath' ? "cfg" : ""
-        );
+        return this == 'dbPool' ? !!(ret) : ret.toString();
     },
     adapterDefaultValueProd = function(values){
         if(values.dbProdType == "memory") return "";
         let database = adapter[Object.keys(adapter).find(i=>values.dbProdType == adapter[i][1])];
         let ret = database[2][this] || "";
-        return this == 'dbPool' ? !!(ret) : ret.toString()+(
-            this == 'dbPath' ? "data" : ""
-        );
+        return this == 'dbPool' ? !!(ret) : ret.toString();
     },
     validPort = num=>{
       var number = +num;
@@ -94,14 +92,14 @@ let
             dbPort : validPort
         }],
         firebird :  ["firebird" ,"node-firebird",{
-            dbHost : "",
-            dbPort : "",
-            dbPath : "sms",
+            dbHost : "127.0.0.1",
+            dbPort : "3050",
+            dbPath : "sms.fdb",
             dbPool : false
         },{}],
         mongodb :   ["MongoDB","mongodb",{
             dbHost : "127.0.0.1",
-            dbPort : "2770",
+            dbPort : "27017",
             dbPath : "sms",
             dbPool : false
         },{
@@ -110,7 +108,7 @@ let
         }],
         mongoose :  ["MongoDB(Mongoose)","mongoose",{
             dbHost : "127.0.0.1",
-            dbPort : "2770",
+            dbPort : "27017",
             dbPath : "sms",
             dbPool : false
         },{
@@ -127,20 +125,20 @@ let
             dbPort : validPort
         }],
         nano :      ["Nano","nano",{
-            dbHost : "",
-            dbPort : "",
-            dbPath : "app://sms",
+            dbHost : "127.0.0.1",
+            dbPort : "5984",
+            dbPath : "sms",
             dbPool : false
         },{}],
         neo4j :     ["Neo4J","neo4j",{
             dbHost : "127.0.0.1",
-            dbPort : "",
+            dbPort : "7474",
             dbPath : "sms",
             dbPool : false
         },{}],
         postgres :  ["PostgresSQL","pg",{
             dbHost : "127.0.0.1",
-            dbPort : "",
+            dbPort : "5432",
             dbPath : "sms",
             dbPool : true
         },{
@@ -158,13 +156,13 @@ let
         }],
         rethinkdb : ["RethinkDB","rethinkdb",{
             dbHost : "127.0.0.1",
-            dbPort : "",
+            dbPort : "28015",
             dbPath : "sms",
             dbPool : false
         },{}],
         riak :      ["Riak","riak-js",{
             dbHost : "127.0.0.1",
-            dbPort : "",
+            dbPort : "8098",
             dbPath : "sms",
             dbPool : false
         },{}],
@@ -199,7 +197,8 @@ let
                 }
                 return x;
             })},
-            httpPort :          {label :'Port Http', default : 13014, validate : validPort}
+            httpPort :          {label :'Port Http', default : 13014, validate : validPort},
+            memcachedSocket :          {label :'Port For memory Shared', default : 13024, validate : validPort}
         },
         db:{
             dbType :            {label : "storage Type", type:"list",choices : [{value : 'memory',name : "Memory"}]},
@@ -209,6 +208,7 @@ let
             dbUser :            {label : "Database username", validate :adapterRequiredValue.bind('dbUser'),default :adapterDefaultValue.bind('dbUser')},
             dbPwd  :            {label : "Database password", validate :adapterRequiredValue.bind('dbPwd'),default :adapterDefaultValue.bind('dbPwd') },
             dbPool :            {label : "Pool Connection", type : "confirm", validate :adapterRequiredValue.bind('dbPool'), default :adapterDefaultValue.bind('dbPool')},
+            dbSSL :             {label : "SSL Connection", type : "confirm", validate :adapterRequiredValue.bind('dbSSL'), default :adapterDefaultValue.bind('dbSSL')},
         },
         dbProd : {
             dbProdType :        {label : "storage Type", type:"list",choices : [{value : 'memory',name : "Memory"}]},
@@ -218,6 +218,7 @@ let
             dbProdUser :        {label : "Database username", validate :adapterRequiredValueProd.bind('dbUser'),default :adapterDefaultValueProd.bind('dbUser')},
             dbProdPwd  :        {label : "Database password", validate :adapterRequiredValueProd.bind('dbPwd'),default :adapterDefaultValueProd.bind('dbPwd') },
             dbProdPool :        {label : "Pool Connection", type : "confirm", validate :adapterRequiredValueProd.bind('dbPool'), default :adapterDefaultValueProd.bind('dbPool')},
+            dbProdSSL :         {label : "SSL Connection", type : "confirm", validate :adapterRequiredValueProd.bind('dbSSL'), default :adapterDefaultValueProd.bind('dbSSL')},
         }
     },
     prompt = inquirer.createPromptModule();

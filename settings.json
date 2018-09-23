@@ -15,6 +15,7 @@
     "dbPwd": "",
     "dbPath": "app://db",
     "dbPool": false,
+    "dbSSL": false,
     "dbProdType": "memory",
     "dbProdHost": "",
     "dbProdPort": "",
@@ -22,7 +23,9 @@
     "dbProdPwd": "",
     "dbProdPath": "dbProd",
     "dbProdPool": false,
+    "dbProdSSL": false,
     "keywordRegExp": false,
     "defautErrorMSG": "ERROR ON EXEC",
-    "httpPort": "13014"
+    "httpPort": 13014,
+    "memcachedSocket" : 13024
 }

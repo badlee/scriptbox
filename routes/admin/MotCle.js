@@ -1,5 +1,7 @@
 var path = require('path'),
     fs = require('fs');
+    S = require("string");
+
 var forceString = function(s){
 	var ret = [];
 	for(var i in s)
@@ -123,7 +125,8 @@ module.exports = function(app,dir){
 				return res.render("page-error",{error : {code:403, message : "Le MotCle "+update.keyword+" Ne peut être vide"}});	
 			}
 			if(update.keyword)
-				update.keyword = update.keyword.toLowerCase();
+				update.keyword = S(update.keyword.replace(/[ ]+/,"-")).camelize().s;
+
 			update.shortNumbers = s(update.shortNumbers);
 			Models.MotCle.find({ where : {keyword : update.keyword}}, function(err,keywords){
 				if(err)

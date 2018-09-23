@@ -34,13 +34,15 @@ module.exports = function(app){
 		dbPwd  : 			{label  : "Mot de passe de Connexion à la BD" },
 		dbPath : 			{label  : "Nom de la base de donnée" },
 		dbPool : 			{label  : "Connexion Pool à la BD", type : Boolean, inputType : 'checkbox' },
+		dbSSL : 			{label  : "Connexion SSL/TLS à la BD", type : Boolean, inputType : 'checkbox' },
 		dbProdType : 		{label : "storage Type [DB Prod]", list : {memory: "Memory"}},
 		dbProdHost : 		{label : "Serveur de base de donnée [DB Prod]"},
 		dbProdPort : 		{label : "Port du serveur de BD [DB Prod]"},
 		dbProdUser : 		{label : "Utilisateur de la BD [DB Prod]"},
 		dbProdPwd  : 		{label : "Mot de passe de Connexion à la BD [DB Prod]" },
 		dbProdPath : 		{label : "Nom de la base de donnée [DB Prod]" },
-		dbProdPool : 		{label : "Connexion Pool à la BD [DB Prod]", type : Boolean, inputType : 'checkbox' }
+		dbProdPool : 		{label : "Connexion Pool à la BD [DB Prod]", type : Boolean, inputType : 'checkbox' },
+		dbProdSSL : 		{label  : "Connexion SSL/TLS à la BD [DB Prod]", type : Boolean, inputType : 'checkbox' },
 	};
 
 	for(var i in adapter){
