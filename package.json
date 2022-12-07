@@ -50,7 +50,7 @@
     "cookie-parser": "^1.0.1",
     "couchbase": "^2.5.1",
     "daemonize2": "^0.4.2",
-    "express": "^4.0.0",
+    "express": "^4.17.3",
     "express-session": "^1.8.2",
     "inquirer": "^6.2.0",
     "inquirer-select-line": "^1.1.1",
