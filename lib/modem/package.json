@@ -1,0 +1,22 @@
+{
+  "name": "modem",
+  "version": "2.0.0",
+  "description": "Modern ES6+ library to send and receive messages and make USSD queries using GSM modems",
+  "main": "index.js",
+  "keywords": [
+    "ussd",
+    "sms",
+    "modem",
+    "gsm",
+    "serial"
+  ],
+  "author": "Updated from original by badlee",
+  "license": "MIT",
+  "dependencies": {
+    "pdu": "^1.1.0",
+    "serialport": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

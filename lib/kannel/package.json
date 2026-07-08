@@ -1,0 +1,21 @@
+{
+  "name": "kannel",
+  "version": "1.0.0",
+  "description": "Modern ES6+ JavaScript implementation of Kannel Box protocol",
+  "main": "index.js",
+  "keywords": [
+    "kannel",
+    "sms",
+    "smsc",
+    "smsbox",
+    "protocol",
+    "gateway",
+    "vas"
+  ],
+  "author": "Updated from original by badlee",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
