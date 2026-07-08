@@ -259,7 +259,7 @@ boxSMS.on('submit', function(data) {
         'source_addr': from,
         'destination_addr': to,
         'sm_length': Buffer.byteLength(message),
-        'short_message': new Buffer(message)
+        'short_message': Buffer.from(message)
     });
     log('Submit message[id:'+id+']', 'to', client,':',message);
   boxSMS.render();
@@ -470,7 +470,7 @@ async function main(){
 //                     'source_addr': from,
 //                     'destination_addr': to,
 //                     'sm_length': Buffer.byteLength(message),
-//                     'short_message': new Buffer(message)
+//                     'short_message': Buffer.from(message)
 //                 });
 //                 log("SMS sent");
 //             }
@@ -508,7 +508,7 @@ async function main(){
 //         'source_addr': parts[0],
 //         'destination_addr': parts[1],
 //         'sm_length': Buffer.byteLength(message),
-//         'short_message': new Buffer(message)
+//         'short_message': Buffer.from(message)
 //     });
 // });
 

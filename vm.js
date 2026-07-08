@@ -143,9 +143,9 @@ var lang = false;
  	}else if (m.type === 'sms'){
  		// console.log("recieve SMS",m.time);
  		m.msgdata_orig = m.msgdata;
-		m.msgdata = new Buffer(m.msgdata).toString().trim();
-		m.receiver = new Buffer(m.receiver).toString().toLowerCase();
-		m.sender = new Buffer(m.sender).toString().toLowerCase();
+		m.msgdata = Buffer.from(m.msgdata).toString().trim();
+		m.receiver = Buffer.from(m.receiver).toString().toLowerCase();
+		m.sender = Buffer.from(m.sender).toString().toLowerCase();
 		var priv = Symbol(m.sender);
 		m[priv] = true;
 		m.fileType = m.script.type;
@@ -168,7 +168,7 @@ var lang = false;
 		  	}).bind(null,m.file,sendError));
 		}
 		/* definition de la session et du storage */
-			var _id = new Buffer(m.sender).toString();
+			var _id = Buffer.from(m.sender).toString();
 		m.filename = path.basename(m.file);
 		var MSG = function(conf){
 		  		conf = conf || {};
