@@ -285,7 +285,7 @@ Client.prototype.store   = function(cmd, key, value, callback, lifetime, flags) 
 
 	var set_flags = flags || 0;
 	var exp_time  = lifetime || 0;
-    var tml_buf = new Buffer(value.toString());
+    var tml_buf = Buffer.from(value.toString());
 	var value_len = tml_buf.length || 0;
 	var query = [cmd, this.scope+key, set_flags, exp_time, value_len];
 

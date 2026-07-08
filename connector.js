@@ -42,7 +42,7 @@ function initVm(j){
 	VMs[j].send({type:"settings", data:settings});
 	VMs[j].on('message', (function(m) {
 		if (m.type === 'sms'){
-			this.sendSMS(m,new Buffer(m.receiver).toString());
+			this.sendSMS(m,Buffer.from(m.receiver).toString());
 		}
 	}).bind(this));
 	VMs[j].on('error',(function(j){
@@ -121,7 +121,7 @@ Object.defineProperties(Connector.prototype, {
 	},
 	sendSMS  : {
 		value: function(data,id){
-			console.log("send SMS",new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
+			console.log("send SMS",Buffer.from(data.receiver).toString(),Buffer.from(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats++",id);
 			this._sendSMS(data);
 		},
@@ -134,10 +134,10 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("sendSMS",data);}catch(e){console.log("Error",e)}
 			new Models.SMS({ 
 				pdu: data,
-				sms : new Buffer(data.msgdata || "").toString(),
-				from: new Buffer(data.sender || "").toString(),
-				to: new Buffer(data.receiver || "").toString(),
-				SMSC: new Buffer(data.smsc_id || "").toString(),
+				sms : Buffer.from(data.msgdata || "").toString(),
+				from: Buffer.from(data.sender || "").toString(),
+				to: Buffer.from(data.receiver || "").toString(),
+				SMSC: Buffer.from(data.smsc_id || "").toString(),
 				MotCle : "",
 				success : false,
 				received : false
@@ -156,10 +156,10 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("failSMS",data,raison);}catch(e){};
 			var save = { 
 				pdu: data,
-				sms : new Buffer(data.msgdata || "").toString(),
-				from: new Buffer(data.sender || "").toString(),
-				to: new Buffer(data.receiver || "").toString(),
-				SMSC: new Buffer(data.smsc_id || "").toString(),
+				sms : Buffer.from(data.msgdata || "").toString(),
+				from: Buffer.from(data.sender || "").toString(),
+				to: Buffer.from(data.receiver || "").toString(),
+				SMSC: Buffer.from(data.smsc_id || "").toString(),
 				MotCle : "",
 				success : false,
 				raison : raison
@@ -178,10 +178,10 @@ Object.defineProperties(Connector.prototype, {
 			try{this.emit("successSMS",data);}catch(e){}
 			new Models.SMS({ 
 				pdu: data,
-				sms : new Buffer(data.msgdata || "").toString(),
-				from: new Buffer(data.sender || "").toString(),
-				to: new Buffer(data.receiver || "").toString(),
-				SMSC: new Buffer(data.smsc_id || "").toString(),
+				sms : Buffer.from(data.msgdata || "").toString(),
+				from: Buffer.from(data.sender || "").toString(),
+				to: Buffer.from(data.receiver || "").toString(),
+				SMSC: Buffer.from(data.smsc_id || "").toString(),
 				MotCle : keyword,
 				script : script,
 				success : true
@@ -197,7 +197,7 @@ Object.defineProperties(Connector.prototype, {
 	runSMS : {
 		value : function(data,err,items){
 			var id = (data && data.receiver ? data.receiver : "unknow").toString();
-			console.log("receive SMS",new Buffer(data.receiver).toString(),new Buffer(data.sender).toString(),data.msgdata.toString());
+			console.log("receive SMS",Buffer.from(data.receiver).toString(),Buffer.from(data.sender).toString(),data.msgdata.toString());
 			this.emit("stats--",id);
 			if(err || !items)
 				return this.failSMS(data, err ? err : "Pas d'items" );

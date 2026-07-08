@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 require('../settings');
-var path = require('path'),
+const path = require('path'),
     fs = require('fs'),
     os = require('os'),
     osHomedir = os.homedir(),
@@ -8,7 +8,7 @@ var path = require('path'),
     Spinner = require('cli-spinner').Spinner,
     altSettings = path.resolve(osHomedir,"."+package.name+".json");
     
-var spinner = new Spinner();
+const spinner = new Spinner();
 spinner.setSpinnerString('|/-\\');
     
 const colors = require('colors'),
@@ -16,7 +16,7 @@ const colors = require('colors'),
       name = package.name;
 
 
-var daemon = require("daemonize2").setup({
+const daemon = require("daemonize2").setup({
     main: path.resolve(__dirname,'..','index.js'),
     name: name,
     silent:true,
@@ -61,9 +61,9 @@ switch((process.argv[2]||"").replace(/^(-|--|\/)/,"")){
         daemon.on("started",function(){
             spinner.stop();
             process.stdout.write(emoji.get('+1')+' \n');
-            var interfaces = os.getNetworkInterfaces();
-            interfaces = Object.keys(interfaces).map(x=>interfaces[x].filter(x=>x.family == 'IPv4').map(x=>x.address).join(":"+settings.httpPort+", http://")).filter(x=>x).join(":"+settings.httpPort+", http://");
-            console.log("Web interfaces at : http://"+interfaces+":"+settings.httpPort);            
+            const interfaces = os.networkInterfaces();
+            const interfacesList = Object.keys(interfaces).map(x=>interfaces[x].filter(x=>x.family === 'IPv4').map(x=>x.address).join(":"+settings.httpPort+", http://")).filter(x=>x).join(":"+settings.httpPort+", http://");
+            console.log("Web interfaces at : http://"+interfacesList+":"+settings.httpPort);            
             process.exit();
         })
         spinner.setSpinnerTitle('%s Server start... ');
