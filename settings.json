@@ -8,7 +8,7 @@
         "sendsms": 1,
         "keywording": 1
     },
-    "dbType": "memory",
+    "dbType": "tingodb",
     "dbHost": "",
     "dbPort": "",
     "dbUser": "",
@@ -16,16 +16,15 @@
     "dbPath": "app://db",
     "dbPool": false,
     "dbSSL": false,
-    "dbProdType": "memory",
+    "dbProdType": "tingodb",
     "dbProdHost": "",
     "dbProdPort": "",
     "dbProdUser": "",
     "dbProdPwd": "",
-    "dbProdPath": "dbProd",
+    "dbProdPath": "app://dbProd",
     "dbProdPool": false,
     "dbProdSSL": false,
     "keywordRegExp": false,
     "defautErrorMSG": "ERROR ON EXEC",
-    "httpPort": 13014,
-    "memcachedSocket" : 13024
+    "httpPort": "13014"
 }

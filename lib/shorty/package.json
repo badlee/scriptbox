@@ -1,0 +1,20 @@
+{
+  "name": "shorty",
+  "version": "1.0.0",
+  "description": "Modern ES6+ asynchronous SMPP client and server built on Node.js",
+  "main": "index.js",
+  "keywords": [
+    "smpp",
+    "sms",
+    "gateway",
+    "client",
+    "server",
+    "async"
+  ],
+  "author": "Updated from original by badlee",
+  "license": "GPL-3.0",
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

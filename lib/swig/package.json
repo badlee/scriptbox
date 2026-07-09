@@ -1,0 +1,29 @@
+{
+  "name": "swig",
+  "version": "1.4.2-modern",
+  "description": "Modern ES6+ version of Swig - A simple, powerful, and extendable templating engine for node.js and browsers",
+  "main": "index.js",
+  "keywords": [
+    "template",
+    "templating",
+    "html",
+    "django",
+    "jinja",
+    "twig",
+    "express",
+    "block",
+    "es6",
+    "modern"
+  ],
+  "author": "Updated from original by Paul Armstrong / badlee",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paularmstrong/swig.git"
+  },
+  "homepage": "https://github.com/paularmstrong/swig"
+}
