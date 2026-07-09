@@ -28,7 +28,9 @@
     "vas",
     "script",
     "es6",
-    "modern"
+    "modern",
+    "templating",
+    "swig"
   ],
   "engines": {
     "node": ">=14.0.0"
